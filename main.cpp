@@ -50,6 +50,22 @@ bool ChecagemDeColisaoVertical( int xColisor, int &yColisor, int yColisorAnterio
       colidiu = true;
 	}
   }
+  else if(xColisor >= xColidido && yColisor + alturaColisor >= yColidido)
+  {
+    if(xColisor <= xColidido + TamanhoColidido && yColisor + alturaColisor <= yColidido + TamanhoColidido)
+    {
+      yColisor = yColisorAnterior;
+      colidiu = true;
+	}
+  }
+  else if(xColisor + larguraColisor >= xColidido && yColisor >= yColidido)
+  {
+    if(xColisor + larguraColisor <= xColidido + TamanhoColidido && yColisor <= yColidido + TamanhoColidido)
+    {
+      yColisor = yColisorAnterior;
+      colidiu = true;
+	}
+  }
   else
     colidiu = false;
   return colidiu;
@@ -68,6 +84,22 @@ bool ChecagemDeColisaoHorizontal( int &xColisor, int yColisor, int xColisorAnter
   else if(xColisor + larguraColisor >= xColidido && yColisor + alturaColisor >= yColidido)
   {
     if(xColisor + larguraColisor <= xColidido + TamanhoColidido && yColisor + alturaColisor <= yColidido + TamanhoColidido)
+    {
+      xColisor = xColisorAnterior;
+      colidiu = true;
+	}
+  }
+  else if(xColisor >= xColidido && yColisor + alturaColisor >= yColidido)
+  {
+    if(xColisor <= xColidido + TamanhoColidido && yColisor + alturaColisor <= yColidido + TamanhoColidido)
+    {
+      xColisor = xColisorAnterior;
+      colidiu = true;
+	}
+  }
+  else if(xColisor + larguraColisor >= xColidido && yColisor >= yColidido)
+  {
+    if(xColisor + larguraColisor <= xColidido + TamanhoColidido && yColisor <= yColidido + TamanhoColidido)
     {
       xColisor = xColisorAnterior;
       colidiu = true;
@@ -162,7 +194,7 @@ int main()
   
   altura = 128;
   largura = 64;
-  xPlayer = 30;
+  xPlayer = 130;
   yPlayer = 600 - altura;
   gravidade = 5;
   passoxP = 4;
