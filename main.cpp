@@ -32,79 +32,80 @@ void* loadimage(const char *sprite, int largura, int altura , int x, int y)
   return image;		
 }
 
-bool ChecagemDeColisaoVertical( int xColisor, int &yColisor, int yColisorAnterior, int larguraColisor, int alturaColisor, int xColidido, int yColidido, int TamanhoColidido, bool colidiu)
+bool ChecagemDeColisaoVertical( int xColisor, int &yColisor, int yColisorAnterior, int larguraColisor, int alturaColisor, int xColidido, int yColidido, int TamanhoColidido, bool &colidiu)
 {
-  if(xColisor >= xColidido && yColisor >= yColidido)
+  if( xColisor >= xColidido && yColisor >= yColidido )
   {
-    if(xColisor <= xColidido + TamanhoColidido && yColisor <= yColidido + TamanhoColidido)
+    if( xColisor <= (xColidido + TamanhoColidido) && yColisor <= (yColidido + TamanhoColidido) )//Verificando colisao vertice Superior Esquerdo
     {
-      yColisor = yColisorAnterior;
       colidiu = true;
+      yColisor = yColisorAnterior;
 	}
   }
-  else if(xColisor + larguraColisor >= xColidido && yColisor + alturaColisor >= yColidido)
+  else if( (xColisor + larguraColisor) >= xColidido && yColisor >= yColidido )
   {
-    if(xColisor + larguraColisor <= xColidido + TamanhoColidido && yColisor + alturaColisor <= yColidido + TamanhoColidido)
+    if( (xColisor + larguraColisor) <= (xColidido + TamanhoColidido) && yColisor <= (yColidido + TamanhoColidido) )//Verificando colisao vertice Superior Direito
     {
-      yColisor = yColisorAnterior;
       colidiu = true;
+      yColisor = yColisorAnterior;
 	}
   }
-  else if(xColisor >= xColidido && yColisor + alturaColisor >= yColidido)
+  else if( xColisor >= xColidido && (yColisor + alturaColisor) >= yColidido )
   {
-    if(xColisor <= xColidido + TamanhoColidido && yColisor + alturaColisor <= yColidido + TamanhoColidido)
+    if(xColisor <= (xColidido + TamanhoColidido) && (yColisor + alturaColisor) <= (yColidido + TamanhoColidido) )//Verificando colisao vertice Inferior Esquerdo
     {
-      yColisor = yColisorAnterior;
       colidiu = true;
+      yColisor = yColisorAnterior;
+      printf("\n Inferior Esquerdo %d",colidiu);
 	}
   }
-  else if(xColisor + larguraColisor >= xColidido && yColisor >= yColidido)
+  else if( (xColisor + larguraColisor) >= xColidido && (yColisor + alturaColisor) >= yColidido )
   {
-    if(xColisor + larguraColisor <= xColidido + TamanhoColidido && yColisor <= yColidido + TamanhoColidido)
+    if( (xColisor + larguraColisor) <= (xColidido + TamanhoColidido) && (yColisor + alturaColisor) <= (yColidido + TamanhoColidido) )//Verificando colisao vertice Inferior Direito
     {
-      yColisor = yColisorAnterior;
       colidiu = true;
+      yColisor = yColisorAnterior;
 	}
   }
   else
     colidiu = false;
-  return colidiu;
 }
 
-bool ChecagemDeColisaoHorizontal( int &xColisor, int yColisor, int xColisorAnterior, int larguraColisor, int alturaColisor, int xColidido, int yColidido, int TamanhoColidido, bool colidiu)
+bool ChecagemDeColisaoHorizontal( int &xColisor, int yColisor, int xColisorAnterior, int larguraColisor, int alturaColisor, int xColidido, int yColidido, int TamanhoColidido, bool &colidiu)
 {
-  if(xColisor >= xColidido && yColisor >= yColidido)
+  if( xColisor >= (xColidido + TamanhoColidido - 2) && yColisor >= yColidido )
   {
-    if(xColisor <= xColidido + TamanhoColidido && yColisor <= yColidido + TamanhoColidido)
+    if(xColisor <= (xColidido + TamanhoColidido) && yColisor <= (yColidido + TamanhoColidido) )//Verificando colisao vertice Superior Esquerdo do Colisor
     {
       xColisor = xColisorAnterior;
       colidiu = true;
 	}
   }
-  else if(xColisor + larguraColisor >= xColidido && yColisor + alturaColisor >= yColidido)
+  else if( (xColisor + larguraColisor) >= (xColidido + TamanhoColidido - 2) && yColisor >= yColidido)
   {
-    if(xColisor + larguraColisor <= xColidido + TamanhoColidido && yColisor + alturaColisor <= yColidido + TamanhoColidido)
+    if( (xColisor + larguraColisor) <= (xColidido + TamanhoColidido) && yColisor <= (yColidido + TamanhoColidido) )//Verificando colisao vertice Superior Direito do Colisor
     {
       xColisor = xColisorAnterior;
       colidiu = true;
 	}
   }
-  else if(xColisor >= xColidido && yColisor + alturaColisor >= yColidido)
+  else if( (xColisor >= xColidido + TamanhoColidido - 2) && (yColisor + alturaColisor) >= yColidido )
   {
-    if(xColisor <= xColidido + TamanhoColidido && yColisor + alturaColisor <= yColidido + TamanhoColidido)
+    if( xColisor <= (xColidido + TamanhoColidido) && (yColisor + alturaColisor) <= (yColidido + TamanhoColidido) )//Verificando colisao vertice Inferior Esquerdo do Colisor
     {
       xColisor = xColisorAnterior;
       colidiu = true;
 	}
   }
-  else if(xColisor + larguraColisor >= xColidido && yColisor >= yColidido)
+  else if( (xColisor + larguraColisor) >= (xColidido + TamanhoColidido - 2) && (yColisor + alturaColisor) >= yColidido)
   {
-    if(xColisor + larguraColisor <= xColidido + TamanhoColidido && yColisor <= yColidido + TamanhoColidido)
+    if( (xColisor + larguraColisor) <= (xColidido + TamanhoColidido) && (yColisor + alturaColisor) <= (yColidido + TamanhoColidido))//Verificando colisao vertice Inferior Direito do Colisor
     {
       xColisor = xColisorAnterior;
       colidiu = true;
 	}
   }
+  else if( (xColisor + (largura/2)) >= (xColidido + TamanhoColidido - 2) )//em processo
   else
     colidiu = false;
   return colidiu;
@@ -137,7 +138,7 @@ int main()
   tamTiles = qntTilesAltura * qntTilesLargura;
   tiles = (Tiles *)malloc(sizeof(Tiles)*tamTiles);
   
-  int tileMap[12][20] = 
+  int tileMap[12][20] = // Posições dos Tiles na tela:
   {
     {3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
     {3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
@@ -146,10 +147,10 @@ int main()
     {3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
     {3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
     {3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
-    {3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
-    {3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
-    {3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
-    {3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+    {3, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+    {3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 4},
+    {3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 4},
+    {3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 4},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
   };
   
@@ -182,15 +183,19 @@ int main()
     }
   }
   //====Tempo de Espera ====
-  int Espera = 5000;
-  double TempoDecorrido;
+  int espera = 1000;
+  double tempoDecorrido;
+  unsigned long long inicio, agora;
+  bool contar = false;
   
   //====Player====
   int xPlayer, yPlayer, xAnterior, yAnterior, passoyP, passoxP, altura, largura;
   int limitePulo;
   int gravidade;
   bool jump = false;
-  bool colisao = false;
+  
+  bool colisaoVertical = false;
+  bool colisaoHorizontal = false;
   
   altura = 128;
   largura = 64;
@@ -210,13 +215,18 @@ int main()
   
   //====Salvando o tick do computador Inicialmente====
   gt1 = GetTickCount();
+  inicio = GetTickCount();
+  agora = inicio + espera;
   
   while(tecla != ESC)
   {	
     //====Coletando o Tick ao passar do tempo====
     gt2 = GetTickCount();
     
-	//TempoDecorrido = Agora - Inicio;
+    if(contar == true)
+      agora = GetTickCount();
+    
+	tempoDecorrido = agora - inicio;
 	    
     if (gt2-gt1 > 1000/fps)
 	{
@@ -226,26 +236,30 @@ int main()
 	  cleardevice();
 	  
 	  //====Lidando com o Player====
-	  xAnterior = xPlayer;
-	  yAnterior = yPlayer;
-	  
+	  if(!colisaoVertical)
+	    yAnterior = yPlayer;
+	
+	  if(!colisaoHorizontal)
+	    xAnterior = xPlayer;
+	    
 	  //====LOCAL PARA PROGRAMAR NA TELA===
-	  
 	  //========Player=======
-	  setfillstyle(1, YELLOW);
+	  setfillstyle(1, RED);
       setcolor (YELLOW);
       bar(xPlayer, yPlayer, xPlayer + largura, yPlayer + altura); 
       
 	  //====Gravidade====
-	  if(!colisao)
+	  if(!colisaoVertical)
 	    yPlayer = yPlayer + gravidade;
 	  
 	  //====Pulo====
-	  if(GetKeyState(VK_SPACE)&0x80 && !jump && colisao == true)
+	  if(GetKeyState(VK_SPACE)&0x80 && !jump && tempoDecorrido >= espera)
 	  {
 	    jump = true;
 	    limitePulo = yPlayer - 80;
-	  }
+	  	inicio = GetTickCount();
+	    contar = true;
+	  } 
 	  if(yPlayer >= limitePulo && jump == true)
 	  {
 	    yPlayer = yPlayer - passoyP;
@@ -255,8 +269,6 @@ int main()
 		}
 	  }
 	  
-	  setvisualpage(pg);
-	  
 	  //======Captura de Inputs do teclado(Esquerda e Direta, Respestivamente)======
 	  if(GetKeyState(0x41)&0x80)  xPlayer = xPlayer - passoxP;
       if(GetKeyState(0x44)&0x80)  xPlayer = xPlayer + passoxP;
@@ -264,16 +276,22 @@ int main()
       //======Lidando com Colisão dos Tiles======
       for(int i = 0; i < tamTiles; i++)
       {
-      	//printf("\n%d", tiles[i].tipo);
         if(tiles[i].tipo == 1)
         {
-			ChecagemDeColisaoVertical(xPlayer, yPlayer, yAnterior, largura, altura, tiles[i].x, tiles[i].y, tileComprimento, colisao);
+        	setfillstyle(1, RGB(255,255,0));
+        	bar(tiles[i].x, tiles[i].y, tiles[i].x+tileComprimento, tiles[i].y+tileComprimento);
+			ChecagemDeColisaoVertical(xPlayer, yPlayer, yAnterior, largura, altura, tiles[i].x, tiles[i].y, tileComprimento, colisaoVertical);
+			printf("\n%d",colisaoVertical);
 		}
 		if(tiles[i].tipo == 2)
         {
-        	ChecagemDeColisaoHorizontal(xPlayer, yPlayer, xAnterior, largura, altura, tiles[i].x, tiles[i].y, tileComprimento, colisao); 
+        	setfillstyle(1, RGB(255,0,255));
+        	bar(tiles[i].x, tiles[i].y, tiles[i].x+tileComprimento, tiles[i].y+tileComprimento);
+        	ChecagemDeColisaoHorizontal(xPlayer, yPlayer, xAnterior, largura, altura, tiles[i].x, tiles[i].y, tileComprimento,  colisaoHorizontal); 
 		}
 	  }
+	  
+      setvisualpage(pg);
       
       //====Ajeitando a Posição do Mouse====
       (GetCursorPos(&P));
