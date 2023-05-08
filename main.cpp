@@ -18,7 +18,7 @@ using namespace std;
 typedef struct _item
 {
   int x, y, altura, largura;
-  bool colidido;
+  bool colidido, cliqueMouse;
 }Item;
 
 //Area para funcoes
@@ -55,11 +55,11 @@ int main()
   int pg = 1;
   char tecla;
   HWND janela;	
-  unsigned long long gt1, gt2;	
+  unsigned long long gt1, gt2;//Clocks do Computador
   int fps = 60;
   
   //===============================> Mouse <===============================
-  POINT P;
+  POINT P;//Posição do Mouse
   bool colisaoMouse = false;
   
   //===============================> Itens <===============================
@@ -76,18 +76,21 @@ int main()
   Itens[0].altura = 20;
   Itens[0].largura = 20;
   Itens[0].colidido = false;
+  Itens[0].cliqueMouse = false;
   
   Itens[1].x = 500;
   Itens[1].y = 30;
   Itens[1].altura = 20;
   Itens[1].largura = 20;
   Itens[1].colidido = false;
+  Itens[1].cliqueMouse = false;
   
   Itens[2].x = 30;
   Itens[2].y = 500;
   Itens[2].altura = 20;
   Itens[2].largura = 20;
   Itens[2].colidido = false;
+  Itens[2].cliqueMouse = false;
   
   //===============================> Fases <===============================
   int fase = 0;
@@ -130,26 +133,23 @@ int main()
 	  setfillstyle(1,RGB(255, 0, 0));
 	  for(int i = 0; i < qntItens; i++)
 	  {	
-	  
-	    bar(Itens[i].x, Itens[i].y, Itens[i].x + Itens[i].largura, Itens[i].y + Itens[i].altura);
+	    if(!Itens[i].cliqueMouse)
+	      bar(Itens[i].x, Itens[i].y, Itens[i].x + Itens[i].largura, Itens[i].y + Itens[i].altura);
 	  }
 	  
-	  //===============================> Captura de Inputs <===============================
-      
       //===============================> Colisão do Mouse <===============================
       (GetCursorPos(&P));
       (ScreenToClient(janela, &P));
       
       for(int i = 0; i < qntItens; i++)
       {
-        ChecagemDeColisao(P.x, P.y, Itens[i].x, Itens[i].y, Itens[i].largura, Itens[i].altura, Itens[i].colidido);
+        ChecagemDeColisao(P.x, P.y, Itens[i].x, Itens[i].y, Itens[i].largura, Itens[i].altura, Itens[i].colidido);//Coletando a informação de colisão e guardando dentro do item.
 	  }
 	  if(colisaoMouse == false)
 	  {
-	    for(int i = 0; i < qntItens; i++)
+	    for(int i = 0; i < qntItens; i++)//Checagem dos Itens para ver se há algum colidido e Qual foi.
 	    {
 	      colisaoMouse = Itens[i].colidido;
-	      printf("\n%d", colisaoMouse);	
 	      if(colisaoMouse == true)
 	      {
 	        indexItemColidido = i;
@@ -159,7 +159,7 @@ int main()
 	  }
 	  if(colisaoMouse == true)
 	  {
-	    for(int i = 0; i < qntItens; i++)
+	    for(int i = 0; i < qntItens; i++)//Checagem se não há mais colisão.
 	    {
 		  if(Itens[i].colidido == true)
 		    break;
@@ -170,7 +170,12 @@ int main()
 		  }
 		} 
 	  }
-	  //printf("\nItem colidido : %d", indexItemColidido);
+	  
+	  //===============================> Captura de Inputs <===============================
+      if(GetKeyState(VK_LBUTTON)&0x80 && colisaoMouse == true)//Input do Mouse
+      {
+        Itens[indexItemColidido].cliqueMouse = true;
+	  }
       setvisualpage(pg);
     }
     
