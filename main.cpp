@@ -8,10 +8,17 @@ using namespace std;
 
 #define ESC    	27
 
+/*
+  Como programar as funções do clique do mouse com o que está colidido:
+  
+  
+*/
+
 //local para os structs
 typedef struct _item
 {
   int x, y, altura, largura;
+  bool colidido;
 }Item;
 
 //Area para funcoes
@@ -27,35 +34,16 @@ void* loadimage(const char *sprite, int largura, int altura , int x, int y)
   return image;		
 }
 
-bool ChecagemDeColisao( int xColisor, int yColisor, int larguraColisor, int alturaColisor, int xColidido, int yColidido, int TamanhoColidido, bool &colidiu)
+bool ChecagemDeColisao( int xColisor, int yColisor, int xColidido, int yColidido, int larguraColidido, int alturaColidido, bool &colidiu)
 {
   if( xColisor >= xColidido && yColisor >= yColidido )
   {
-    if( xColisor <= (xColidido + TamanhoColidido) && yColisor <= (yColidido + TamanhoColidido) )//Verificando colisao vertice Superior Esquerdo
+    if( xColisor <= (xColidido + larguraColidido) && yColisor <= (yColidido + alturaColidido) )
     {
       colidiu = true;
 	}
-  }
-  else if( (xColisor + larguraColisor) >= xColidido && yColisor >= yColidido )
-  {
-    if( (xColisor + larguraColisor) <= (xColidido + TamanhoColidido) && yColisor <= (yColidido + TamanhoColidido) )//Verificando colisao vertice Superior Direito
-    {
-      colidiu = true;
-	}
-  }
-  else if( xColisor >= xColidido && (yColisor + alturaColisor) >= yColidido )
-  {
-    if(xColisor <= (xColidido + TamanhoColidido) && (yColisor + alturaColisor) <= (yColidido + TamanhoColidido) )//Verificando colisao vertice Inferior Esquerdo
-    {
-      colidiu = true;
-	}
-  }
-  else if( (xColisor + larguraColisor) >= xColidido && (yColisor + alturaColisor) >= yColidido )
-  {
-    if( (xColisor + larguraColisor) <= (xColidido + TamanhoColidido) && (yColisor + alturaColisor) <= (yColidido + TamanhoColidido) )//Verificando colisao vertice Inferior Direito
-    {
-      colidiu = true;
-	}
+   else
+    colidiu = false;
   }
   else
     colidiu = false;
@@ -70,16 +58,36 @@ int main()
   unsigned long long gt1, gt2;	
   int fps = 60;
   
-  //===============================> Itens <===============================
+  //===============================> Mouse <===============================
   POINT P;
   bool colisaoMouse = false;
   
   //===============================> Itens <===============================
-  Item seiLa;
-  seiLa.x = 50;
-  seiLa.y = 50;
-  seiLa.altura = 40;
-  seiLa.largura = 40;
+  //Vetor guardando os itens
+  Item *Itens;
+  int qntItens = 3;
+  Itens = NULL;
+  Itens = (Item *) malloc(sizeof(Item) * qntItens);
+  int indexItemColidido = 0;
+  
+  //itens
+  Itens[0].x = 20;
+  Itens[0].y = 20;
+  Itens[0].altura = 20;
+  Itens[0].largura = 20;
+  Itens[0].colidido = false;
+  
+  Itens[1].x = 500;
+  Itens[1].y = 30;
+  Itens[1].altura = 20;
+  Itens[1].largura = 20;
+  Itens[1].colidido = false;
+  
+  Itens[2].x = 30;
+  Itens[2].y = 500;
+  Itens[2].altura = 20;
+  Itens[2].largura = 20;
+  Itens[2].colidido = false;
   
   //===============================> Fases <===============================
   int fase = 0;
@@ -110,7 +118,7 @@ int main()
     agora = GetTickCount();
     
 	tempoDecorrido = agora - inicio;
-	    
+	
     if (gt2-gt1 > 1000/fps)
 	{
       gt1 = gt2;
@@ -119,17 +127,50 @@ int main()
 	  cleardevice();
 	    
 	  //===============================> LOCAL PARA PROGRAMAR NA TELA <===============================
-	  setfillstyle(1,RGB(255, 255, 0));
-	  bar(seiLa.x, seiLa.y, seiLa.x + seiLa.largura, seiLa.y + seiLa.altura);
+	  setfillstyle(1,RGB(255, 0, 0));
+	  for(int i = 0; i < qntItens; i++)
+	  {	
+	  
+	    bar(Itens[i].x, Itens[i].y, Itens[i].x + Itens[i].largura, Itens[i].y + Itens[i].altura);
+	  }
 	  
 	  //===============================> Captura de Inputs <===============================
       
-      //===============================> Ajeitando a Posição do Mouse <===============================
-      (ScreenToClient(janela, &P));
+      //===============================> Colisão do Mouse <===============================
       (GetCursorPos(&P));
-      ChecagemDeColisao( P.x, P.y, 1, 1, seiLa.x, seiLa.y, seiLa.altura, colisaoMouse);
-      printf("%d", colisaoMouse);
+      (ScreenToClient(janela, &P));
       
+      for(int i = 0; i < qntItens; i++)
+      {
+        ChecagemDeColisao(P.x, P.y, Itens[i].x, Itens[i].y, Itens[i].largura, Itens[i].altura, Itens[i].colidido);
+	  }
+	  if(colisaoMouse == false)
+	  {
+	    for(int i = 0; i < qntItens; i++)
+	    {
+	      colisaoMouse = Itens[i].colidido;
+	      printf("\n%d", colisaoMouse);	
+	      if(colisaoMouse == true)
+	      {
+	        indexItemColidido = i;
+	        break;
+		  }
+		}
+	  }
+	  if(colisaoMouse == true)
+	  {
+	    for(int i = 0; i < qntItens; i++)
+	    {
+		  if(Itens[i].colidido == true)
+		    break;
+		  else if(i == qntItens - 1)
+		  {  
+		    if(Itens[i].colidido == false)
+		      colisaoMouse = false;
+		  }
+		} 
+	  }
+	  //printf("\nItem colidido : %d", indexItemColidido);
       setvisualpage(pg);
     }
     
@@ -140,7 +181,8 @@ int main()
       tecla = getch();
     }
   }
-  printf("\nFim do Programa");
+  
+  printf("\n\nFim do Programa");
   closegraph();
   return 0; 
 }
