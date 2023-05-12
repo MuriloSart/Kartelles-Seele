@@ -24,9 +24,7 @@ void* loadimage(const char *sprite, int largura, int altura , int x, int y);
 
 bool ChecagemDeColisao(int xColisor, int yColisor, int xColidido, int yColidido, int larguraColidido, int alturaColidido, bool &colidiu);
 
-void LidandoComFases(BlocoDeColisao *blocos, int qntBlocos, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, int blocoInicial, int blocoFinal);
-
-void ExibeTempo(int x, int y, char *msg, long long t);
+void LidandoComFases(BlocoDeColisao *blocos, int qntBlocos, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool caixinhaTexto, int blocoInicial, int blocoFinal);
 
 //===============================> Mouse <===============================
   HWND janela;//coletando a janela
@@ -48,7 +46,7 @@ int main()
   //===============================> Blocos de Colisão para o Mouse <===============================
   //Vetor que está guardando os blocos
   BlocoDeColisao *blocosColisao;
-  int qntBlocos = 19;
+  int qntBlocos = 20;
   blocosColisao = NULL;
   blocosColisao = (BlocoDeColisao *) malloc(sizeof(BlocoDeColisao) * qntBlocos);
 
@@ -85,8 +83,9 @@ int main()
   blocosColisao[3].colidido = false;
   blocosColisao[3].cliqueMouse = false;
   
-  blocosColisao[4].x = 500;
-  blocosColisao[4].y = 500;
+  //caixa de conversa com a otta
+  blocosColisao[4].x = 900;
+  blocosColisao[4].y = 650;
   blocosColisao[4].altura = 20;
   blocosColisao[4].largura = 20;
   blocosColisao[4].tipo = 4;
@@ -94,7 +93,13 @@ int main()
   blocosColisao[4].cliqueMouse = false;
   
   //Itens
-  
+  blocosColisao[5].x = 500;
+  blocosColisao[5].y = 500;
+  blocosColisao[5].altura = 20;
+  blocosColisao[5].largura = 20;
+  blocosColisao[5].tipo = 5;
+  blocosColisao[5].colidido = false;
+  blocosColisao[5].cliqueMouse = false;
   //===============================> Tempo de Espera <===============================
   int espera = 2000;
   double tempoDecorrido;
@@ -124,14 +129,20 @@ int main()
     if (gt2-gt1 > 1000/fps)//setando teto para frames
 	{
       gt1 = gt2;
-	  if(pg == 1) pg = 2; else pg = 1;
+	  if(pg == 1) pg = 2; else pg = 1;//técnica de paginação
 	  setactivepage(pg);
 	  cleardevice();
       
-      
-      LidandoComFases(blocosColisao, qntBlocos, fases, false, true, true, true, 4, 4);
-      ExibeTempo(10, 10, "Fase = ", fases);
-      
+      //=================> Lidando com a troca de fases <=================
+      if(fases == 0)
+      {
+        LidandoComFases(blocosColisao, qntBlocos, fases, false, false, true, false, true, 5, 5);	
+	  }
+	  else if(fases == 2)
+	  {
+	    LidandoComFases(blocosColisao, qntBlocos, fases, false, false, false, true, true, 5, 5);
+	  }
+
       setvisualpage(pg);
     }
     
@@ -149,19 +160,19 @@ int main()
   return 0; 
 }
 
-void* loadimage(const char *sprite, int largura, int altura , int x, int y)
+void* carregarImagem(const char *sprite, int largura, int altura , int x, int y)
 {	
-  void *image;
-  int aux = imagesize(x, y, largura, altura);
-  image = malloc(aux);
-  readimagefile(sprite, x, y, largura, altura);
-  getimage(x, y, largura, altura, image);
+  void *image;//vetor para bits brutos
+  int aux = imagesize(x, y, largura, altura);//tamanho da imagem
+  image = malloc(aux);//abrindo espaço de memória para o vetor com base no tamanho da imagem
+  readimagefile(sprite, x, y, largura, altura);//lendo a imagem que queremos
+  getimage(x, y, largura, altura, image);//imprimindo a imagem
   cleardevice();
   
   return image;
 }
 
-void LidandoComFases(BlocoDeColisao *blocos, int qntBlocos, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, int blocoInicial, int blocoFinal)
+void LidandoComFases(BlocoDeColisao *blocos, int qntBlocos, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool caixinhaTexto, int blocoInicial, int blocoFinal)
 {
   //===============================> Desenhando os Itens <===============================
   setfillstyle(1,RGB(255, 255, 0));
@@ -173,28 +184,50 @@ void LidandoComFases(BlocoDeColisao *blocos, int qntBlocos, int &fase, bool fase
   
   //===============================> Blocos para Mudança de Fase <===============================
   setfillstyle(1,RGB(255, 0, 0));
-  for(int i = 0; i <= 3; i++)
+  for(int i = 0; i <= 4; i++)
   {
-    bar(blocos[i].x, blocos[i].y, blocos[i].x + blocos[i].largura, blocos[i].y + blocos[i].altura);
-    if(blocos[i].tipo == 3 && blocos[i].cliqueMouse == true && fasePraBaixo == true)
-    {	
-	  fase -= 1;
-	  blocos[i].cliqueMouse = false;
+  	if(i == 0 && fasePraCima == true)//conferindo para quais lados serão as próximas fases / fases anteriores
+      bar(blocos[i].x, blocos[i].y, blocos[i].x + blocos[i].largura, blocos[i].y + blocos[i].altura);//desenhando os botões
+    if(i == 1 && fasePraDireita == true)
+      bar(blocos[i].x, blocos[i].y, blocos[i].x + blocos[i].largura, blocos[i].y + blocos[i].altura);
+    if(i == 2 && fasePraEsquerda == true)
+      bar(blocos[i].x, blocos[i].y, blocos[i].x + blocos[i].largura, blocos[i].y + blocos[i].altura);
+    if(i == 3 && fasePraBaixo == true)
+      bar(blocos[i].x, blocos[i].y, blocos[i].x + blocos[i].largura, blocos[i].y + blocos[i].altura);
+    if(i == 3 && fasePraBaixo == true)
+      bar(blocos[i].x, blocos[i].y, blocos[i].x + blocos[i].largura, blocos[i].y + blocos[i].altura);
+      
+    //===============================> Blocos de Texto <===============================
+    if(i == 4 && caixinhaTexto == true)
+      bar(blocos[i].x, blocos[i].y, blocos[i].x + blocos[i].largura, blocos[i].y + blocos[i].altura);
+      
+    //==================> Verificação do tipo do Bloco de Colisão <==================
+    if(blocos[i].tipo == 0 && blocos[i].cliqueMouse == true && fasePraCima == true)//botão fase Acima
+	{
+	  fase += 1;
+	  blocos[i].cliqueMouse = false;	
 	}
-	else if(blocos[i].tipo == 1 && blocos[i].cliqueMouse == true && fasePraDireita == true)
+	else if(blocos[i].tipo == 1 && blocos[i].cliqueMouse == true && fasePraDireita == true)//botão fase para à Direita
 	{	
 	  fase += 2;
 	  blocos[i].cliqueMouse = false;
 	}
-	else if(blocos[i].tipo == 2 && blocos[i].cliqueMouse == true && fasePraEsquerda == true)
+	else if(blocos[i].tipo == 2 && blocos[i].cliqueMouse == true && fasePraEsquerda == true)//botão fase à Esquerda
 	{	
 	  fase -= 2;
 	  blocos[i].cliqueMouse = false;
 	}
-	else if(blocos[i].tipo == 0 && blocos[i].cliqueMouse == true && fasePraCima == true)
-	{
-	  fase += 1;
-	  blocos[i].cliqueMouse = false;	
+    else if(blocos[i].tipo == 3 && blocos[i].cliqueMouse == true && fasePraBaixo == true)//botão fase Abaixo
+    {
+	  fase -= 1;
+	  blocos[i].cliqueMouse = false;
+	}
+	else if(blocos[i].tipo == 4 && blocos[i].cliqueMouse == true)//botão para diálogo
+    {
+      setfillstyle(1,RGB(255, 255, 255));
+	  bar(blocos[i].x - 55, blocos[i].x - 55, blocos[i].x, blocos[i].y);
+	  outtextxy(blocos[i].x, blocos[i].y, "texto a ser inserido");
+	  //blocos[i].cliqueMouse = false;
 	}
   }
   
@@ -208,7 +241,7 @@ void LidandoComFases(BlocoDeColisao *blocos, int qntBlocos, int &fase, bool fase
   }
   if(colisaoMouse == false)
   {
-    for(int i = 0; i < qntBlocos; i++)//Checagem dos Itens para ver se há algum colidido e Qual foi.
+    for(int i = 0; i < qntBlocos; i++)//checagem dos Itens para ver se há algum colidido e Qual foi.
 	{
 	  colisaoMouse = blocos[i].colidido;
 	  if(colisaoMouse == true)
@@ -220,15 +253,15 @@ void LidandoComFases(BlocoDeColisao *blocos, int qntBlocos, int &fase, bool fase
   }
   if(colisaoMouse == true)
   {
-	for(int i = 0; i < qntBlocos; i++)//Checagem se não há mais colisão.
+	for(int i = 0; i < qntBlocos; i++)//checagem se não há mais colisão.
 	{
-	  if(blocos[i].colidido == true) 
+	  if(blocos[i].colidido == true)//se há, então ignora a verificação
 		break;
-	  else if(i == qntBlocos - 1)
+	  else if(i == qntBlocos - 1)//se não há. então mouse não está colidido
 	  {
 		if(blocos[i].colidido == false) colisaoMouse = false;
 	  }
-	} 
+	}
   }
   //===============================> Captura de Inputs <===============================
   if(GetKeyState(VK_LBUTTON)&0x80 && colisaoMouse == true)//Input do Mouse
@@ -239,9 +272,9 @@ void LidandoComFases(BlocoDeColisao *blocos, int qntBlocos, int &fase, bool fase
 
 bool ChecagemDeColisao( int xColisor, int yColisor, int xColidido, int yColidido, int larguraColidido, int alturaColidido, bool &colidiu)
 {
-  if( xColisor >= xColidido && yColisor >= yColidido )
+  if( xColisor >= xColidido && yColisor >= yColidido )//chegagem se o mouse está à direita e em baixo do vértice superior esquerdo
   {
-    if( xColisor <= (xColidido + larguraColidido) && yColisor <= (yColidido + alturaColidido) )
+    if( xColisor <= (xColidido + larguraColidido) && yColisor <= (yColidido + alturaColidido) )//chegagem se o mouse está à esquerda e em cima do vértice inferior direito
     {
       colidiu = true;
 	}
@@ -252,14 +285,6 @@ bool ChecagemDeColisao( int xColisor, int yColisor, int xColidido, int yColidido
     colidiu = false;
 }
 
-void ExibeTempo(int x, int y, char *msg, long long t) 
-{
-  char st[50], S[100];
-  itoa(t, st, 10);
-  strcpy(S, msg);
-  strcat(S, st);
-  outtextxy(x, y, S);
-}
 /*
 strcpy() -> Copia a string para dentro da variável
 strcat() -> Junta duas strings
