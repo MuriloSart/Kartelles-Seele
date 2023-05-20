@@ -4,8 +4,8 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = main.o
-LINKOBJ  = main.o
+OBJ      = main.o teste.o
+LINKOBJ  = main.o teste.o
 LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW/mingw32/lib" -static-libgcc -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW/lib/gcc/mingw32/4.4.1/include"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW/lib/gcc/mingw32/4.4.1/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW/lib/gcc/mingw32/4.4.1/include/c++"
@@ -26,3 +26,6 @@ $(BIN): $(OBJ)
 
 main.o: main.cpp
 	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
+
+teste.o: teste.cpp
+	$(CPP) -c teste.cpp -o teste.o $(CXXFLAGS)

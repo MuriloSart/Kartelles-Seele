@@ -20,23 +20,23 @@ typedef struct _blocosColisao
 }BlocoDeColisao;
 
 //Area para funcoes
-void* loadimage(const char *sprite, int largura, int altura , int x, int y);
+void* carregarImagem(const char *sprite, int largura, int altura , int x, int y);
 
 bool ChecagemDeColisao(int xColisor, int yColisor, int xColidido, int yColidido, int larguraColidido, int alturaColidido, bool &colidiu);
 
 void LidandoComFases(BlocoDeColisao *blocos, int &numItensColetados, int qntBlocos, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool caixinhaTexto, int blocoInicial, int blocoFinal);
 
 //===============================> Mouse <===============================
-  HWND janela;//coletando a janela
-  POINT P;//posição do Mouse
-  int indexItemColidido = 0;//coletandoBlocoColidido
-  bool colisaoMouse = false;//verificando se o mouse colidiu com algum bloco
+HWND janela;//coletando a janela
+POINT P;//posição do Mouse
+int indexItemColidido = 0;//coletandoBlocoColidido
+bool colisaoMouse = false;//verificando se o mouse colidiu com algum bloco
   
 //===============================> Inventário <===============================
-  int InvLargura = 90;
-  int InvAltura = 720;
-  int xInv = 1280 - InvLargura;
-  int yInv = 0;
+int InvLargura = 90;
+int InvAltura = 720;
+int xInv = 1280 - InvLargura;
+int yInv = 0;
   
 //=================================================> JOGO <=================================================
 int main()
@@ -126,12 +126,16 @@ int main()
   janela = GetForegroundWindow();
   setactivepage(pg);//Deixa ativa a pagina do laço para desenhar nela
   setvisualpage(pg);//Deixa visual para mostrar o que foi desenhado na tela
-  tecla = 0;
+  tecla = 0;//index do teclado
   
   //===============================> Salvando o tick do computador Inicialmente <===============================
   gt1 = GetTickCount();
   inicio = GetTickCount();
   agora = inicio + espera;
+  
+  void *cenario1;
+  
+  cenario1 = carregarImagem(".//Artes//Cenarios//sala_tutas.bmp", 1200, 675, 0, 0);
   
   while(tecla != ESC)
   {
@@ -151,9 +155,10 @@ int main()
       //=================> Lidando com a troca de fases <=================
       if(fases == 1)
       {
+        putimage(0, 0, cenario1, COPY_PUT);
         LidandoComFases(blocosColisao, qntItensColetados, qntBlocos, fases, false, false, true, false, true, 5, 5);
 	  }
-	  else if(fases == 3)
+	  else if(fases == 3)//não há segunda fase pela lógica q criei de transição de fase
 	  {
 	    LidandoComFases(blocosColisao, qntItensColetados, qntBlocos, fases, false, false, false, true, true, 5, 5);
 	  }
@@ -171,6 +176,7 @@ int main()
 
   printf("\n\nFim do Programa");
   free(blocosColisao);
+  free(cenario1);
   closegraph();
   return 0; 
 }
@@ -181,13 +187,12 @@ void* carregarImagem(const char *sprite, int largura, int altura , int x, int y)
   int aux = imagesize(x, y, largura, altura);//tamanho da imagem
   image = malloc(aux);//abrindo espaço de memória para o vetor com base no tamanho da imagem
   readimagefile(sprite, x, y, largura, altura);//lendo a imagem que queremos
-  getimage(x, y, largura, altura, image);//imprimindo a imagem
-  cleardevice();
+  getimage(x, y, largura, altura, image);
   
   return image;
 }
 
-void LidandoComFases(BlocoDeColisao *blocos, int &numItensColetados, int qntBlocos, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool caixinhaTexto, int blocoInicial, int blocoFinal)
+void LidandoComFases(BlocoDeColisao *blocos	, int &numItensColetados, int qntBlocos, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool caixinhaTexto, int blocoInicial, int blocoFinal)
 {
   int controleItensInventario = InvAltura/(blocoFinal - blocoInicial + 2);//Criando variável para controlar a localidade de cada item no inventário.
   
