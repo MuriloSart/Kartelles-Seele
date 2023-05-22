@@ -17,6 +17,7 @@ typedef struct _blocosColisao
 {
   int x, y, altura, largura, tipo;
   bool colidido, cliqueMouse, coletado;
+  void *sprite;
 }BlocoDeColisao;
 
 //Area para funcoes
@@ -41,10 +42,17 @@ int yInv = 0;
 //=================================================> JOGO <=================================================
 int main()
 {
+  //===============================> Lidando com a janela <===============================
   int pg = 1;
   char tecla;	
   unsigned long long gt1, gt2;//Clocks do Computador
   int fps = 60;
+  
+  initwindow(1280, 720, "Projeto Alma");
+  janela = GetForegroundWindow();
+  setactivepage(pg);//Deixa ativa a pagina do laço para desenhar nela
+  setvisualpage(pg);//Deixa visual para mostrar o que foi desenhado na tela
+  tecla = 0;//index do teclado
   
   //===============================> Fases <===============================
   int fases = 1;
@@ -52,11 +60,12 @@ int main()
   //===============================> Blocos de Colisão para o Mouse <===============================
   //Vetor que está guardando os blocos
   BlocoDeColisao *blocosColisao;
-  int qntBlocos = 20;
+  int qntBlocos = 10;
   blocosColisao = NULL;
   blocosColisao = (BlocoDeColisao *) malloc(sizeof(BlocoDeColisao) * qntBlocos);
 
   //Botões para troca de fases
+  //botão para cima
   blocosColisao[0].x = 640;
   blocosColisao[0].y = 20;
   blocosColisao[0].altura = 20;
@@ -65,7 +74,8 @@ int main()
   blocosColisao[0].colidido = false;
   blocosColisao[0].cliqueMouse = false;
   blocosColisao[0].coletado = false;
-
+  
+  //botão para direita
   blocosColisao[1].x = 1230;
   blocosColisao[1].y = 360;
   blocosColisao[1].altura = 20;
@@ -75,6 +85,7 @@ int main()
   blocosColisao[1].cliqueMouse = false;
   blocosColisao[1].coletado = false;
   
+  //botão para esquerda
   blocosColisao[2].x = 30;
   blocosColisao[2].y = 360;
   blocosColisao[2].altura = 20;
@@ -83,7 +94,9 @@ int main()
   blocosColisao[2].colidido = false;
   blocosColisao[2].cliqueMouse = false;
   blocosColisao[2].coletado = false;
+  blocosColisao[2].sprite = carregarImagem(".//Artes//Cenarios//sala_tutas.bmp", 20, 20, blocosColisao[2].x, blocosColisao[2].y);
   
+  //botão para baixo
   blocosColisao[3].x = 640;
   blocosColisao[3].y = 680;
   blocosColisao[3].altura = 20;
@@ -106,8 +119,8 @@ int main()
   //Itens
   int qntItensColetados = 0;
   
-  blocosColisao[5].x = 500;
-  blocosColisao[5].y = 500;
+  blocosColisao[5].x = 320;
+  blocosColisao[5].y = 230;
   blocosColisao[5].altura = 20;
   blocosColisao[5].largura = 20;
   blocosColisao[5].tipo = 5;
@@ -115,35 +128,59 @@ int main()
   blocosColisao[5].cliqueMouse = false;
   blocosColisao[5].coletado = false;
   
-  //===============================> Tempo de Espera <===============================
-  int espera = 2000;
-  double tempoDecorrido;
-  unsigned long long inicio, agora;
-  bool contar = false;
-
-  //===============================> Lidando com a janela <===============================
-  initwindow(1280, 720, "Projeto Alma");
-  janela = GetForegroundWindow();
-  setactivepage(pg);//Deixa ativa a pagina do laço para desenhar nela
-  setvisualpage(pg);//Deixa visual para mostrar o que foi desenhado na tela
-  tecla = 0;//index do teclado
+  blocosColisao[6].x = 900;
+  blocosColisao[6].y = 540;
+  blocosColisao[6].altura = 20;
+  blocosColisao[6].largura = 20;
+  blocosColisao[6].tipo = 5;
+  blocosColisao[6].colidido = false;
+  blocosColisao[6].cliqueMouse = false;
+  blocosColisao[6].coletado = false;
   
-  //===============================> Salvando o tick do computador Inicialmente <===============================
-  gt1 = GetTickCount();
-  inicio = GetTickCount();
-  agora = inicio + espera;
+  blocosColisao[7].x = 670;
+  blocosColisao[7].y = 240;
+  blocosColisao[7].altura = 20;
+  blocosColisao[7].largura = 20;
+  blocosColisao[7].tipo = 5;
+  blocosColisao[7].colidido = false;
+  blocosColisao[7].cliqueMouse = false;
+  blocosColisao[7].coletado = false;
   
+  blocosColisao[8].x = 1000;
+  blocosColisao[8].y = 400;
+  blocosColisao[8].altura = 20;
+  blocosColisao[8].largura = 20;
+  blocosColisao[8].tipo = 5;
+  blocosColisao[8].colidido = false;
+  blocosColisao[8].cliqueMouse = false;
+  blocosColisao[8].coletado = false;
+  
+  blocosColisao[9].x = 1100;
+  blocosColisao[9].y = 130;
+  blocosColisao[9].altura = 20;
+  blocosColisao[9].largura = 20;
+  blocosColisao[9].tipo = 5;
+  blocosColisao[9].colidido = false;
+  blocosColisao[9].cliqueMouse = false;
+  blocosColisao[9].coletado = false;
+  
+  
+  
+  //===============================> Cenários <===============================
   void *cenario1;
+  cenario1 = carregarImagem(".//Artes//Cenarios//sala_tutas.bmp", 1280, 600, 0, 0);
   
-  cenario1 = carregarImagem(".//Artes//Cenarios//sala_tutas.bmp", 1200, 675, 0, 0);
+  void *cenario2;
+  cenario2 = carregarImagem(".//Artes//Cenarios//quarto_tutas.bmp", 1280, 600, 0, 0);
+  
+  
+  //=======================> Salvando o tick do computador Inicialmente <=======================
+  gt1 = GetTickCount();
   
   while(tecla != ESC)
   {
     //===============================> Coletando o Tick ao passar do tempo <===============================
     gt2 = GetTickCount();
-    agora = GetTickCount();
-    
-	tempoDecorrido = agora - inicio;
 	
     if (gt2-gt1 > 1000/fps)//setando teto para frames
 	{
@@ -156,11 +193,12 @@ int main()
       if(fases == 1)
       {
         putimage(0, 0, cenario1, COPY_PUT);
-        LidandoComFases(blocosColisao, qntItensColetados, qntBlocos, fases, false, false, true, false, true, 5, 5);
+        LidandoComFases(blocosColisao, qntItensColetados, qntBlocos, fases, false, false, true, false, true, 5, 6);
 	  }
 	  else if(fases == 3)//não há segunda fase pela lógica q criei de transição de fase
 	  {
-	    LidandoComFases(blocosColisao, qntItensColetados, qntBlocos, fases, false, false, false, true, true, 5, 5);
+	  	putimage(0, 0, cenario2, COPY_PUT);
+	    LidandoComFases(blocosColisao, qntItensColetados, qntBlocos, fases, false, false, false, true, true, 7, 9);
 	  }
 
       setvisualpage(pg);
@@ -173,8 +211,10 @@ int main()
       tecla = getch();
     }
   }
-
+  
   printf("\n\nFim do Programa");
+  for(int i = 0; i<qntBlocos; i++)
+    free(blocosColisao[i].sprite);
   free(blocosColisao);
   free(cenario1);
   closegraph();
@@ -272,7 +312,7 @@ void LidandoComFases(BlocoDeColisao *blocos	, int &numItensColetados, int qntBlo
 	    {
 	      setfillstyle(1,RGB(50, 125, 50));
 	      bar(xInv + (InvLargura/2) - (blocos[i].largura/2), controleItensInventario*(j - blocoInicial + 1), xInv + (InvLargura/2) + (blocos[i].largura/2), controleItensInventario*(j - blocoInicial + 1) + blocos[j].largura);
-		}  
+		}
 	    else
 	    {
 	      setfillstyle(1,RGB(0, 0, 0));
