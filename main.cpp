@@ -21,6 +21,8 @@ typedef struct _blocosColisao
 BlocoDeColisao *blocosColisao;
 int qntBlocos = 10;
 
+
+
 //checagem de itens coletados
 int qntItensColetados = 0;
  
@@ -64,10 +66,6 @@ int main()
   setactivepage(pg);//Deixa ativa a pagina do laço para desenhar nela
   setvisualpage(pg);//Deixa visual para mostrar o que foi desenhado na tela
   tecla = 0;//index do teclado
-  
-  //===============================> Fases <===============================
-  int fases = 1;
-  bool pegouMissao = false;
 
   //===============================> Blocos de Colisão para o Mouse <===============================
   //Vetor que está guardando os blocos
@@ -191,6 +189,10 @@ int main()
   blocosColisao[9].sprite = NULL;
   blocosColisao[9].spriteMascara = NULL;
 
+  //===============================> Fases <===============================
+  int fases = 1;
+  bool pegouMissao = false;
+  bool inventario = true;
   
   //===============================> Cenários <===============================
   void *cenario1;
@@ -210,6 +212,24 @@ int main()
   
   void *cenario6;
   cenario6 = carregarImagem(".//Artes//Cenarios//fase_2_cenario_4.bmp", 1280, 600, 0, 0);
+  
+  void *cenario7;
+  cenario7 = carregarImagem(".//Artes//Cenarios//fase_2_cenario_5.bmp", 1280, 600, 0, 0);
+  
+  void *cenario8;
+  cenario8 = carregarImagem(".//Artes//Cenarios//fase_2_cenario_6.bmp", 1280, 600, 0, 0);
+  
+  void *cenario9;
+  cenario9 = carregarImagem(".//Artes//Cenarios//fase_2_cenario_7.bmp", 1280, 600, 0, 0);
+  
+  void *cenario10;
+  cenario10 = carregarImagem(".//Artes//Cenarios//fase_2_cenario_8.bmp", 1280, 600, 0, 0);
+  
+  void *cenario11;
+  cenario11 = carregarImagem(".//Artes//Cenarios//fase_2_cenario_9.bmp", 1280, 600, 0, 0);
+  
+  void *cenario12;
+  cenario12 = carregarImagem(".//Artes//Cenarios//fase_2_cenario_10.bmp", 1280, 600, 0, 0);
   
   //=======================> Salvando o tick do computador Inicialmente <=======================
   gt1 = GetTickCount();//registrando o tick inicial do computador para intervalo de frames
@@ -232,36 +252,74 @@ int main()
       if(fases == 1)
       {
         putimage(0, 0, cenario1, COPY_PUT);
-        LidandoComFases(qntItensColetados, fases, false, false, true, false, true, 5, 6, 5, 9);
+        LidandoComFases(qntItensColetados, fases, false, false, true, false, inventario, 5, 6, 5, 9);
         if(qntItensColetados >= 5)
+        {
+	      inventario = false;
           fases = 4;
+		}
 	  }//não há segunda fase pela lógica que criei de transição de fase
 	  else if(fases == 3)
 	  {
 	    putimage(0, 0, cenario2, COPY_PUT);
-	    LidandoComFases(qntItensColetados, fases, false, false, false, true, true, 7, 9, 5, 9);
+	    LidandoComFases(qntItensColetados, fases, false, false, false, true, inventario, 7, 9, 5, 9);
 	    if(qntItensColetados >= 5)
+	    {
+	      inventario = false;
           fases = 4;
+		}
 	  }
 	  else if(fases == 4)
 	  {
 	    putimage(0, 0, cenario3, COPY_PUT);
-	    LidandoComFases(qntItensColetados, fases, false, false, true, false, false, 7, 9, 5, 9);
+	    LidandoComFases(qntItensColetados, fases, false, false, true, false, inventario, 7, 9, 5, 9);
 	  }
 	  else if(fases == 6)
 	  {
 	    putimage(0, 0, cenario4, COPY_PUT);
-	    LidandoComFases(qntItensColetados, fases, true, false, pegouMissao, true, false, 7, 9, 5, 9);
+	    LidandoComFases(qntItensColetados, fases, true, false, pegouMissao, true, inventario, 7, 9, 5, 9);
 	  }
 	  else if(fases == 7)
 	  {
 	    putimage(0, 0, cenario5, COPY_PUT);
-	    LidandoComFases(qntItensColetados, fases, false, true, true, false, false, 7, 9, 5, 9);
+	    LidandoComFases(qntItensColetados, fases, false, true, true, false, inventario, 7, 9, 5, 9);
+	  }
+	  else if(fases == 8)
+	  {
+	    putimage(0, 0, cenario7, COPY_PUT);
+	    LidandoComFases(qntItensColetados, fases, false, false, true, true, inventario, 7, 9, 5, 9);
 	  }
 	  else if(fases == 9)
 	  {
 	    putimage(0, 0, cenario6, COPY_PUT);
-	    LidandoComFases(qntItensColetados, fases, false, false, false, true, false, 7, 9, 5, 9);
+	    LidandoComFases(qntItensColetados, fases, false, false, false, true, inventario, 7, 9, 5, 9);
+	    pegouMissao = true;
+	  }
+	  else if(fases == 10)
+	  {
+	    putimage(0, 0, cenario8, COPY_PUT);
+	    LidandoComFases(qntItensColetados, fases, false, false, true, true, inventario, 7, 9, 5, 9);
+	    inventario = true;
+	  }
+	  else if(fases == 12)
+	  {
+	    putimage(0, 0, cenario9, COPY_PUT);
+	    LidandoComFases(qntItensColetados, fases, true, false, true, true, inventario, 7, 9, 5, 9);
+	  }
+	  else if(fases == 13)
+	  {
+	    putimage(0, 0, cenario10, COPY_PUT);
+	    LidandoComFases(qntItensColetados, fases, false, true, true, false, inventario, 7, 9, 5, 9);
+	  }
+	  else if(fases == 14)
+	  {
+	    putimage(0, 0, cenario12, COPY_PUT);
+	    LidandoComFases(qntItensColetados, fases, false, false, false, true, inventario, 7, 9, 5, 9);
+	  }
+	  else if(fases == 15)
+	  {
+	    putimage(0, 0, cenario11, COPY_PUT);
+	    LidandoComFases(qntItensColetados, fases, false, false, false, true, inventario, 7, 9, 5, 9);
 	  }
 	  
       setvisualpage(pg);
@@ -288,6 +346,12 @@ int main()
   free(cenario4);
   free(cenario5);
   free(cenario6);
+  free(cenario7);
+  free(cenario8);
+  free(cenario9);
+  free(cenario10);
+  free(cenario11);
+  free(cenario12);
   closegraph();
   return 0; 
 }
@@ -345,25 +409,25 @@ void LidandoComFases(int &numItensColetados, int &fase, bool fasePraCima, bool f
     //==================> Ações dos Bloco de Colisão que não sejam coletáveis (Botões de mudança de fases e inventário) <==================
     if(blocosColisao[i].tipo == 0 && blocosColisao[i].cliqueMouse == true && fasePraCima == true)//botão fase Acima
 	{
-	  blocosColisao[i].cliqueMouse = false;
 	  fase += 1;
+	  blocosColisao[i].cliqueMouse = false;
 	}
 	else if(blocosColisao[i].tipo == 1 && blocosColisao[i].cliqueMouse == true && fasePraDireita == true)//botão fase para à Direita
 	{	
-	  blocosColisao[i].cliqueMouse = false;
 	  fase += 2;
+	  blocosColisao[i].cliqueMouse = false;
 	}
 	else if(blocosColisao[i].tipo == 2 && blocosColisao[i].cliqueMouse == true && fasePraEsquerda == true)//botão fase à Esquerda
 	{	
-	  blocosColisao[i].cliqueMouse = false;
 	  fase -= 2;
+	  blocosColisao[i].cliqueMouse = false;
 	}
     else if(blocosColisao[i].tipo == 3 && blocosColisao[i].cliqueMouse == true && fasePraBaixo == true)//botão fase Abaixo
     {
-	  blocosColisao[i].cliqueMouse = false;
 	  fase -= 1;
+	  blocosColisao[i].cliqueMouse = false;
 	}
-	else if(blocosColisao[i].tipo == 4 && blocosColisao[i].cliqueMouse == true)//botão para inventário
+	else if(blocosColisao[i].tipo == 4 && inventario == true && blocosColisao[i].cliqueMouse == true)//botão para inventário
     {
       if(!blocosColisao[i].coletado)//abrindo o inventário
       {
@@ -453,14 +517,12 @@ bool ChecagemDeColisao( int xColisor, int yColisor, int xColidido, int yColidido
   if( xColisor >= xColidido && yColisor >= yColidido )//chegagem se o mouse está à direita e em baixo do vértice superior esquerdo
   {
     if( xColisor <= (xColidido + larguraColidido) && yColisor <= (yColidido + alturaColidido) )//chegagem se o mouse está à esquerda e em cima do vértice inferior direito
-    {
       colidiu = true;
-	}
-   else
-	  colidiu = false;
+    else
+      colidiu = false;
   }
   else
-	  colidiu = false;
+    colidiu = false;
 }
 
 /*
