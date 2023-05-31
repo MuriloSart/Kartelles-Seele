@@ -188,6 +188,18 @@ int main()
   blocosColisao[9].coletado = false;
   blocosColisao[9].sprite = NULL;
   blocosColisao[9].spriteMascara = NULL;
+  
+  //personagens
+  blocosColisao[10].x = 1100;
+  blocosColisao[10].y = 130;
+  blocosColisao[10].altura = 64;
+  blocosColisao[10].largura = 64;
+  blocosColisao[10].tipo = 5;
+  blocosColisao[10].colidido = false;
+  blocosColisao[10].cliqueMouse = false;
+  blocosColisao[10].coletado = false;
+  blocosColisao[10].sprite = NULL;
+  blocosColisao[10].spriteMascara = NULL;
 
   //===============================> Fases <===============================
   int fases = 1;
