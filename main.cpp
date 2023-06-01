@@ -4,6 +4,7 @@
 #include<stdlib.h>
 #include<graphics.h>
 #include<time.h>
+#include <windows.h>
 using namespace std;
 
 #define ESC    	27
@@ -19,7 +20,7 @@ typedef struct _blocosColisao
 
 //criando o vetor para blocos de colisão
 BlocoDeColisao *blocosColisao;
-int qntBlocos = 30;
+int qntBlocos = 35;
 
 //checagem de itens coletados
 int qntItensColetados = 0;
@@ -111,7 +112,7 @@ int main()
   blocosColisao[3].altura = 64;
   blocosColisao[3].largura = 64;
   blocosColisao[3].x = 640;
-  blocosColisao[3].y = 600 - blocosColisao[3].altura - 20;
+  blocosColisao[3].y = 720 - blocosColisao[3].altura - 20;
   blocosColisao[3].tipo = 3;
   blocosColisao[3].colidido = false;
   blocosColisao[3].cliqueMouse = false;
@@ -420,9 +421,20 @@ int main()
   blocosColisao[29].coletado = false;
   blocosColisao[29].sprite = carregarImagem(".//Artes//Personagens//lontra_outline.bmp", blocosColisao[29].largura, blocosColisao[29].altura, 0, 0);
   blocosColisao[29].spriteMascara = carregarImagem(".//Artes//Personagens//lontra_outline_masc.bmp", blocosColisao[29].largura, blocosColisao[29].altura, 0, 0);
-  
+
+  blocosColisao[30].x = 595;
+  blocosColisao[30].y = 255;
+  blocosColisao[30].altura = 255;
+  blocosColisao[30].largura = 255;
+  blocosColisao[30].tipo = 7;
+  blocosColisao[30].colidido = false;
+  blocosColisao[30].cliqueMouse = false;
+  blocosColisao[30].coletado = false;
+  blocosColisao[30].sprite = carregarImagem(".//Artes//Personagens//lontra_outline.bmp", blocosColisao[29].largura, blocosColisao[29].altura, 0, 0);
+  blocosColisao[30].spriteMascara = carregarImagem(".//Artes//Personagens//lontra_outline_masc.bmp", blocosColisao[29].largura, blocosColisao[29].altura, 0, 0);
+
   //===============================> Fases <===============================
-  int fases = 1;
+  int fases = 0;
   bool pegouMissao = false;
   bool inventario = true;
   
@@ -478,8 +490,7 @@ int main()
         LidandoComFases(cenarios[0], qntItensColetados, fases, false, false, true, false, inventario, 5, 6, 5, 9);
         if(qntItensColetados >= 5)
         {
-          blocosColisao[4].coletado = false;
-          blocosColisao[4].x = 1280 - blocosColisao[4].largura;
+	      inventario = false;
           fases = 4;
 		}
 	  }//não há segunda fase pela lógica que criei de transição de fase
@@ -488,8 +499,7 @@ int main()
 	    LidandoComFases(cenarios[1], qntItensColetados, fases, false, false, false, true, inventario, 7, 9, 5, 9);
 	    if(qntItensColetados >= 5)
 	    {
-	      blocosColisao[4].coletado = false;
-	      blocosColisao[4].x = 1280 - blocosColisao[4].largura;
+	      inventario = false;
           fases = 4;
 		}
 	  }
@@ -500,7 +510,6 @@ int main()
 	      DesenhandoBotao( blocosColisao[28].x, blocosColisao[28].y, blocosColisao[28].sprite, blocosColisao[28].spriteMascara);
 	    else
 	      DesenhandoBotao( blocosColisao[29].x, blocosColisao[29].y, blocosColisao[29].sprite, blocosColisao[29].spriteMascara);
-	    inventario = false;
 	  }
 	  else if(fases == 6)
 	  {
@@ -602,7 +611,16 @@ void LidandoComFases(void *cenario, int &numItensColetados, int &fase, bool fase
 	if(!blocosColisao[i].coletado)
 	  bar(blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].x + blocosColisao[i].largura, blocosColisao[i].y + blocosColisao[i].altura);
   }
-  
+  //===============================> Lidando com som<=========================
+  mciSendString("open .\\sons\\my.mp3 type MPEGVideo alias fundo2", NULL, 0, 0); 
+  mciSendString("open .\\sons\\led.mp3 type MPEGVideo alias fundo", NULL, 0, 0); 
+  mciSendString("play fundo2 repeat", NULL, 0, 0);
+  if(blocosColisao[30].cliqueMouse == true)
+  {
+  	mciSendString("stop fundo2", NULL, 0, 0);
+    mciSendString("play fundo", NULL, 0, 0); 
+    fase ++;
+  }
   //===============================> Lidando com os Blocos <===============================
   setfillstyle(1,RGB(255, 0, 0));
   for(int i = 0; i <= 4; i++)//pegando os botões bases para troca de fase e inventário
@@ -619,7 +637,8 @@ void LidandoComFases(void *cenario, int &numItensColetados, int &fase, bool fase
       
     if(blocosColisao[i].tipo == 3 && fasePraBaixo == true)
       DesenhandoBotao( blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].sprite, blocosColisao[i].spriteMascara);
-
+      
+      
     //===============================> Botão do Inventário <===============================
     if(i == 4 && inventario == true)
     {
