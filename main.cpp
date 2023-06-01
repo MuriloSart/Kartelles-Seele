@@ -19,7 +19,7 @@ typedef struct _blocosColisao
 
 //criando o vetor para blocos de colisão
 BlocoDeColisao *blocosColisao;
-int qntBlocos = 10;
+int qntBlocos = 11;
 
 
 
@@ -61,7 +61,7 @@ int main()
   unsigned long long gt1, gt2;//Clocks do Computador
   int fps = 60;
   
-  initwindow(1280, 720, "Projeto Alma");
+  initwindow(1280, 720, "Kartelles Seele");
   janela = GetForegroundWindow();
   setactivepage(pg);//Deixa ativa a pagina do laço para desenhar nela
   setvisualpage(pg);//Deixa visual para mostrar o que foi desenhado na tela
@@ -194,7 +194,7 @@ int main()
   blocosColisao[10].y = 130;
   blocosColisao[10].altura = 64;
   blocosColisao[10].largura = 64;
-  blocosColisao[10].tipo = 5;
+  blocosColisao[10].tipo = 6;
   blocosColisao[10].colidido = false;
   blocosColisao[10].cliqueMouse = false;
   blocosColisao[10].coletado = false;
