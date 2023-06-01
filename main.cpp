@@ -34,6 +34,8 @@ void LidandoComFases(void *cenario, int &numItensColetados, int &fase, bool fase
 
 void DesenhandoBotao( int xImagem, int yImagem, void *sprites,void *spritesMascara);
 
+void Menu(void *cenario);
+
 //=====================> Tempo de Espera para Clique do Mouse <=====================
 int Espera = 500;
 double TempoDecorrido;
@@ -440,7 +442,7 @@ int main()
   
   //===============================> Cenários <===============================
   void **cenarios;
-  int qntDeCenarios = 12;
+  int qntDeCenarios = 13;
   cenarios = (void **) malloc(sizeof(void *) * qntDeCenarios);
 
   cenarios[0] = carregarImagem(".//Artes//Cenarios//sala_tutas.bmp", 1280, 600, 0, 0);
@@ -455,6 +457,7 @@ int main()
   cenarios[9] = carregarImagem(".//Artes//Cenarios//fase_2_cenario_8.bmp", 1280, 600, 0, 0);
   cenarios[10] = carregarImagem(".//Artes//Cenarios//fase_2_cenario_9.bmp", 1280, 600, 0, 0);
   cenarios[11] = carregarImagem(".//Artes//Cenarios//fase_2_cenario_10.bmp", 1280, 600, 0, 0);
+  cenarios[12] = carregarImagem(".//Artes//Cenarios//menu.bmp", 1280, 720, 0, 0);
   
   //=======================> Salvando o tick do computador Inicialmente <=======================
   gt1 = GetTickCount();//registrando o tick inicial do computador para intervalo de frames
@@ -474,6 +477,10 @@ int main()
 	  cleardevice();
 	  
       //=================> Lidando com a troca de fases <=================
+       if(fases == 0)
+      {
+        Menu(cenarios[12]);
+	  }
       if(fases == 1)
       {
         LidandoComFases(cenarios[0], qntItensColetados, fases, false, false, true, false, inventario, 5, 6, 5, 9);
@@ -505,13 +512,9 @@ int main()
 	    LidandoComFases(cenarios[3], qntItensColetados, fases, true, false, pegouMissao, true, inventario, 7, 9, 5, 9);
 	  }
 	  else if(fases == 7)
-	  {
 	    LidandoComFases(cenarios[4], qntItensColetados, fases, false, true, true, false, inventario, 7, 9, 5, 9);
-	  }
 	  else if(fases == 8)
-	  {
 	    LidandoComFases(cenarios[6], qntItensColetados, fases, false, false, true, true, inventario, 7, 9, 5, 9);
-	  }
 	  else if(fases == 9)
 	  {
 	    LidandoComFases(cenarios[5], qntItensColetados, fases, false, false, false, true, inventario, 7, 9, 5, 9);
@@ -523,21 +526,17 @@ int main()
 	    inventario = true;
 	  }
 	  else if(fases == 12)
-	  {
 	    LidandoComFases(cenarios[8], qntItensColetados, fases, true, false, true, true, inventario, 7, 9, 5, 9);
-	  }
+	    
 	  else if(fases == 13)
-	  {
 	    LidandoComFases(cenarios[9], qntItensColetados, fases, false, true, true, false, inventario, 7, 9, 5, 9);
-	  }
+	    
 	  else if(fases == 14)
-	  {
 	    LidandoComFases(cenarios[11], qntItensColetados, fases, false, false, false, true, inventario, 7, 9, 5, 9);
-	  }
+	    
 	  else if(fases == 15)
-	  {
 	    LidandoComFases(cenarios[10], qntItensColetados, fases, false, false, false, true, inventario, 7, 9, 5, 9);
-	  }
+	    
 	  
       setvisualpage(pg);
     }
@@ -551,20 +550,17 @@ int main()
   }
   
   printf("\n\nFim do Programa");
-  
   for(int i = 0; i<qntBlocos; i++)//liberando memória dos blocos
   {
     free(blocosColisao[i].sprite);
-  	free(blocosColisao[i].spriteMascara);
+    free(blocosColisao[i].spriteMascara);
   }
   free(blocosColisao);
-  
   for(int i = 0; i<qntDeCenarios; i++)//liberando memória dos cenários
   {
     free(cenarios[i]);
   }
   free(cenarios);
-  
   closegraph();
   return 0; 
 }
@@ -586,6 +582,11 @@ void DesenhandoBotao( int xImagem, int yImagem, void *sprites,void *spritesMasca
   putimage(xImagem, yImagem, sprites, OR_PUT);
 }
 
+void Menu(void *cenario)
+{
+  putimage(0, 0, cenario, COPY_PUT);
+}
+
 void LidandoComFases(void *cenario, int &numItensColetados, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool inventario, int blocoInicial, int blocoFinal, int InvIndexInicial, int InvIndexFinal)
 {
   //Criando variável para controlar a localidade de cada item no inventário.
@@ -600,7 +601,7 @@ void LidandoComFases(void *cenario, int &numItensColetados, int &fase, bool fase
 	if(!blocosColisao[i].coletado)
 	  bar(blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].x + blocosColisao[i].largura, blocosColisao[i].y + blocosColisao[i].altura);
   }
-  //===============================> Lidando com som<=========================
+  //===============================> Lidando com Som <=========================
   mciSendString("open .\\sons\\my.mp3 type MPEGVideo alias fundo2", NULL, 0, 0); 
   mciSendString("open .\\sons\\led.mp3 type MPEGVideo alias fundo", NULL, 0, 0); 
   mciSendString("play fundo2 repeat", NULL, 0, 0);
