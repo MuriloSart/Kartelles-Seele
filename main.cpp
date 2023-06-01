@@ -38,7 +38,7 @@ void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBai
 
 void DesenhandoBotao( int xImagem, int yImagem, void *sprites,void *spritesMascara);
 
-void Menu(int &fases);
+void Menu(void *cenario, int &fases);
 
 //=====================> Tempo de Espera para Clique do Mouse <=====================
 int Espera = 500;
@@ -62,7 +62,7 @@ int main()
 {
   //===============================> Carrega som<=========================
     mciSendString("open .\\sons\\my.mp3 type MPEGVideo alias fundo2", NULL, 0, 0); 
-    mciSendString("open .\\sons\\led.mp3 type MPEGVideo alias fundo", NULL, 0, 0); 
+    mciSendString("open .\\sons\\Kartelles_Seele.mp3 type MPEGVideo alias jogo", NULL, 0, 0); 
   //===============================> Lidando com a janela <===============================
   int pg = 1;
   char tecla;	
@@ -455,7 +455,7 @@ int main()
   
   cenarios[11] = carregarImagem(".//Artes//Cenarios//fase_2_cenario_10.bmp", 1280, 600, 0, 0);
   
-  cenarios[12] = carregarImagem(".//Artes//Cenarios//menu.bmp", 1280, 600, 0, 0);
+  cenarios[12] = carregarImagem(".//Artes//Cenarios//menu.bmp", 1280, 720, 0, 0);
   
   //=======================> Salvando o tick do computador Inicialmente <=======================
   gt1 = GetTickCount();//registrando o tick inicial do computador para intervalo de frames
@@ -478,8 +478,12 @@ int main()
       //=================> Lidando com a troca de fases <=================
       	if(fases == 0)//menu
 		  {
+<<<<<<< HEAD
 		  	Menu(fases);
 		  	putimage(0, 0, cenarios[12], COPY_PUT);
+=======
+		  	Menu(cenarios[12], fases);
+>>>>>>> 681305bc6366d68b3d584493a284dc98bbe27264
 		  }
 	  if(fases == 1)
       {
@@ -757,6 +761,20 @@ void ChecagemDeColisaoDoMouse()
   }
 }
 
+<<<<<<< HEAD
+=======
+void Menu(void *cenario, int &fases){
+    mciSendString("play fundo2", NULL, 0, 0);
+    putimage(0, 0, cenario, COPY_PUT);
+    if(GetKeyState(VK_LBUTTON)&0x80)
+    {
+  	    mciSendString("stop fundo2", NULL, 0, 0);
+        mciSendString("play jogo", NULL, 0, 0); 
+        fases ++;
+    }
+}
+
+>>>>>>> 681305bc6366d68b3d584493a284dc98bbe27264
 bool ChecagemDeColisao( int xColisor, int yColisor, int xColidido, int yColidido, int larguraColidido, int alturaColidido, bool &colidiu)
 {
   if( xColisor >= xColidido && yColisor >= yColidido )//checagem se o mouse está à direita e em baixo do vértice superior esquerdo
