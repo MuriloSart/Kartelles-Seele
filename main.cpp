@@ -479,6 +479,7 @@ int main()
         if(qntItensColetados >= 5)
         {
           blocosColisao[4].coletado = false;
+          blocosColisao[4].x = 1280 - blocosColisao[4].largura;
           fases = 4;
 		}
 	  }//não há segunda fase pela lógica que criei de transição de fase
@@ -488,6 +489,7 @@ int main()
 	    if(qntItensColetados >= 5)
 	    {
 	      blocosColisao[4].coletado = false;
+	      blocosColisao[4].x = 1280 - blocosColisao[4].largura;
           fases = 4;
 		}
 	  }
