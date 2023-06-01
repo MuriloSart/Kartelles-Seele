@@ -747,7 +747,8 @@ void LidandoComFases(void *cenario, int &numItensColetados, int &fase, bool fase
   }
 }
 
-void Menu(void *cenario, int &fases){
+void Menu(void *cenario, int &fases)
+{
     mciSendString("play fundo2", NULL, 0, 0);
     putimage(0, 0, cenario, COPY_PUT);
     if(GetKeyState(VK_LBUTTON)&0x80)
