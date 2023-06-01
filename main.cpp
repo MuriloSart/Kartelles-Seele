@@ -111,7 +111,7 @@ int main()
   blocosColisao[3].altura = 64;
   blocosColisao[3].largura = 64;
   blocosColisao[3].x = 640;
-  blocosColisao[3].y = 720 - blocosColisao[3].altura - 20;
+  blocosColisao[3].y = 600 - blocosColisao[3].altura - 20;
   blocosColisao[3].tipo = 3;
   blocosColisao[3].colidido = false;
   blocosColisao[3].cliqueMouse = false;
@@ -478,7 +478,7 @@ int main()
         LidandoComFases(cenarios[0], qntItensColetados, fases, false, false, true, false, inventario, 5, 6, 5, 9);
         if(qntItensColetados >= 5)
         {
-	      inventario = false;
+          blocosColisao[4].coletado = false;
           fases = 4;
 		}
 	  }//não há segunda fase pela lógica que criei de transição de fase
@@ -487,7 +487,7 @@ int main()
 	    LidandoComFases(cenarios[1], qntItensColetados, fases, false, false, false, true, inventario, 7, 9, 5, 9);
 	    if(qntItensColetados >= 5)
 	    {
-	      inventario = false;
+	      blocosColisao[4].coletado = false;
           fases = 4;
 		}
 	  }
@@ -498,6 +498,7 @@ int main()
 	      DesenhandoBotao( blocosColisao[28].x, blocosColisao[28].y, blocosColisao[28].sprite, blocosColisao[28].spriteMascara);
 	    else
 	      DesenhandoBotao( blocosColisao[29].x, blocosColisao[29].y, blocosColisao[29].sprite, blocosColisao[29].spriteMascara);
+	    inventario = false;
 	  }
 	  else if(fases == 6)
 	  {
@@ -616,8 +617,7 @@ void LidandoComFases(void *cenario, int &numItensColetados, int &fase, bool fase
       
     if(blocosColisao[i].tipo == 3 && fasePraBaixo == true)
       DesenhandoBotao( blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].sprite, blocosColisao[i].spriteMascara);
-      
-      
+
     //===============================> Botão do Inventário <===============================
     if(i == 4 && inventario == true)
     {
