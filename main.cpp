@@ -34,6 +34,8 @@ void LidandoComFases(void *cenario, int &numItensColetados, int &fase, bool fase
 
 void DesenhandoBotao( int xImagem, int yImagem, void *sprites,void *spritesMascara);
 
+void Menu(int &fases);
+
 //=====================> Tempo de Espera para Clique do Mouse <=====================
 int Espera = 500;
 double TempoDecorrido;
@@ -460,7 +462,7 @@ int main()
   
   cenarios[11] = carregarImagem(".//Artes//Cenarios//fase_2_cenario_10.bmp", 1280, 600, 0, 0);
   
-  cenarios[12] = carregarImagem(".//Artes//Cenarios//fase_2_cenario_10.bmp", 1280, 600, 0, 0);
+  cenarios[12] = carregarImagem(".//Artes//Cenarios//menu.bmp", 1280, 600, 0, 0);
   
   //=======================> Salvando o tick do computador Inicialmente <=======================
   gt1 = GetTickCount();//registrando o tick inicial do computador para intervalo de frames
@@ -481,16 +483,11 @@ int main()
 	  
   
       //=================> Lidando com a troca de fases <=================
-      if(fases == 0)//menu
-	  {
-      	mciSendString("play fundo2", NULL, 0, 0);
-      	if(GetKeyState(VK_LBUTTON)&0x80)
-        {
-  	      mciSendString("stop fundo2", NULL, 0, 0);
-          mciSendString("play fundo", NULL, 0, 0); 
-          fases ++;
-        }
-	  }
+      	if(fases == 0)//menu
+		  {
+		  	Menu(fases);
+		  	putimage(0, 0, void *cenario[12], COPY_PUT);
+		  }
 	  if(fases == 1)
       {
         LidandoComFases(cenarios[0], qntItensColetados, fases, false, false, true, false, inventario, 5, 6, 5, 9);
@@ -749,6 +746,16 @@ void LidandoComFases(void *cenario, int &numItensColetados, int &fase, bool fase
 	  }
 	}
   }
+}
+
+void Menu(int &fases){
+    mciSendString("play fundo2", NULL, 0, 0);
+    if(GetKeyState(VK_LBUTTON)&0x80)
+    {
+  	    mciSendString("stop fundo2", NULL, 0, 0);
+        mciSendString("play fundo", NULL, 0, 0); 
+        fases ++;
+    }
 }
 
 bool ChecagemDeColisao( int xColisor, int yColisor, int xColidido, int yColidido, int larguraColidido, int alturaColidido, bool &colidiu)
