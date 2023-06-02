@@ -9,6 +9,10 @@ using namespace std;
 
 #define ESC    	27
 
+/*
+	Colocar MostrarColetaveisMissao() para mostrar as moedas ou doces das respectiveis fases,
+	Criar função para receber item ao completar
+*/
 //local para os structs
 typedef struct _blocosColisao
 {
@@ -26,12 +30,33 @@ int qntBlocos = 40;
 int fases = 0;
 bool pegouMissao = false;
 bool inventario = true;
+bool entrou = false;
+void *inventarioImagem;
 
 //checagem de itens coletados
 int qntItensColetados = 0;
+int qntMoedasColetadas = 0;
+int qntDocesColetados = 0;
  
 //variável para controlar qual personagem terá no mapa 
 int variavelDeControle = 18;
+
+//=====================> Tempo de Espera para Clique do Mouse <=====================
+int Espera = 500;
+double TempoDecorrido;
+long long Inicio, Agora;
+					
+//===============================> Mouse <===============================
+HWND janela;//coletando a janela
+POINT P;//posição do Mouse
+int indexItemColidido = 0;//coletandoBlocoColidido
+bool colisaoMouse = false;//verificando se o mouse colidiu com algum bloco
+  
+//===============================> Inventário <===============================
+int InvLargura = 400;
+int InvAltura = 720;
+int xInv = 1280 - InvLargura;
+int yInv = 0;
  
 //=====================> Funções <=====================
 //=> Área para Colisões
@@ -50,12 +75,20 @@ void* carregarImagem(const char *sprite, int largura, int altura , int x, int y)
 
 void CriandoPersonagem(int index);
 
+void MostrarColetaveisMissao(int indexMenor, int indexMaior);
+
+void MostrarColetaveis(int index);
+
 //= > Àrea para Lidar com Leveis
 void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool inventario, int blocoInicial, int blocoFinal, int InvIndexInicial, int InvIndexFinal, bool TemPersonagem);
 
 void Menu(void *cenario, int &fases);
 
 void SaindoDoTutorial();
+
+void AtivandoFinal();
+
+void CaixaDeTextos(int indexMenor, int indexMaior);
 
 //= > Àrea para Lidar com Personagens
 void LidandoComPersonagem(int &index);
@@ -66,27 +99,17 @@ void LidandoComABruxa(int primeiroItemMissao, int ultimoItemMissao);
 
 void LidandoComMissoes(int tipo);
 
+void FinalizandoMissoes();
+
+void FinalGuaxinim();
+
+void FinalCat();
+
+
 //= > Àrea para Coletas de Itens
 void ColetarItensFase();
 
-void ColetarItensMissoes(int tipo);
-
-//=====================> Tempo de Espera para Clique do Mouse <=====================
-int Espera = 500;
-double TempoDecorrido;
-long long Inicio, Agora;
-					
-//===============================> Mouse <===============================
-HWND janela;//coletando a janela
-POINT P;//posição do Mouse
-int indexItemColidido = 0;//coletandoBlocoColidido
-bool colisaoMouse = false;//verificando se o mouse colidiu com algum bloco
-  
-//===============================> Inventário <===============================
-int InvLargura = 90;
-int InvAltura = 720;
-int xInv = 1280 - InvLargura;
-int yInv = 0;
+void ColetarItensMissoes(int tipo, int quantidade);
   
 //=================================================> JOGO <=================================================
 int main()
@@ -303,8 +326,8 @@ int main()
   blocosColisao[15].colidido = false;
   blocosColisao[15].cliqueMouse = false;
   blocosColisao[15].coletado = false;
-  blocosColisao[15].sprite = NULL;
-  blocosColisao[15].spriteMascara = NULL;
+  blocosColisao[15].sprite = carregarImagem(".//Artes//Itens//giz.bmp", blocosColisao[14].largura, blocosColisao[14].altura, 0, 0);
+  blocosColisao[15].spriteMascara = carregarImagem(".//Artes//Itens//giz_masc.bmp", blocosColisao[14].largura, blocosColisao[14].altura, 0, 0);
   
   //=>vela
   blocosColisao[16].x = 1200;
@@ -315,8 +338,8 @@ int main()
   blocosColisao[16].colidido = false;
   blocosColisao[16].cliqueMouse = false;
   blocosColisao[16].coletado = false;
-  blocosColisao[16].sprite = NULL;
-  blocosColisao[16].spriteMascara = NULL;
+  blocosColisao[16].sprite = carregarImagem(".//Artes//Itens//giz.bmp", blocosColisao[14].largura, blocosColisao[14].altura, 0, 0);
+  blocosColisao[16].spriteMascara = carregarImagem(".//Artes//Itens//giz_masc.bmp", blocosColisao[14].largura, blocosColisao[14].altura, 0, 0);
   
   //=>adaga
   blocosColisao[17].x = 1050;
@@ -327,8 +350,8 @@ int main()
   blocosColisao[17].colidido = false;
   blocosColisao[17].cliqueMouse = false;
   blocosColisao[17].coletado = false;
-  blocosColisao[17].sprite = NULL;
-  blocosColisao[17].spriteMascara = NULL;
+  blocosColisao[17].sprite = carregarImagem(".//Artes//Itens//giz.bmp", blocosColisao[14].largura, blocosColisao[14].altura, 0, 0);
+  blocosColisao[17].spriteMascara = carregarImagem(".//Artes//Itens//giz_masc.bmp", blocosColisao[14].largura, blocosColisao[14].altura, 0, 0);
   
   //===============================> PERSONAGENS <===============================
   //=>Folhas
@@ -596,6 +619,21 @@ int main()
   blocosColisao[39].sprite = carregarImagem(".//Artes//Personagens//doce.bmp", blocosColisao[35].largura, blocosColisao[35].altura, 0, 0);
   blocosColisao[39].spriteMascara = carregarImagem(".//Artes//Personagens//doce_masc.bmp", blocosColisao[35].largura, blocosColisao[35].altura, 0, 0);
   
+  //===============================> CAIXAS DE TEXTO <===============================
+  //Texto tutorial 1
+  blocosColisao[39].x = 0;
+  blocosColisao[39].y = 601;
+  blocosColisao[39].altura = 120;
+  blocosColisao[39].largura = 1280;
+  blocosColisao[39].tipo = 13;
+  blocosColisao[39].colidido = false;
+  blocosColisao[39].cliqueMouse = false;
+  blocosColisao[39].coletado = true;
+  blocosColisao[39].sprite = carregarImagem(".//Artes//Personagens//doce.bmp", blocosColisao[39].largura, blocosColisao[39].altura, 0, 0);
+  blocosColisao[39].spriteMascara = carregarImagem(".//Artes//Personagens//doce_masc.bmp", blocosColisao[39].largura, blocosColisao[39].altura, 0, 0);
+  
+  //Texto tutorial 2
+  
   //===============================> Cenários <===============================
   void **cenarios;
   int qntDeCenarios = 13;
@@ -626,6 +664,9 @@ int main()
   cenarios[11] = carregarImagem(".//Artes//Cenarios//fase_2_cenario_10.bmp", 1280, 600, 0, 0);
   
   cenarios[12] = carregarImagem(".//Artes//Cenarios//menu.bmp", 1280, 720, 0, 0);
+  
+  //Imagem do Inventario
+  inventarioImagem = carregarImagem(".//Artes//Itens//inventario.bmp", InvLargura, InvAltura, 0, 0);
   
   //=======================> Salvando o tick do computador Inicialmente <=======================
   gt1 = GetTickCount();//registrando o tick inicial do computador para intervalo de frames
@@ -677,6 +718,11 @@ int main()
 	  }
 	  else if(fases == 9)
 	  {
+	  	if(!entrou)
+	  	{	
+	      pegouMissao = true;
+	      entrou = true;
+		}
 	    variavelDeControle = 22;
 	    LidandoComFases(cenarios[5], fases, false, false, false, true, inventario, 13, 13, 10, 17, true);
 	  }
@@ -692,16 +738,16 @@ int main()
 	  else if(fases == 13)
 	  {
 	    variavelDeControle = 26;
-	    LidandoComFases(cenarios[9], fases, false, true, true, false, inventario, 15, 15, 5, 9, true);
+	    LidandoComFases(cenarios[9], fases, false, true, true, false, inventario, 15, 15, 10, 17, true);
 	  }
 	  else if(fases == 14)
 	  {
 	    variavelDeControle = 28;
-	    LidandoComFases(cenarios[11], fases, false, false, false, true, inventario, 17, 17, 5, 9, true);
+	    LidandoComFases(cenarios[11], fases, false, false, false, true, inventario, 17, 17, 10, 17, true);
 	  }
 	  else if(fases == 15)
 	  {
-	    LidandoComFases(cenarios[10], fases, false, false, false, true, inventario, 16, 16, 5, 9, false);
+	    LidandoComFases(cenarios[10], fases, false, false, false, true, inventario, 16, 16, 10, 17, false);
 	  }
 	  
       setvisualpage(pg);
@@ -750,25 +796,25 @@ void CriandoPersonagem(int index)
 
 void CriandoInvetario(int IndexInicial, int IndexFinal, int index)
 {
-  int controleItensInventario = InvAltura/(IndexFinal - IndexInicial + 1);//Criando variável para controlar a localidade de cada item no inventário.
+  int controleItensInventario = InvAltura/5;//Criando variável para controlar a localidade de cada item no inventário.
   if(blocosColisao[index].tipo == 4 && blocosColisao[index].coletado == true)
   {
-    setfillstyle(1,RGB(50, 125, 255));
-    bar(blocosColisao[index].x + blocosColisao[index].largura, 0, 1280, 720);//desenhando o inventário
+    putimage(xInv, yInv, inventarioImagem, COPY_PUT);//desenhando o inventário
     for(int j = IndexInicial; j < IndexFinal + 1; j++)//pegando quais itens tem pela fase para aparecer no inventário
     {
 	  if(!blocosColisao[j].coletado)//modificando a imagem com base se o item foi coletado ou não
 	  {
-	    setfillstyle(1,RGB(50, 125, 50));
-	    bar(xInv + (InvLargura/2) - (blocosColisao[index].largura/2), controleItensInventario*(j - IndexInicial + 1) - (controleItensInventario/2) - (blocosColisao[j].largura/2), xInv + (InvLargura/2) + (blocosColisao[index].largura/2), controleItensInventario*(j - IndexInicial + 1) - (controleItensInventario/2) + (blocosColisao[j].largura/2));
-	  }
-	  else
-      {
-	    setfillstyle(1,RGB(0, 0, 0));
-	    bar(xInv + (InvLargura/2) - (blocosColisao[index].largura/2), controleItensInventario*(j - IndexInicial + 1) - (controleItensInventario/2) - (blocosColisao[j].largura/2), xInv + (InvLargura/2) + (blocosColisao[index].largura/2), controleItensInventario*(j - IndexInicial + 1) - (controleItensInventario/2) + (blocosColisao[j].largura/2));
+	  	if((j - IndexInicial + 1) <= 5)
+	  	{
+	      DesenhandoBotao(xInv + 50, controleItensInventario*(j - IndexInicial + 1) - (controleItensInventario/2) - (blocosColisao[j].largura/2), blocosColisao[j].sprite, blocosColisao[j].spriteMascara);	
+		}
+	    else if((j - IndexInicial + 1) > 5)
+	    {
+	      DesenhandoBotao(xInv + 200, controleItensInventario*(j - (IndexInicial + 5) + 1) - (controleItensInventario/2) - (blocosColisao[j].largura/2), blocosColisao[j].sprite, blocosColisao[j].spriteMascara);
+        }
       }
-    }
-  }	
+    }	
+  }
 }
 
 void* carregarImagem(const char *sprite, int largura, int altura , int x, int y)
@@ -788,6 +834,20 @@ void DesenhandoBotao( int xImagem, int yImagem, void *sprites,void *spritesMasca
   putimage(xImagem, yImagem, sprites, OR_PUT);
 }
 
+void MostrarColetaveis(int index)
+{
+  if(!blocosColisao[index].coletado)
+	DesenhandoBotao( blocosColisao[index].x, blocosColisao[index].y, blocosColisao[index].sprite, blocosColisao[index].spriteMascara);
+}
+
+void MostrarColetaveisMissao(int indexMenor, int indexMaior)
+{
+	for(int i = indexMenor; i < indexMaior + 1; i++)
+	{
+		MostrarColetaveis(i);
+	}
+}
+
 //= > Àrea para Lidar com Leveis
 void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool inventario, int blocoInicial, int blocoFinal, int InvIndexInicial, int InvIndexFinal, bool TemPersonagem)
 {
@@ -800,10 +860,8 @@ void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBai
   //===============================> Desenhando os Itens <===============================
   for(int i = blocoInicial; i < blocoFinal + 1; i++)//conferindo quais itens tem na fase
   {
-	if(!blocosColisao[i].coletado)
-	  DesenhandoBotao( blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].sprite, blocosColisao[i].spriteMascara);
+    MostrarColetaveis(i);
   }
-
   //===============================> Lidando com os Blocos <===============================
   for(int i = 0; i <= 4; i++)//pegando os botões bases para troca de fase e inventário
   { 
@@ -913,6 +971,22 @@ void SaindoDoTutorial()//Verificando se o Player coletou todos os itens para mud
   }
 }
 
+void AtivandoFinal()
+{
+  if(fases == 9)
+  {
+    //Caixas de Texto();
+  }
+}
+
+void CaixaDeTextos(int indexMenor, int indexMaior)
+{
+  for(int i = indexMenor; i > indexMaior; i++)
+  {
+  	//blocos de texto
+  }
+}
+
 //= > Àrea para Lidar com Colisões
 void ChecagemDeColisaoDoMouse()
 {
@@ -949,8 +1023,8 @@ void ChecagemDeColisaoDoMouse()
 	  Inicio = GetTickCount();//resetando o tempo de espera
 	  blocosColisao[indexItemColidido].cliqueMouse = true;
 	  ColetarItensFase();
-	  ColetarItensMissoes(11);
-	  ColetarItensMissoes(12);
+	  ColetarItensMissoes(11, qntMoedasColetadas);
+	  ColetarItensMissoes(12, qntDocesColetados);
 	}
   }
 }
@@ -987,7 +1061,7 @@ void LidandoComPersonagem(int &index)//Colentando o tipo de personagem que teve 
 	    LidandoComAsFolhas(index);//Interação com as folhas de onde sai a Lontra
 	    break;
 	  case 7:
-	    //Caixas de Texto
+	    //Caixas de Texto()
 	    break;
 	  case 8:
 	    LidandoComABruxa(10, 17);
@@ -1027,6 +1101,35 @@ void LidandoComMissoes(int tipo)//Ativando os itens a serem coletados adicionalm
   }
 }
 
+void FinalizandoMissoes()
+{
+  if(qntItensColetados >= 15)
+    AtivandoFinal();
+  else if(qntDocesColetados >= 5)
+    FinalCat();
+  else if(qntMoedasColetadas >= 5)
+    FinalGuaxinim();
+}
+
+void FinalGuaxinim()
+{
+  if(fases == 14)
+  {
+    //Caixas de texto()
+    qntItensColetados++;
+	qntMoedasColetadas = 0;
+  }
+}
+
+void FinalCat()
+{
+  if(fases == 15)
+  {
+    //Caixas de texto()
+    qntItensColetados++;
+	qntMoedasColetadas = 0;
+  }
+}
 //= > Àrea para Coletas de Itens
 void ColetarItensFase()
 {
@@ -1037,20 +1140,14 @@ void ColetarItensFase()
   }
 }
 
-void ColetarItensMissoes(int tipo)
+void ColetarItensMissoes(int tipo, int quantidade)
 {
   if(blocosColisao[indexItemColidido].tipo == tipo && blocosColisao[indexItemColidido].coletado == false)//Captura de Coletáveis da Missão
   {
-	blocosColisao[indexItemColidido].coletado = true;//impossibilitando de clicar novamente
+  	quantidade++;
+    blocosColisao[indexItemColidido].coletado = true;//impossibilitando de clicar novamente
   }
 }
-
-//void MostrarColetaveis()
-//{
-//	
-//}
-
-
 
 
 
