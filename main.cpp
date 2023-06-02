@@ -696,7 +696,7 @@ int main()
 	  setactivepage(pg);
 	  cleardevice();
       
-  	  printf("\n Itens:%d", qntItensColetados);
+  	  
       //=================> Lidando com a troca de fases <=================
       if(fases == 0)//menu
 		Menu(cenarios[12], fases);
@@ -771,15 +771,14 @@ int main()
 	    MostrarColetaveisMissao(38,38);
 	  }
 	  else if(fases == 16)
-	    Menu(cenarios[12], fases);
-	  else if(fases == 17)
 	    Menu(cenarios[13], fases);
-	  else if(fases == 18)
+	  else if(fases == 17)
 	    Menu(cenarios[14], fases);
-	  else if(fases == 19)
+	  else if(fases == 18)
 	    Menu(cenarios[15], fases);
-	  else if(fases == 20)
+	  else if(fases == 19)
 	    putimage(0,0, cenarios[16], COPY_PUT);
+	    
 	  else if(fases == 21)
 	    CutScene(cenarios[17], fases);
 	  else if(fases == 22)
