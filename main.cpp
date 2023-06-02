@@ -198,8 +198,8 @@ int main()
   
   //===============================> ITENS <===============================
   //=>Ervas
-  blocosColisao[5].x = 320;
-  blocosColisao[5].y = 230;
+  blocosColisao[5].x = 318;
+  blocosColisao[5].y = 198;
   blocosColisao[5].altura = 54;
   blocosColisao[5].largura = 96;
   blocosColisao[5].tipo = 5;
@@ -211,7 +211,7 @@ int main()
   
   //=>Pote de Sal
   blocosColisao[6].x = 900;
-  blocosColisao[6].y = 540;
+  blocosColisao[6].y = 527;
   blocosColisao[6].altura = 54;
   blocosColisao[6].largura = 96;
   blocosColisao[6].tipo = 5;
@@ -222,8 +222,8 @@ int main()
   blocosColisao[6].spriteMascara = carregarImagem(".//Artes//Itens//pote_de_sal_masc.bmp", blocosColisao[6].largura, blocosColisao[6].altura, 0, 0);
   
   //=>Relicário
-  blocosColisao[7].x = 670;
-  blocosColisao[7].y = 240;
+  blocosColisao[7].x = 518;
+  blocosColisao[7].y = 185;
   blocosColisao[7].altura = 54;
   blocosColisao[7].largura = 96;
   blocosColisao[7].tipo = 5;
@@ -726,6 +726,7 @@ int main()
 	  else if(fases == 8)
 	  {
 	    LidandoComFases(cenarios[6], fases, false, false, true, true, inventario, 14, 14, 10, 17, false);
+	    MostrarColetaveisMissao(30,30);
 	  }
 	  else if(fases == 9)
 	  {
@@ -741,24 +742,33 @@ int main()
 	  {
 	    variavelDeControle = 24;
 	    LidandoComFases(cenarios[7], fases, false, false, true, true, inventario, 7, 9, 10, 17, true);
+	    MostrarColetaveisMissao(31,31);
+	    MostrarColetaveisMissao(35,35);
 	  }
 	  else if(fases == 12)
 	  {
 	    LidandoComFases(cenarios[8], fases, true, false, true, true, inventario, 7, 9, 10, 17, false);
+	    MostrarColetaveisMissao(32,32);
+	    MostrarColetaveisMissao(33,33);
+	    MostrarColetaveisMissao(36,36);
 	  }
 	  else if(fases == 13)
 	  {
 	    variavelDeControle = 26;
 	    LidandoComFases(cenarios[9], fases, false, true, true, false, inventario, 15, 15, 10, 17, true);
+	    MostrarColetaveisMissao(37,37);
 	  }
 	  else if(fases == 14)
 	  {
 	    variavelDeControle = 28;
 	    LidandoComFases(cenarios[11], fases, false, false, false, true, inventario, 17, 17, 10, 17, true);
+	    MostrarColetaveisMissao(39,39);
+	    MostrarColetaveisMissao(34,34);
 	  }
 	  else if(fases == 15)
 	  {
 	    LidandoComFases(cenarios[10], fases, false, false, false, true, inventario, 16, 16, 10, 17, false);
+	    MostrarColetaveisMissao(38,38);
 	  }
 	  else if(fases == 16)
 	    Menu(cenarios[12], fases);
@@ -867,7 +877,7 @@ void MostrarColetaveisMissao(int indexMenor, int indexMaior)
 {
 	for(int i = indexMenor; i < indexMaior + 1; i++)
 	{
-		MostrarColetaveis(i);
+	  MostrarColetaveis(i);
 	}
 }
 
