@@ -158,8 +158,8 @@ int main()
   blocosColisao[5].colidido = false;
   blocosColisao[5].cliqueMouse = false;
   blocosColisao[5].coletado = false;
-  blocosColisao[5].sprite = NULL;
-  blocosColisao[5].spriteMascara = NULL;
+  blocosColisao[5].sprite = carregarImagem(".//Artes//Itens//ervas.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
+  blocosColisao[5].spriteMascara = carregarImagem(".//Artes//Itens//ervas_masc.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
   
   //=>Pote de Sal
   blocosColisao[6].x = 900;
@@ -170,8 +170,8 @@ int main()
   blocosColisao[6].colidido = false;
   blocosColisao[6].cliqueMouse = false;
   blocosColisao[6].coletado = false;
-  blocosColisao[6].sprite = NULL;
-  blocosColisao[6].spriteMascara = NULL;
+  blocosColisao[6].sprite = carregarImagem(".//Artes//Itens//pote_de_sal.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
+  blocosColisao[6].spriteMascara = carregarImagem(".//Artes//Itens//pote_de_sal_masc.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
   
   //=>Relicário
   blocosColisao[7].x = 670;
@@ -182,8 +182,8 @@ int main()
   blocosColisao[7].colidido = false;
   blocosColisao[7].cliqueMouse = false;
   blocosColisao[7].coletado = false;
-  blocosColisao[7].sprite = NULL;
-  blocosColisao[7].spriteMascara = NULL;
+  blocosColisao[7].sprite = carregarImagem(".//Artes//Itens//relicario.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
+  blocosColisao[7].spriteMascara = carregarImagem(".//Artes//Itens//relicario_masc.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
   
   //=>Boneca
   blocosColisao[8].x = 1000;
@@ -194,8 +194,8 @@ int main()
   blocosColisao[8].colidido = false;
   blocosColisao[8].cliqueMouse = false;
   blocosColisao[8].coletado = false;
-  blocosColisao[8].sprite = NULL;
-  blocosColisao[8].spriteMascara = NULL;
+  blocosColisao[8].sprite = carregarImagem(".//Artes//Itens//boneca.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
+  blocosColisao[8].spriteMascara = carregarImagem(".//Artes//Itens//boneca_masc.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
   
   //=>Estrela Judaica
   blocosColisao[9].x = 1100;
@@ -206,8 +206,8 @@ int main()
   blocosColisao[9].colidido = false;
   blocosColisao[9].cliqueMouse = false;
   blocosColisao[9].coletado = false;
-  blocosColisao[9].sprite = NULL;
-  blocosColisao[9].spriteMascara = NULL;
+  blocosColisao[9].sprite = carregarImagem(".//Artes//Itens//caixa_estrela.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
+  blocosColisao[9].spriteMascara = carregarImagem(".//Artes//Itens//caixa_estrela_masc.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
   
   //=>COGUMELO
   blocosColisao[10].x = 900;
@@ -218,8 +218,8 @@ int main()
   blocosColisao[10].colidido = false;
   blocosColisao[10].cliqueMouse = false;
   blocosColisao[10].coletado = false;
-  blocosColisao[10].sprite = NULL;
-  blocosColisao[10].spriteMascara = NULL;
+  blocosColisao[10].sprite = carregarImagem(".//Artes//Itens//cogumelo.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
+  blocosColisao[10].spriteMascara = carregarImagem(".//Artes//Itens//cogumelo_masc.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
   
   //=>Caveira
   blocosColisao[11].x = 595;
@@ -230,10 +230,10 @@ int main()
   blocosColisao[11].colidido = false;
   blocosColisao[11].cliqueMouse = false;
   blocosColisao[11].coletado = false;
-  blocosColisao[11].sprite = NULL;
-  blocosColisao[11].spriteMascara = NULL;
+  blocosColisao[11].sprite = carregarImagem(".//Artes//Itens//caveira.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
+  blocosColisao[11].spriteMascara = carregarImagem(".//Artes//Itens//carveira_masc.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
   
-  //=>Anel
+  //=>Olho Mágico
   blocosColisao[12].x = 900;
   blocosColisao[12].y = 300;
   blocosColisao[12].altura = 64;
@@ -242,8 +242,8 @@ int main()
   blocosColisao[12].colidido = false;
   blocosColisao[12].cliqueMouse = false;
   blocosColisao[12].coletado = false;
-  blocosColisao[12].sprite = NULL;
-  blocosColisao[12].spriteMascara = NULL;
+  blocosColisao[12].sprite = carregarImagem(".//Artes//Itens//olho_magico.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
+  blocosColisao[12].spriteMascara = carregarImagem(".//Artes//Itens//olho_magico_masc.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
   
   //=>Cálice
   blocosColisao[13].x = 800;
@@ -254,8 +254,8 @@ int main()
   blocosColisao[13].colidido = false;
   blocosColisao[13].cliqueMouse = false;
   blocosColisao[13].coletado = false;
-  blocosColisao[13].sprite = NULL;
-  blocosColisao[13].spriteMascara = NULL;
+  blocosColisao[13].sprite = carregarImagem(".//Artes//Itens//calice.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
+  blocosColisao[13].spriteMascara = carregarImagem(".//Artes//Itens//calice_masc.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
   
   //=>Giz
   blocosColisao[14].x = 1150;
@@ -266,8 +266,8 @@ int main()
   blocosColisao[14].colidido = false;
   blocosColisao[14].cliqueMouse = false;
   blocosColisao[14].coletado = false;
-  blocosColisao[14].sprite = NULL;
-  blocosColisao[14].spriteMascara = NULL;
+  blocosColisao[14].sprite = carregarImagem(".//Artes//Itens//giz.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
+  blocosColisao[14].spriteMascara = carregarImagem(".//Artes//Itens//giz_masc.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
   
   //
   blocosColisao[15].x = 312;
@@ -278,8 +278,8 @@ int main()
   blocosColisao[15].colidido = false;
   blocosColisao[15].cliqueMouse = false;
   blocosColisao[15].coletado = false;
-  blocosColisao[15].sprite = NULL;
-  blocosColisao[15].spriteMascara = NULL;
+  blocosColisao[15].sprite = carregarImagem(".//Artes//Itens//giz.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
+  blocosColisao[15].spriteMascara = carregarImagem(".//Artes//Itens//giz_masc.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
   
   blocosColisao[16].x = 1100;
   blocosColisao[16].y = 130;
@@ -289,8 +289,8 @@ int main()
   blocosColisao[16].colidido = false;
   blocosColisao[16].cliqueMouse = false;
   blocosColisao[16].coletado = false;
-  blocosColisao[16].sprite = NULL;
-  blocosColisao[16].spriteMascara = NULL;
+  blocosColisao[16].sprite = carregarImagem(".//Artes//Itens//giz.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
+  blocosColisao[16].spriteMascara = carregarImagem(".//Artes//Itens//giz_masc.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
   
   blocosColisao[17].x = 1100;
   blocosColisao[17].y = 130;
@@ -300,8 +300,8 @@ int main()
   blocosColisao[17].colidido = false;
   blocosColisao[17].cliqueMouse = false;
   blocosColisao[17].coletado = false;
-  blocosColisao[17].sprite = NULL;
-  blocosColisao[17].spriteMascara = NULL;
+  blocosColisao[17].sprite = carregarImagem(".//Artes//Itens//giz.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
+  blocosColisao[17].spriteMascara = carregarImagem(".//Artes//Itens//giz_masc.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
   
   //===============================> PERSONAGENS <===============================
   //=>Folhas
@@ -657,7 +657,7 @@ void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBai
   for(int i = blocoInicial; i < blocoFinal + 1; i++)//conferindo quais itens tem na fase
   {
 	if(!blocosColisao[i].coletado)
-	  bar(blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].x + blocosColisao[i].largura, blocosColisao[i].y + blocosColisao[i].altura);
+	  DesenhandoBotao( blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].sprite, blocosColisao[i].spriteMascara);
   }
 
   //===============================> Lidando com os Blocos <===============================
@@ -781,7 +781,6 @@ void ChecagemDeColisaoDoMouse()
   {
     for(int i = 0; i < qntBlocos; i++)//checagem dos Itens para ver se há algum colidido e Qual foi.
 	{
-	  printf("\npq?");
 	  colisaoMouse = blocosColisao[i].colidido;
 	  if(colisaoMouse == true)//se há, coleta qual item
 	  {
@@ -794,7 +793,6 @@ void ChecagemDeColisaoDoMouse()
   {
 	for(int i = 0; i < qntBlocos; i++)//checagem se não há mais colisão.
 	{
-	  printf("\n%d", indexItemColidido);
 	  if(blocosColisao[i].colidido == true)//se há, então ignora a verificação
 		break;
 	  else if(i == qntBlocos - 1)//se não há. então mouse não está colidido
@@ -822,20 +820,22 @@ void ChecagemDeColisaoDoMouse()
 
 void ZerandoColisoes()
 {
+  //Fazendo com que todos os itens desverifiquem as colisões(útil para situações em que o item acabou saindo da tela com a informação q está cólidido e bug o jogo)
   for(int i = 0; i < qntBlocos; i++)
     blocosColisao[i].colidido = false;
 }
 
-void Menu(void *cenario, int &fases)
-{
-    mciSendString("play fundo2", NULL, 0, 0);
-    putimage(0, 0, cenario, COPY_PUT);
-    if(GetKeyState(VK_LBUTTON)&0x80)
-    {
-  	    mciSendString("stop fundo2", NULL, 0, 0);
-        mciSendString("play jogo", NULL, 0, 0); 
-        fases ++;
-    }
+
+
+void Menu(void *cenario, int &fases){
+  mciSendString("play fundo2", NULL, 0, 0);
+  putimage(0, 0, cenario, COPY_PUT);
+  if(GetKeyState(VK_LBUTTON)&0x80)
+  {
+    mciSendString("stop fundo2", NULL, 0, 0);
+    mciSendString("play jogo", NULL, 0, 0); 
+    fases ++;
+  }
 }
 
 bool ChecagemDeColisao( int xColisor, int yColisor, int xColidido, int yColidido, int larguraColidido, int alturaColidido, bool &colidiu)
