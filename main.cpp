@@ -25,6 +25,9 @@ int qntBlocos = 40;
 //checagem de itens coletados
 int qntItensColetados = 0;
  
+//variável para controlar qual personagem terá no mapa 
+int variavelDeControle = 18;
+ 
 //=====================> Funções <=====================
 //=> Área para Colisões
 bool ChecagemDeColisao(int xColisor, int yColisor, int xColidido, int yColidido, int larguraColidido, int alturaColidido, bool &colidiu);
@@ -43,9 +46,13 @@ void* carregarImagem(const char *sprite, int largura, int altura , int x, int y)
 void CriandoPersonagem(int index);
 
 //= > Àrea para Lidar com leveis
-void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool inventario, int blocoInicial, int blocoFinal, int InvIndexInicial, int InvIndexFinal);
-
+void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool inventario, int blocoInicial, int blocoFinal, int InvIndexInicial, int InvIndexFinal, bool TemPersonagem);
 void Menu(void *cenario, int &fases);
+
+//= > Àrea para Lidar com Personagens
+void LidandoComPersonagem(int &index);
+
+void LidandoComAsFolhas(int &index);
 
 //=====================> Tempo de Espera para Clique do Mouse <=====================
 int Espera = 500;
@@ -309,7 +316,7 @@ int main()
   blocosColisao[18].y = 300;
   blocosColisao[18].altura = 173;
   blocosColisao[18].largura = 343;
-  blocosColisao[18].tipo = 5;
+  blocosColisao[18].tipo = 6;
   blocosColisao[18].colidido = false;
   blocosColisao[18].cliqueMouse = false;
   blocosColisao[18].coletado = false;
@@ -333,7 +340,7 @@ int main()
   blocosColisao[20].y = blocosColisao[18].y;
   blocosColisao[20].altura = 255;
   blocosColisao[20].largura = 255;
-  blocosColisao[20].tipo = 5;
+  blocosColisao[20].tipo = 7;
   blocosColisao[20].colidido = false;
   blocosColisao[20].cliqueMouse = false;
   blocosColisao[20].coletado = false;
@@ -357,7 +364,7 @@ int main()
   blocosColisao[22].y = 130;
   blocosColisao[22].altura = 300;
   blocosColisao[22].largura = 300;
-  blocosColisao[22].tipo = 5;
+  blocosColisao[22].tipo = 8;
   blocosColisao[22].colidido = false;
   blocosColisao[22].cliqueMouse = false;
   blocosColisao[22].coletado = false;
@@ -369,7 +376,7 @@ int main()
   blocosColisao[23].y = blocosColisao[22].y;
   blocosColisao[23].altura = blocosColisao[22].altura;
   blocosColisao[23].largura = blocosColisao[22].largura;
-  blocosColisao[23].tipo = 5;
+  blocosColisao[23].tipo = blocosColisao[22].tipo;
   blocosColisao[23].colidido = false;
   blocosColisao[23].cliqueMouse = false;
   blocosColisao[23].coletado = false;
@@ -381,7 +388,7 @@ int main()
   blocosColisao[24].y = 130;
   blocosColisao[24].altura = 137;
   blocosColisao[24].largura = 137;
-  blocosColisao[24].tipo = 5;
+  blocosColisao[24].tipo = 7;
   blocosColisao[24].colidido = false;
   blocosColisao[24].cliqueMouse = false;
   blocosColisao[24].coletado = false;
@@ -405,7 +412,7 @@ int main()
   blocosColisao[26].y = 300;
   blocosColisao[26].altura = 255;
   blocosColisao[26].largura = 255;
-  blocosColisao[26].tipo = 5;
+  blocosColisao[26].tipo = 9;
   blocosColisao[26].colidido = false;
   blocosColisao[26].cliqueMouse = false;
   blocosColisao[26].coletado = false;
@@ -429,7 +436,7 @@ int main()
   blocosColisao[28].y = 130;
   blocosColisao[28].altura = 400;
   blocosColisao[28].largura = 170;
-  blocosColisao[28].tipo = 5;
+  blocosColisao[28].tipo = 10;
   blocosColisao[28].colidido = false;
   blocosColisao[28].cliqueMouse = false;
   blocosColisao[28].coletado = false;
@@ -625,10 +632,9 @@ int main()
       //=================> Lidando com a troca de fases <=================
       if(fases == 0)//menu
 		Menu(cenarios[12], fases);
-		
 	  if(fases == 1)
       {
-        LidandoComFases(cenarios[0], fases, false, false, true, false, inventario, 5, 6, 5, 9);
+        LidandoComFases(cenarios[0], fases, false, false, true, false, inventario, 5, 6, 5, 9, false);
         if(qntItensColetados >= 5)
         {
 	      inventario = false;
@@ -636,10 +642,9 @@ int main()
           ZerandoColisoes();
 		}
 	  }//não há segunda fase pela lógica que criei de transição de fase
-	  
 	  else if(fases == 3)
 	  {
-	    LidandoComFases(cenarios[1], fases, false, false, false, true, inventario, 7, 9, 5, 9);
+	    LidandoComFases(cenarios[1], fases, false, false, false, true, inventario, 7, 9, 5, 9, false);
 	    if(qntItensColetados >= 5)
 	    {
 	      inventario = false;
@@ -647,71 +652,56 @@ int main()
           ZerandoColisoes();
 		}
 	  }
-	  
 	  else if(fases == 4)
 	  {
-	    LidandoComFases(cenarios[2], fases, false, false, true, false, inventario, 10, 10, 10, 17);
-	    if(!blocosColisao[18].cliqueMouse)
-	      CriandoPersonagem(18);
-	    else
-	    {	
-	      blocosColisao[18].colidido = false;
-		  CriandoPersonagem(20);
-		}
+	    LidandoComFases(cenarios[2], fases, false, false, true, false, inventario, 10, 10, 10, 17, true);
 	  }
-	  
+	
 	  else if(fases == 6)
 	  {
-	    LidandoComFases(cenarios[3], fases, true, false, pegouMissao, true, inventario, 11, 11, 10, 17);
+	    LidandoComFases(cenarios[3], fases, true, false, pegouMissao, true, inventario, 11, 11, 10, 17, false);
 	  }
-	  
 	  else if(fases == 7)
 	  {
-	    LidandoComFases(cenarios[4], fases, false, true, true, false, inventario, 12, 12, 10, 17);
+	    LidandoComFases(cenarios[4], fases, false, true, true, false, inventario, 12, 12, 10, 17, false);
 	  }
-	  
 	  else if(fases == 8)
 	  {
-	    LidandoComFases(cenarios[6], fases, false, false, true, true, inventario, 14, 14, 10, 17);
+	    LidandoComFases(cenarios[6], fases, false, false, true, true, inventario, 14, 14, 10, 17, false);
 	  }
-	  
 	  else if(fases == 9)
 	  {
-	    LidandoComFases(cenarios[5], fases, false, false, false, true, inventario, 13, 13, 10, 17);
-	    CriandoPersonagem(22);
 	    pegouMissao = true;
+	    variavelDeControle = 22;
+	    LidandoComFases(cenarios[5], fases, false, false, false, true, inventario, 13, 13, 10, 17, true);
 	  }
-	  
 	  else if(fases == 10)
 	  {
-	    LidandoComFases(cenarios[7], fases, false, false, true, true, inventario, 7, 9, 10, 17);
-	    CriandoPersonagem(24);
 	    inventario = true;
+	    variavelDeControle = 24;
+	    LidandoComFases(cenarios[7], fases, false, false, true, true, inventario, 7, 9, 10, 17, true);
 	  }
-	  
 	  else if(fases == 12)
 	  {
-	    LidandoComFases(cenarios[8], fases, true, false, true, true, inventario, 7, 9, 10, 17);
+	    LidandoComFases(cenarios[8], fases, true, false, true, true, inventario, 7, 9, 10, 17, false);
 	  }
 	  else if(fases == 13)
 	  {
-	    LidandoComFases(cenarios[9], fases, false, true, true, false, inventario, 7, 9, 5, 9);
-	    CriandoPersonagem(26);
+	    variavelDeControle = 26;
+	    LidandoComFases(cenarios[9], fases, false, true, true, false, inventario, 7, 9, 5, 9, true);
 	  }
-	  
 	  else if(fases == 14)
 	  {
-	    LidandoComFases(cenarios[11], fases, false, false, false, true, inventario, 7, 9, 5, 9);
-	    CriandoPersonagem(28);
+	    variavelDeControle = 28;
+	    LidandoComFases(cenarios[11], fases, false, false, false, true, inventario, 7, 9, 5, 9, true);
 	  }
-	  
 	  else if(fases == 15)
 	  {
-	    LidandoComFases(cenarios[10], fases, false, false, false, true, inventario, 7, 9, 5, 9);
+	    LidandoComFases(cenarios[10], fases, false, false, false, true, inventario, 7, 9, 5, 9, false);
 	  }
 	  
       setvisualpage(pg);
-    }
+    }//Fim do Condicional para Barramento de Frames
     
     //===============================> Input para saída do laço <===============================
     fflush(stdin);
@@ -719,25 +709,22 @@ int main()
 	{
       tecla = getch();
     }
-  }
+  }//Fim do Laço
   
   printf("\n\nFim do Programa");
-  
-  for(int i = 0; i<qntBlocos; i++)//liberando memória dos blocos
+  for(int i = 0; i < qntBlocos; i++)//liberando memória dos blocos
   {
     free(blocosColisao[i].sprite);
-  	free(blocosColisao[i].spriteMascara);
+    free(blocosColisao[i].spriteMascara);
   }
   free(blocosColisao);
-  
   for(int i = 0; i < qntDeCenarios; i++)//liberando memória dos cenários
   {
     free(cenarios[i]);
   }
   free(cenarios);
-  
   closegraph();
-  return 0; 
+  return 0;
 }
 
 void CriandoPersonagem(int index)
@@ -768,11 +755,14 @@ void DesenhandoBotao( int xImagem, int yImagem, void *sprites,void *spritesMasca
   putimage(xImagem, yImagem, sprites, OR_PUT);
 }
 
-void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool inventario, int blocoInicial, int blocoFinal, int InvIndexInicial, int InvIndexFinal)
+void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool inventario, int blocoInicial, int blocoFinal, int InvIndexInicial, int InvIndexFinal, bool TemPersonagem)
 {
   //Desenhando Cenário
   putimage(0, 0, cenario, COPY_PUT);
   
+  //Lidando com Personagem da fase, se houver
+  if(TemPersonagem == true)
+    LidandoComPersonagem(variavelDeControle);
   //===============================> Desenhando os Itens <===============================
   for(int i = blocoInicial; i < blocoFinal + 1; i++)//conferindo quais itens tem na fase
   {
@@ -919,6 +909,7 @@ void ChecagemDeColisaoDoMouse()
 		if(blocosColisao[i].colidido == false) colisaoMouse = false;
 	  }
 	}
+	printf("\n%d", indexItemColidido);
   }
   
   //===============================> Captura de Inputs <===============================
@@ -968,20 +959,36 @@ bool ChecagemDeColisao( int xColisor, int yColisor, int xColidido, int yColidido
     colidiu = false;
 }
 
-void LidandoComPersonagem(int index)
+//= > Àrea para Lidar com Personagens
+void LidandoComPersonagem(int &index)
 {
   CriandoPersonagem(index);
-  switch(blocosColisao[index].tipo)
+  if(blocosColisao[index].cliqueMouse == true)
   {
-  	case 6:
-  		index++;
-  	case 7:
-  		//Mudar Caixa de Texto
-  	case 8:
-  		//Missão Bruxa
-  	case 9:
-  		//Missão Guaxinim
-  	case 10:
-  		//Missão Cat
-  }		
-} 
+	  switch(blocosColisao[index].tipo)
+	  {
+	  	case 6:
+	  		LidandoComAsFolhas(index);
+	  		break;
+	  	case 7:
+	  		//Mudar Caixa de Texto
+	  		break;
+	  	case 8:
+	  		//Missão Bruxa
+	  		break;
+	  	case 9:
+	  		//Missão Guaxinim]
+	  		break;
+	  	case 10:
+	  		//Missão Cat
+	  		break;
+	  }	
+  }
+}
+
+void LidandoComAsFolhas(int &index)
+{
+  blocosColisao[index].cliqueMouse = false;
+  index += 2;
+  ZerandoColisoes();
+}
