@@ -27,7 +27,7 @@ BlocoDeColisao *blocosColisao;
 int qntBlocos = 40;
 
 //=> Fases
-int fases = 0;
+int fases = 21;
 bool pegouMissao = false;
 bool inventario = true;
 bool entrou = false;
@@ -90,6 +90,8 @@ void SaindoDoTutorial();
 void AtivandoFinal();
 
 void CaixaDeTextos(int indexMenor, int indexMaior);
+
+void CutScene(void *cenario, int &fases);
 
 //= > Àrea para Lidar com Personagens
 void LidandoComPersonagem(int &index);
@@ -621,7 +623,7 @@ int main()
 
   //===============================> Cenários <===============================
   void **cenarios;
-  int qntDeCenarios = 17;
+  int qntDeCenarios = 25;
   cenarios = (void **) malloc(sizeof(void *) * qntDeCenarios);
 
   cenarios[0] = carregarImagem(".//Artes//Cenarios//sala_tutas.bmp", 1280, 600, 0, 0);
@@ -658,7 +660,21 @@ int main()
   
   cenarios[16] = carregarImagem(".//Artes//Cenarios//tela_4_final.bmp", 1280, 720, 0, 0);
   
+  cenarios[17] = carregarImagem(".//Artes//Cenarios//cena1_pt1.bmp", 1280, 720, 0, 0);
   
+  cenarios[18] = carregarImagem(".//Artes//Cenarios//cena1_pt2.bmp", 1280, 720, 0, 0);
+  
+  cenarios[19] = carregarImagem(".//Artes//Cenarios//cena2_pt1.bmp", 1280, 720, 0, 0);
+  
+  cenarios[20] = carregarImagem(".//Artes//Cenarios//cena2_pt2.bmp", 1280, 720, 0, 0);
+  
+  cenarios[21] = carregarImagem(".//Artes//Cenarios//cena3.bmp", 1280, 720, 0, 0);
+  
+  cenarios[22] = carregarImagem(".//Artes//Cenarios//cena4.bmp", 1280, 720, 0, 0);
+  
+  cenarios[23] = carregarImagem(".//Artes//Cenarios//cena5_pt1.bmp", 1280, 720, 0, 0);
+  
+  cenarios[24] = carregarImagem(".//Artes//Cenarios//cena5_pt2.bmp", 1280, 720, 0, 0);
   
   //Imagem do Inventario
   inventarioImagem = carregarImagem(".//Artes//Itens//inventario.bmp", InvLargura, InvAltura, 0, 0);
@@ -680,8 +696,7 @@ int main()
 	  setactivepage(pg);
 	  cleardevice();
       
-  	  printf("%d", qntMoedasColetadas);
-  	  printf("%d", qntDocesColetados);
+  	  printf("\n Itens:%d", qntItensColetados);
       //=================> Lidando com a troca de fases <=================
       if(fases == 0)//menu
 		Menu(cenarios[12], fases);
@@ -765,6 +780,24 @@ int main()
 	    Menu(cenarios[15], fases);
 	  else if(fases == 20)
 	    putimage(0,0, cenarios[16], COPY_PUT);
+	  else if(fases == 21)
+	    CutScene(cenarios[17], fases);
+	  else if(fases == 22)
+	    CutScene(cenarios[18], fases);
+	  else if(fases == 23)
+	    CutScene(cenarios[19], fases);
+	  else if(fases == 24)
+	    CutScene(cenarios[20], fases);
+	  else if(fases == 25)
+	    CutScene(cenarios[21], fases);
+	  else if(fases == 26)
+	    CutScene(cenarios[22], fases);
+	  else if(fases == 27)
+	    CutScene(cenarios[23], fases);
+	  else if(fases == 28)
+	    CutScene(cenarios[24], fases);
+	  else if(fases == 29)
+	    fases = 0;
 	  
 	  FinalizandoMissoes();
 	  
@@ -975,14 +1008,18 @@ void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBai
 void Menu(void *cenario, int &fases)
 {
   putimage(0, 0, cenario, COPY_PUT);
-  if(GetKeyState(VK_LBUTTON)&0x80)
+  if(TempoDecorrido > Espera)
   {
-  	if(!tocou)
-  	{
-	  mciSendString("play jogo repeat", NULL, 0, 0); 
-	  tocou = true;	
+    if(GetKeyState(VK_LBUTTON)&0x80)
+	{
+	  Inicio = GetTickCount();
+	  if(!tocou)
+	  {
+		mciSendString("play jogo repeat", NULL, 0, 0); 
+		tocou = true;	
+	  }
+	  fases ++;
 	}
-    fases ++;
   }
 }
 
@@ -1007,6 +1044,19 @@ void CaixaDeTextos(int indexMenor, int indexMaior)
   for(int i = indexMenor; i > indexMaior; i++)
   {
   	//blocos de texto
+  }
+}
+
+void CutScene(void *cenario, int &fases)
+{
+  putimage(0, 0, cenario, COPY_PUT);
+  if(TempoDecorrido > Espera)
+  {
+    if (GetKeyState(VK_LBUTTON)&0x80)
+	{
+	  Inicio = GetTickCount();
+	  fases ++;
+	}
   }
 }
 
@@ -1128,9 +1178,9 @@ void FinalizandoMissoes()
 {
   if(qntItensColetados >= 15)
     AtivandoFinal();
-  else if(qntDocesColetados >= 5)
+  if(qntDocesColetados >= 5)
     FinalCat();
-  else if(qntMoedasColetadas >= 5)
+  if(qntMoedasColetadas >= 5)
     FinalGuaxinim();
 }
 
@@ -1150,7 +1200,7 @@ void FinalCat()
   {
     //Caixas de texto()
     qntItensColetados++;
-	qntMoedasColetadas = 0;
+	qntDocesColetados = 0;
   }
 }
 
