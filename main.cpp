@@ -25,18 +25,25 @@ int qntBlocos = 30;
 //checagem de itens coletados
 int qntItensColetados = 0;
  
-//Area para funcoes
-void* carregarImagem(const char *sprite, int largura, int altura , int x, int y);
-
+//=====================> Funções <=====================
+//=> Área para Colisões
 bool ChecagemDeColisao(int xColisor, int yColisor, int xColidido, int yColidido, int larguraColidido, int alturaColidido, bool &colidiu);
 
 void ChecagemDeColisaoDoMouse();
 
+void ZerandoColisoes();
+
+//= > Àrea para Desenhar e Criar
 void CriandoInvetario(int IndexInicial, int IndexFinal, int index);
 
-void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool inventario, int blocoInicial, int blocoFinal, int InvIndexInicial, int InvIndexFinal);
-
 void DesenhandoBotao( int xImagem, int yImagem, void *sprites,void *spritesMascara);
+
+void* carregarImagem(const char *sprite, int largura, int altura , int x, int y);
+
+void CriandoPersonagem(int index);
+
+//= > Àrea para Lidar com leveis
+void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool inventario, int blocoInicial, int blocoFinal, int InvIndexInicial, int InvIndexFinal);
 
 void Menu(void *cenario, int &fases);
 
@@ -141,7 +148,8 @@ int main()
   blocosColisao[4].spriteMascara = carregarImagem(".//Artes//Botoes//icone_Inventario_Mascara.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
   blocosColisao[4].sprite = carregarImagem(".//Artes//Botoes//icone_Inventario.bmp", blocosColisao[4].largura, blocosColisao[4].altura, 0, 0);
   
-  //Itens
+  //===============================> ITENS <===============================
+  //=>Ervas
   blocosColisao[5].x = 320;
   blocosColisao[5].y = 230;
   blocosColisao[5].altura = 64;
@@ -153,6 +161,7 @@ int main()
   blocosColisao[5].sprite = NULL;
   blocosColisao[5].spriteMascara = NULL;
   
+  //=>Pote de Sal
   blocosColisao[6].x = 900;
   blocosColisao[6].y = 540;
   blocosColisao[6].altura = 64;
@@ -164,6 +173,7 @@ int main()
   blocosColisao[6].sprite = NULL;
   blocosColisao[6].spriteMascara = NULL;
   
+  //=>Relicário
   blocosColisao[7].x = 670;
   blocosColisao[7].y = 240;
   blocosColisao[7].altura = 64;
@@ -175,6 +185,7 @@ int main()
   blocosColisao[7].sprite = NULL;
   blocosColisao[7].spriteMascara = NULL;
   
+  //=>Boneca
   blocosColisao[8].x = 1000;
   blocosColisao[8].y = 400;
   blocosColisao[8].altura = 64;
@@ -186,6 +197,7 @@ int main()
   blocosColisao[8].sprite = NULL;
   blocosColisao[8].spriteMascara = NULL;
   
+  //=>Estrela Judaica
   blocosColisao[9].x = 1100;
   blocosColisao[9].y = 130;
   blocosColisao[9].altura = 64;
@@ -197,8 +209,9 @@ int main()
   blocosColisao[9].sprite = NULL;
   blocosColisao[9].spriteMascara = NULL;
   
-  blocosColisao[10].x = 1100;
-  blocosColisao[10].y = 130;
+  //=>COGUMELO
+  blocosColisao[10].x = 900;
+  blocosColisao[10].y = 255;
   blocosColisao[10].altura = 64;
   blocosColisao[10].largura = 64;
   blocosColisao[10].tipo = 5;
@@ -208,8 +221,9 @@ int main()
   blocosColisao[10].sprite = NULL;
   blocosColisao[10].spriteMascara = NULL;
   
-  blocosColisao[11].x = 1100;
-  blocosColisao[11].y = 130;
+  //=>Caveira
+  blocosColisao[11].x = 595;
+  blocosColisao[11].y = 255;
   blocosColisao[11].altura = 64;
   blocosColisao[11].largura = 64;
   blocosColisao[11].tipo = 5;
@@ -219,8 +233,9 @@ int main()
   blocosColisao[11].sprite = NULL;
   blocosColisao[11].spriteMascara = NULL;
   
-  blocosColisao[12].x = 1100;
-  blocosColisao[12].y = 130;
+  //=>Anel
+  blocosColisao[12].x = 900;
+  blocosColisao[12].y = 300;
   blocosColisao[12].altura = 64;
   blocosColisao[12].largura = 64;
   blocosColisao[12].tipo = 5;
@@ -230,8 +245,9 @@ int main()
   blocosColisao[12].sprite = NULL;
   blocosColisao[12].spriteMascara = NULL;
   
-  blocosColisao[13].x = 1100;
-  blocosColisao[13].y = 130;
+  //=>Cálice
+  blocosColisao[13].x = 800;
+  blocosColisao[13].y = 600;
   blocosColisao[13].altura = 64;
   blocosColisao[13].largura = 64;
   blocosColisao[13].tipo = 5;
@@ -241,8 +257,9 @@ int main()
   blocosColisao[13].sprite = NULL;
   blocosColisao[13].spriteMascara = NULL;
   
-  blocosColisao[14].x = 1100;
-  blocosColisao[14].y = 130;
+  //=>Giz
+  blocosColisao[14].x = 1150;
+  blocosColisao[14].y = 500;
   blocosColisao[14].altura = 64;
   blocosColisao[14].largura = 64;
   blocosColisao[14].tipo = 5;
@@ -252,8 +269,9 @@ int main()
   blocosColisao[14].sprite = NULL;
   blocosColisao[14].spriteMascara = NULL;
   
-  blocosColisao[15].x = 1100;
-  blocosColisao[15].y = 130;
+  //
+  blocosColisao[15].x = 312;
+  blocosColisao[15].y = 432;
   blocosColisao[15].altura = 64;
   blocosColisao[15].largura = 64;
   blocosColisao[15].tipo = 5;
@@ -285,141 +303,150 @@ int main()
   blocosColisao[17].sprite = NULL;
   blocosColisao[17].spriteMascara = NULL;
   
-  blocosColisao[18].x = 1100;
-  blocosColisao[18].y = 130;
-  blocosColisao[18].altura = 64;
-  blocosColisao[18].largura = 64;
+  //===============================> PERSONAGENS <===============================
+  //=>Folhas
+  blocosColisao[18].x = 500;
+  blocosColisao[18].y = 300;
+  blocosColisao[18].altura = 173;
+  blocosColisao[18].largura = 343;
   blocosColisao[18].tipo = 5;
   blocosColisao[18].colidido = false;
   blocosColisao[18].cliqueMouse = false;
   blocosColisao[18].coletado = false;
-  blocosColisao[18].sprite = NULL;
-  blocosColisao[18].spriteMascara = NULL;
+  blocosColisao[18].sprite = carregarImagem(".//Artes//Personagens//folhas.bmp", blocosColisao[18].largura, blocosColisao[18].altura, 0, 0);
+  blocosColisao[18].spriteMascara = carregarImagem(".//Artes//Personagens//folhas_masc.bmp", blocosColisao[18].largura, blocosColisao[18].altura, 0, 0);
   
-  blocosColisao[19].x = 1100;
-  blocosColisao[19].y = 130;
-  blocosColisao[19].altura = 64;
-  blocosColisao[19].largura = 64;
-  blocosColisao[19].tipo = 5;
+  //=>Folhas Outline
+  blocosColisao[19].x = blocosColisao[18].x;
+  blocosColisao[19].y = blocosColisao[18].y;
+  blocosColisao[19].altura = blocosColisao[18].altura;
+  blocosColisao[19].largura = blocosColisao[18].largura;
+  blocosColisao[19].tipo = blocosColisao[18].tipo;
   blocosColisao[19].colidido = false;
   blocosColisao[19].cliqueMouse = false;
   blocosColisao[19].coletado = false;
-  blocosColisao[19].sprite = NULL;
-  blocosColisao[19].spriteMascara = NULL;
+  blocosColisao[19].sprite = carregarImagem(".//Artes//Personagens//folhas_out.bmp", blocosColisao[18].largura, blocosColisao[18].altura, 0, 0);
+  blocosColisao[19].spriteMascara = carregarImagem(".//Artes//Personagens//folhas_out_masc.bmp", blocosColisao[18].largura, blocosColisao[18].altura, 0, 0);
   
-  blocosColisao[20].x = 1100;
-  blocosColisao[20].y = 130;
-  blocosColisao[20].altura = 64;
-  blocosColisao[20].largura = 64;
+  //=>Lontra
+  blocosColisao[20].x = blocosColisao[18].x + 100;
+  blocosColisao[20].y = blocosColisao[18].y;
+  blocosColisao[20].altura = 255;
+  blocosColisao[20].largura = 255;
   blocosColisao[20].tipo = 5;
   blocosColisao[20].colidido = false;
   blocosColisao[20].cliqueMouse = false;
   blocosColisao[20].coletado = false;
-  blocosColisao[20].sprite = NULL;
-  blocosColisao[20].spriteMascara = NULL;
+  blocosColisao[20].sprite = carregarImagem(".//Artes//Personagens//lontra.bmp", blocosColisao[20].largura, blocosColisao[20].altura, 0, 0);
+  blocosColisao[20].spriteMascara = carregarImagem(".//Artes//Personagens//lontra_masc.bmp", blocosColisao[20].largura, blocosColisao[20].altura, 0, 0);
   
-  blocosColisao[21].x = 1100;
-  blocosColisao[21].y = 130;
-  blocosColisao[21].altura = 64;
-  blocosColisao[21].largura = 64;
-  blocosColisao[21].tipo = 5;
+  //=>Lontra Outline
+  blocosColisao[21].x = blocosColisao[20].x;
+  blocosColisao[21].y = blocosColisao[20].y;
+  blocosColisao[21].altura = blocosColisao[20].altura;
+  blocosColisao[21].largura = blocosColisao[20].largura;
+  blocosColisao[21].tipo = blocosColisao[20].tipo;
   blocosColisao[21].colidido = false;
   blocosColisao[21].cliqueMouse = false;
   blocosColisao[21].coletado = false;
-  blocosColisao[21].sprite = NULL;
-  blocosColisao[21].spriteMascara = NULL;
+  blocosColisao[21].sprite = carregarImagem(".//Artes//Personagens//lontra_outline.bmp", blocosColisao[20].largura, blocosColisao[20].altura, 0, 0);
+  blocosColisao[21].spriteMascara = carregarImagem(".//Artes//Personagens//lontra_outline_masc.bmp", blocosColisao[20].largura, blocosColisao[20].altura, 0, 0);
   
+  //=>Bruxa
   blocosColisao[22].x = 1100;
   blocosColisao[22].y = 130;
-  blocosColisao[22].altura = 64;
-  blocosColisao[22].largura = 64;
+  blocosColisao[22].altura = 300;
+  blocosColisao[22].largura = 300;
   blocosColisao[22].tipo = 5;
   blocosColisao[22].colidido = false;
   blocosColisao[22].cliqueMouse = false;
   blocosColisao[22].coletado = false;
-  blocosColisao[22].sprite = NULL;
-  blocosColisao[22].spriteMascara = NULL;
+  blocosColisao[22].sprite = carregarImagem(".//Artes//Personagens//bruxa.bmp", blocosColisao[22].largura, blocosColisao[22].altura, 0, 0);
+  blocosColisao[22].spriteMascara = carregarImagem(".//Artes//Personagens//bruxa_masc.bmp", blocosColisao[22].largura, blocosColisao[22].altura, 0, 0);
   
-  blocosColisao[23].x = 1100;
-  blocosColisao[23].y = 130;
-  blocosColisao[23].altura = 64;
-  blocosColisao[23].largura = 64;
+  //=>Bruxa Outline
+  blocosColisao[23].x = blocosColisao[22].x;
+  blocosColisao[23].y = blocosColisao[22].y;
+  blocosColisao[23].altura = blocosColisao[22].altura;
+  blocosColisao[23].largura = blocosColisao[22].largura;
   blocosColisao[23].tipo = 5;
   blocosColisao[23].colidido = false;
   blocosColisao[23].cliqueMouse = false;
   blocosColisao[23].coletado = false;
-  blocosColisao[23].sprite = NULL;
-  blocosColisao[23].spriteMascara = NULL;
+  blocosColisao[23].sprite = carregarImagem(".//Artes//Personagens//bruxa_outline.bmp", blocosColisao[22].largura, blocosColisao[22].altura, 0, 0);
+  blocosColisao[23].spriteMascara = carregarImagem(".//Artes//Personagens//bruxa_outline_masc.bmp", blocosColisao[22].largura, blocosColisao[22].altura, 0, 0);
   
-  blocosColisao[24].x = 1100;
+  //=>Bruxa2
+  blocosColisao[24].x = 600;
   blocosColisao[24].y = 130;
-  blocosColisao[24].altura = 64;
-  blocosColisao[24].largura = 64;
+  blocosColisao[24].altura = 137;
+  blocosColisao[24].largura = 137;
   blocosColisao[24].tipo = 5;
   blocosColisao[24].colidido = false;
   blocosColisao[24].cliqueMouse = false;
   blocosColisao[24].coletado = false;
-  blocosColisao[24].sprite = NULL;
-  blocosColisao[24].spriteMascara = NULL;
+  blocosColisao[24].sprite = carregarImagem(".//Artes//Personagens//bruxa2.bmp", blocosColisao[24].largura, blocosColisao[24].altura, 0, 0);
+  blocosColisao[24].spriteMascara = carregarImagem(".//Artes//Personagens//bruxa2_masc.bmp", blocosColisao[24].largura, blocosColisao[24].altura, 0, 0);
   
-  blocosColisao[25].x = 1100;
-  blocosColisao[25].y = 130;
-  blocosColisao[25].altura = 64;
-  blocosColisao[25].largura = 64;
-  blocosColisao[25].tipo = 5;
+  //=>Bruxa2 Outline
+  blocosColisao[25].x = blocosColisao[24].x;
+  blocosColisao[25].y = blocosColisao[24].y;
+  blocosColisao[25].altura = blocosColisao[24].altura;
+  blocosColisao[25].largura = blocosColisao[24].largura;
+  blocosColisao[25].tipo = blocosColisao[24].tipo;
   blocosColisao[25].colidido = false;
   blocosColisao[25].cliqueMouse = false;
   blocosColisao[25].coletado = false;
-  blocosColisao[25].sprite = NULL;
-  blocosColisao[25].spriteMascara = NULL;
+  blocosColisao[25].sprite = carregarImagem(".//Artes//Personagens//bruxa2_outline.bmp", blocosColisao[24].largura, blocosColisao[24].altura, 0, 0);
+  blocosColisao[25].spriteMascara = carregarImagem(".//Artes//Personagens//bruxa2_out_masc.bmp", blocosColisao[24].largura, blocosColisao[24].altura, 0, 0);
   
-  blocosColisao[26].x = 1100;
-  blocosColisao[26].y = 130;
-  blocosColisao[26].altura = 64;
-  blocosColisao[26].largura = 64;
+  //=>Guaxinim
+  blocosColisao[26].x = 500;
+  blocosColisao[26].y = 300;
+  blocosColisao[26].altura = 255;
+  blocosColisao[26].largura = 255;
   blocosColisao[26].tipo = 5;
   blocosColisao[26].colidido = false;
   blocosColisao[26].cliqueMouse = false;
   blocosColisao[26].coletado = false;
-  blocosColisao[26].sprite = NULL;
-  blocosColisao[26].spriteMascara = NULL;
+  blocosColisao[26].sprite = carregarImagem(".//Artes//Personagens//guaxi.bmp", blocosColisao[26].largura, blocosColisao[26].altura, 0, 0);
+  blocosColisao[26].spriteMascara = carregarImagem(".//Artes//Personagens//guaxi_masc.bmp", blocosColisao[26].largura, blocosColisao[26].altura, 0, 0);
   
-  blocosColisao[27].x = 1100;
-  blocosColisao[27].y = 130;
-  blocosColisao[27].altura = 64;
-  blocosColisao[27].largura = 64;
-  blocosColisao[27].tipo = 5;
+  //=>Guaxinim Outline
+  blocosColisao[27].x = blocosColisao[26].x;
+  blocosColisao[27].y = blocosColisao[26].y;
+  blocosColisao[27].altura = blocosColisao[26].altura;
+  blocosColisao[27].largura = blocosColisao[26].largura;
+  blocosColisao[27].tipo = blocosColisao[26].tipo;
   blocosColisao[27].colidido = false;
   blocosColisao[27].cliqueMouse = false;
   blocosColisao[27].coletado = false;
-  blocosColisao[27].sprite = NULL;
-  blocosColisao[27].spriteMascara = NULL;
+  blocosColisao[27].sprite = carregarImagem(".//Artes//Personagens//guaxi_outline.bmp", blocosColisao[26].largura, blocosColisao[26].altura, 0, 0);
+  blocosColisao[27].spriteMascara = carregarImagem(".//Artes//Personagens//guaxi_outline_masc.bmp", blocosColisao[26].largura, blocosColisao[26].altura, 0, 0);
   
-  //personagens
-  //=>Lontra sem outline
-  blocosColisao[28].x = 595;
-  blocosColisao[28].y = 255;
-  blocosColisao[28].altura = 255;
-  blocosColisao[28].largura = 255;
-  blocosColisao[28].tipo = 6;
+  //=>Cat
+  blocosColisao[28].x = 1100;
+  blocosColisao[28].y = 130;
+  blocosColisao[28].altura = 400;
+  blocosColisao[28].largura = 170;
+  blocosColisao[28].tipo = 5;
   blocosColisao[28].colidido = false;
   blocosColisao[28].cliqueMouse = false;
   blocosColisao[28].coletado = false;
-  blocosColisao[28].sprite = carregarImagem(".//Artes//Personagens//lontra.bmp", blocosColisao[28].largura, blocosColisao[28].altura, 0, 0);
-  blocosColisao[28].spriteMascara = carregarImagem(".//Artes//Personagens//lontra_masc.bmp", blocosColisao[28].largura, blocosColisao[28].altura, 0, 0);
+  blocosColisao[28].sprite = carregarImagem(".//Artes//Personagens//cat.bmp", blocosColisao[28].largura, blocosColisao[28].altura, 0, 0);
+  blocosColisao[28].spriteMascara = carregarImagem(".//Artes//Personagens//cat_masc.bmp", blocosColisao[28].largura, blocosColisao[28].altura, 0, 0);
   
-  //=>Lontra com outline
-  blocosColisao[29].x = 595;
-  blocosColisao[29].y = 255;
-  blocosColisao[29].altura = 255;
-  blocosColisao[29].largura = 255;
-  blocosColisao[29].tipo = 6;
+  //=>Cat Outline
+  blocosColisao[29].x = blocosColisao[28].x;
+  blocosColisao[29].y = blocosColisao[28].y;
+  blocosColisao[29].altura = blocosColisao[28].altura;
+  blocosColisao[29].largura = blocosColisao[28].largura;
+  blocosColisao[29].tipo = blocosColisao[28].tipo;
   blocosColisao[29].colidido = false;
   blocosColisao[29].cliqueMouse = false;
   blocosColisao[29].coletado = false;
-  blocosColisao[29].sprite = carregarImagem(".//Artes//Personagens//lontra_outline.bmp", blocosColisao[29].largura, blocosColisao[29].altura, 0, 0);
-  blocosColisao[29].spriteMascara = carregarImagem(".//Artes//Personagens//lontra_outline_masc.bmp", blocosColisao[29].largura, blocosColisao[29].altura, 0, 0);
-
+  blocosColisao[29].sprite = carregarImagem(".//Artes//Personagens//cat_out.bmp", blocosColisao[28].largura, blocosColisao[28].altura, 0, 0);
+  blocosColisao[29].spriteMascara = carregarImagem(".//Artes//Personagens//cat_out_masc.bmp", blocosColisao[28].largura, blocosColisao[28].altura, 0, 0);
 
   //===============================> Fases <===============================
   int fases = 0;
@@ -473,18 +500,11 @@ int main()
 	  if(pg == 1) pg = 2; else pg = 1;//técnica de paginação
 	  setactivepage(pg);
 	  cleardevice();
-	  
   
       //=================> Lidando com a troca de fases <=================
-      	if(fases == 0)//menu
-		  {
-<<<<<<< HEAD
-		  	Menu(fases);
-		  	putimage(0, 0, cenarios[12], COPY_PUT);
-=======
-		  	Menu(cenarios[12], fases);
->>>>>>> 681305bc6366d68b3d584493a284dc98bbe27264
-		  }
+      if(fases == 0)//menu
+		Menu(cenarios[12], fases);
+		
 	  if(fases == 1)
       {
         LidandoComFases(cenarios[0], fases, false, false, true, false, inventario, 5, 6, 5, 9);
@@ -492,8 +512,10 @@ int main()
         {
 	      inventario = false;
           fases = 4;
+          ZerandoColisoes();
 		}
 	  }//não há segunda fase pela lógica que criei de transição de fase
+	  
 	  else if(fases == 3)
 	  {
 	    LidandoComFases(cenarios[1], fases, false, false, false, true, inventario, 7, 9, 5, 9);
@@ -501,50 +523,67 @@ int main()
 	    {
 	      inventario = false;
           fases = 4;
+          ZerandoColisoes();
 		}
 	  }
+	  
 	  else if(fases == 4)
 	  {
-	    LidandoComFases(cenarios[2], fases, false, false, true, false, inventario, 7, 9, 5, 9);
-	    if(!blocosColisao[28].colidido)
-	      DesenhandoBotao( blocosColisao[28].x, blocosColisao[28].y, blocosColisao[28].sprite, blocosColisao[28].spriteMascara);
+	    LidandoComFases(cenarios[2], fases, false, false, true, false, inventario, 10, 10, 10, 17);
+	    if(!blocosColisao[18].cliqueMouse)
+	      CriandoPersonagem(18);
 	    else
-	      DesenhandoBotao( blocosColisao[29].x, blocosColisao[29].y, blocosColisao[29].sprite, blocosColisao[29].spriteMascara);
+	    {	
+	      blocosColisao[18].colidido = false;
+		  CriandoPersonagem(20);
+		}
 	  }
+	  
 	  else if(fases == 6)
 	  {
-	    LidandoComFases(cenarios[3], fases, true, false, pegouMissao, true, inventario, 7, 9, 5, 9);
+	    LidandoComFases(cenarios[3], fases, true, false, pegouMissao, true, inventario, 11, 11, 10, 17);
 	  }
+	  
 	  else if(fases == 7)
 	  {
-	    LidandoComFases(cenarios[4], fases, false, true, true, false, inventario, 7, 9, 5, 9);
+	    LidandoComFases(cenarios[4], fases, false, true, true, false, inventario, 12, 12, 10, 17);
 	  }
+	  
 	  else if(fases == 8)
 	  {
-	    LidandoComFases(cenarios[6], fases, false, false, true, true, inventario, 7, 9, 5, 9);
+	    LidandoComFases(cenarios[6], fases, false, false, true, true, inventario, 14, 14, 10, 17);
 	  }
+	  
 	  else if(fases == 9)
 	  {
-	    LidandoComFases(cenarios[5], fases, false, false, false, true, inventario, 7, 9, 5, 9);
+	    LidandoComFases(cenarios[5], fases, false, false, false, true, inventario, 13, 13, 10, 17);
+	    CriandoPersonagem(22);
 	    pegouMissao = true;
 	  }
+	  
 	  else if(fases == 10)
 	  {
-	    LidandoComFases(cenarios[7], fases, false, false, true, true, inventario, 7, 9, 5, 9);
+	    LidandoComFases(cenarios[7], fases, false, false, true, true, inventario, 7, 9, 10, 17);
 	    inventario = true;
+	    CriandoPersonagem(24);
 	  }
+	  
 	  else if(fases == 12)
 	  {
-	    LidandoComFases(cenarios[8], fases, true, false, true, true, inventario, 7, 9, 5, 9);
+	    LidandoComFases(cenarios[8], fases, true, false, true, true, inventario, 7, 9, 10, 17);
 	  }
 	  else if(fases == 13)
 	  {
 	    LidandoComFases(cenarios[9], fases, false, true, true, false, inventario, 7, 9, 5, 9);
+	    CriandoPersonagem(26);
 	  }
+	  
 	  else if(fases == 14)
 	  {
 	    LidandoComFases(cenarios[11], fases, false, false, false, true, inventario, 7, 9, 5, 9);
+	    CriandoPersonagem(28);
 	  }
+	  
 	  else if(fases == 15)
 	  {
 	    LidandoComFases(cenarios[10], fases, false, false, false, true, inventario, 7, 9, 5, 9);
@@ -570,7 +609,7 @@ int main()
   }
   free(blocosColisao);
   
-  for(int i = 0; i<qntDeCenarios; i++)//liberando memória dos cenários
+  for(int i = 0; i < qntDeCenarios; i++)//liberando memória dos cenários
   {
     free(cenarios[i]);
   }
@@ -578,6 +617,17 @@ int main()
   
   closegraph();
   return 0; 
+}
+
+void CriandoPersonagem(int index)
+{
+  ChecagemDeColisao( P.x, P.y, blocosColisao[index].x, blocosColisao[index].y, blocosColisao[index].largura, blocosColisao[index].altura, blocosColisao[index].colidido);
+  ChecagemDeColisaoDoMouse();
+  
+  if(!blocosColisao[index].colidido)//Detectando colisão para por outline
+    DesenhandoBotao( blocosColisao[index].x, blocosColisao[index].y, blocosColisao[index].sprite, blocosColisao[index].spriteMascara);
+  else
+    DesenhandoBotao( blocosColisao[index+1].x, blocosColisao[index+1].y, blocosColisao[index+1].sprite, blocosColisao[index+1].spriteMascara);
 }
 
 void* carregarImagem(const char *sprite, int largura, int altura , int x, int y)
@@ -615,23 +665,36 @@ void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBai
   for(int i = 0; i <= 4; i++)//pegando os botões bases para troca de fase e inventário
   {
     //Coletando a informação de colisão e guardando dentro do item.
-    ChecagemDeColisao(P.x, P.y, blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].largura, blocosColisao[i].altura, blocosColisao[i].colidido);
+    
     //===============================> Blocos para Mudança de Fase <===============================
     if(blocosColisao[i].tipo == 0 && fasePraCima == true)//conferindo para quais lados serão as próximas fases / fases anteriores
+    {
+      ChecagemDeColisao(P.x, P.y, blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].largura, blocosColisao[i].altura, blocosColisao[i].colidido);
       DesenhandoBotao( blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].sprite, blocosColisao[i].spriteMascara);
+	}
       
     if(blocosColisao[i].tipo == 1 && fasePraDireita == true)
+    {
+      ChecagemDeColisao(P.x, P.y, blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].largura, blocosColisao[i].altura, blocosColisao[i].colidido);
       DesenhandoBotao( blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].sprite, blocosColisao[i].spriteMascara);
+	}
       
     if(blocosColisao[i].tipo == 2 && fasePraEsquerda == true)
+    {
+      ChecagemDeColisao(P.x, P.y, blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].largura, blocosColisao[i].altura, blocosColisao[i].colidido);
       DesenhandoBotao( blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].sprite, blocosColisao[i].spriteMascara);
+	}
       
     if(blocosColisao[i].tipo == 3 && fasePraBaixo == true)
+    {
+      ChecagemDeColisao(P.x, P.y, blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].largura, blocosColisao[i].altura, blocosColisao[i].colidido);
       DesenhandoBotao( blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].sprite, blocosColisao[i].spriteMascara);
+	}
  
     //===============================> Botão do Inventário <===============================
     if(i == 4 && inventario == true)
     {
+      ChecagemDeColisao(P.x, P.y, blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].largura, blocosColisao[i].altura, blocosColisao[i].colidido);
       DesenhandoBotao( blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].sprite, blocosColisao[i].spriteMascara);
 	}
 
@@ -639,21 +702,25 @@ void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBai
     if(blocosColisao[i].tipo == 0 && blocosColisao[i].cliqueMouse == true && fasePraCima == true)//botão fase Acima
 	{
 	  fase += 1;
+	  ZerandoColisoes();
 	  blocosColisao[i].cliqueMouse = false;
 	}
 	else if(blocosColisao[i].tipo == 1 && blocosColisao[i].cliqueMouse == true && fasePraDireita == true)//botão fase para à Direita
 	{	
 	  fase += 2;
+	  ZerandoColisoes();
 	  blocosColisao[i].cliqueMouse = false;
 	}
 	else if(blocosColisao[i].tipo == 2 && blocosColisao[i].cliqueMouse == true && fasePraEsquerda == true)//botão fase à Esquerda
 	{	
 	  fase -= 2;
+	  ZerandoColisoes();
 	  blocosColisao[i].cliqueMouse = false;
 	}
     else if(blocosColisao[i].tipo == 3 && blocosColisao[i].cliqueMouse == true && fasePraBaixo == true)//botão fase Abaixo
     {
 	  fase -= 1;
+	  ZerandoColisoes();
 	  blocosColisao[i].cliqueMouse = false;
 	}
 	else if(blocosColisao[i].tipo == 4 && inventario == true && blocosColisao[i].cliqueMouse == true)//botão para inventário
@@ -670,7 +737,9 @@ void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBai
 	  }
 	  blocosColisao[i].cliqueMouse = false;
 	}
-    CriandoInvetario(InvIndexInicial, InvIndexFinal, i);//Criando o Inventário
+	
+	//Criando o Inventário
+    CriandoInvetario(InvIndexInicial, InvIndexFinal, i);
   }
   //===============================> Colisão do Mouse <===============================
   (GetCursorPos(&P));
@@ -687,34 +756,23 @@ void CriandoInvetario(int IndexInicial, int IndexFinal, int index)
 {
   int controleItensInventario = InvAltura/(IndexFinal - IndexInicial + 1);//Criando variável para controlar a localidade de cada item no inventário.
   if(blocosColisao[index].tipo == 4 && blocosColisao[index].coletado == true)
-    {
-      setfillstyle(1,RGB(50, 125, 255));
-      bar(blocosColisao[index].x + blocosColisao[index].largura, 0, 1280, 720);//desenhando o inventário
-      for(int j = IndexInicial; j < IndexFinal + 1; j++)//pegando quais itens tem pela fase para aparecer no inventário
-      {
-	    if(!blocosColisao[j].coletado)//modificando a imagem com base se o item foi coletado ou não
-	    {
-	      setfillstyle(1,RGB(50, 125, 50));
-	      bar(xInv + (InvLargura/2) - (blocosColisao[index].largura/2), controleItensInventario*(j - IndexInicial + 1) - (controleItensInventario/2) - (blocosColisao[j].largura/2), xInv + (InvLargura/2) + (blocosColisao[index].largura/2), controleItensInventario*(j - IndexInicial + 1) - (controleItensInventario/2) + (blocosColisao[j].largura/2));
-		}
-	    else
-        {
-	      setfillstyle(1,RGB(0, 0, 0));
-	      bar(xInv + (InvLargura/2) - (blocosColisao[index].largura/2), controleItensInventario*(j - IndexInicial + 1) - (controleItensInventario/2) - (blocosColisao[j].largura/2), xInv + (InvLargura/2) + (blocosColisao[index].largura/2), controleItensInventario*(j - IndexInicial + 1) - (controleItensInventario/2) + (blocosColisao[j].largura/2));
-    	}
-      }
-    }	
-}
-
-void Menu(int &fases)
-{
-  mciSendString("play fundo2", NULL, 0, 0);
-  if(GetKeyState(VK_LBUTTON)&0x80)
   {
-    mciSendString("stop fundo2", NULL, 0, 0);
-    mciSendString("play fundo", NULL, 0, 0); 
-    fases ++;
-  }
+    setfillstyle(1,RGB(50, 125, 255));
+    bar(blocosColisao[index].x + blocosColisao[index].largura, 0, 1280, 720);//desenhando o inventário
+    for(int j = IndexInicial; j < IndexFinal + 1; j++)//pegando quais itens tem pela fase para aparecer no inventário
+    {
+	  if(!blocosColisao[j].coletado)//modificando a imagem com base se o item foi coletado ou não
+	  {
+	    setfillstyle(1,RGB(50, 125, 50));
+	    bar(xInv + (InvLargura/2) - (blocosColisao[index].largura/2), controleItensInventario*(j - IndexInicial + 1) - (controleItensInventario/2) - (blocosColisao[j].largura/2), xInv + (InvLargura/2) + (blocosColisao[index].largura/2), controleItensInventario*(j - IndexInicial + 1) - (controleItensInventario/2) + (blocosColisao[j].largura/2));
+	  }
+	  else
+      {
+	    setfillstyle(1,RGB(0, 0, 0));
+	    bar(xInv + (InvLargura/2) - (blocosColisao[index].largura/2), controleItensInventario*(j - IndexInicial + 1) - (controleItensInventario/2) - (blocosColisao[j].largura/2), xInv + (InvLargura/2) + (blocosColisao[index].largura/2), controleItensInventario*(j - IndexInicial + 1) - (controleItensInventario/2) + (blocosColisao[j].largura/2));
+      }
+    }
+  }	
 }
 
 void ChecagemDeColisaoDoMouse()
@@ -723,6 +781,7 @@ void ChecagemDeColisaoDoMouse()
   {
     for(int i = 0; i < qntBlocos; i++)//checagem dos Itens para ver se há algum colidido e Qual foi.
 	{
+	  printf("\npq?");
 	  colisaoMouse = blocosColisao[i].colidido;
 	  if(colisaoMouse == true)//se há, coleta qual item
 	  {
@@ -761,9 +820,14 @@ void ChecagemDeColisaoDoMouse()
   }
 }
 
-<<<<<<< HEAD
-=======
-void Menu(void *cenario, int &fases){
+void ZerandoColisoes()
+{
+  for(int i = 0; i < qntBlocos; i++)
+    blocosColisao[i].colidido = false;
+}
+
+void Menu(void *cenario, int &fases)
+{
     mciSendString("play fundo2", NULL, 0, 0);
     putimage(0, 0, cenario, COPY_PUT);
     if(GetKeyState(VK_LBUTTON)&0x80)
@@ -774,7 +838,6 @@ void Menu(void *cenario, int &fases){
     }
 }
 
->>>>>>> 681305bc6366d68b3d584493a284dc98bbe27264
 bool ChecagemDeColisao( int xColisor, int yColisor, int xColidido, int yColidido, int larguraColidido, int alturaColidido, bool &colidiu)
 {
   if( xColisor >= xColidido && yColisor >= yColidido )//checagem se o mouse está à direita e em baixo do vértice superior esquerdo
