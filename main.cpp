@@ -31,6 +31,7 @@ int fases = 0;
 bool pegouMissao = false;
 bool inventario = true;
 bool entrou = false;
+bool tocou = false;
 void *inventarioImagem;
 
 //checagem de itens coletados
@@ -636,7 +637,7 @@ int main()
   
   //===============================> Cenários <===============================
   void **cenarios;
-  int qntDeCenarios = 13;
+  int qntDeCenarios = 17;
   cenarios = (void **) malloc(sizeof(void *) * qntDeCenarios);
 
   cenarios[0] = carregarImagem(".//Artes//Cenarios//sala_tutas.bmp", 1280, 600, 0, 0);
@@ -664,6 +665,16 @@ int main()
   cenarios[11] = carregarImagem(".//Artes//Cenarios//fase_2_cenario_10.bmp", 1280, 600, 0, 0);
   
   cenarios[12] = carregarImagem(".//Artes//Cenarios//menu.bmp", 1280, 720, 0, 0);
+  
+  cenarios[13] = carregarImagem(".//Artes//Cenarios//tela_1_final.bmp", 1280, 720, 0, 0);
+  
+  cenarios[14] = carregarImagem(".//Artes//Cenarios//tela_2_final.bmp", 1280, 720, 0, 0);
+  
+  cenarios[15] = carregarImagem(".//Artes//Cenarios//tela_3_final.bmp", 1280, 720, 0, 0);
+  
+  cenarios[16] = carregarImagem(".//Artes//Cenarios//tela_4_final.bmp", 1280, 720, 0, 0);
+  
+  
   
   //Imagem do Inventario
   inventarioImagem = carregarImagem(".//Artes//Itens//inventario.bmp", InvLargura, InvAltura, 0, 0);
@@ -749,6 +760,18 @@ int main()
 	  {
 	    LidandoComFases(cenarios[10], fases, false, false, false, true, inventario, 16, 16, 10, 17, false);
 	  }
+	  else if(fases == 16)
+	    Menu(cenarios[12], fases);
+	  else if(fases == 17)
+	    Menu(cenarios[13], fases);
+	  else if(fases == 18)
+	    Menu(cenarios[14], fases);
+	  else if(fases == 19)
+	    Menu(cenarios[15], fases);
+	  else if(fases == 20)
+	    putimage(0,0, cenarios[16], COPY_PUT);
+	  
+	  FinalizandoMissoes();
 	  
       setvisualpage(pg);
     }//Fim do Condicional para Barramento de Frames
@@ -956,7 +979,11 @@ void Menu(void *cenario, int &fases)
   putimage(0, 0, cenario, COPY_PUT);
   if(GetKeyState(VK_LBUTTON)&0x80)
   {
-    mciSendString("play jogo repeat", NULL, 0, 0); 
+  	if(!tocou)
+  	{
+	  mciSendString("play jogo repeat", NULL, 0, 0); 
+	  tocou = true;	
+	}
     fases ++;
   }
 }
@@ -974,9 +1001,7 @@ void SaindoDoTutorial()//Verificando se o Player coletou todos os itens para mud
 void AtivandoFinal()
 {
   if(fases == 9)
-  {
-    //Caixas de Texto();
-  }
+     fases = 16;
 }
 
 void CaixaDeTextos(int indexMenor, int indexMaior)
@@ -1130,6 +1155,7 @@ void FinalCat()
 	qntMoedasColetadas = 0;
   }
 }
+
 //= > Àrea para Coletas de Itens
 void ColetarItensFase()
 {
