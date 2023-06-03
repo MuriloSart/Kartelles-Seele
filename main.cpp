@@ -81,7 +81,7 @@ void MostrarColetaveisMissao(int indexMenor, int indexMaior);
 void MostrarColetaveis(int index);
 
 //= > Àrea para Lidar com Leveis
-void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool inventario, int blocoInicial, int blocoFinal, int InvIndexInicial, int InvIndexFinal, bool TemPersonagem);
+void LidandoComFases(void *cenario, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool inventario, int blocoInicial, int blocoFinal, int InvIndexInicial, int InvIndexFinal, bool TemPersonagem);
 
 void Menu(void *cenario, int &fases);
 
@@ -91,7 +91,7 @@ void AtivandoFinal();
 
 void CaixaDeTextos(int indexMenor, int indexMaior);
 
-void CutScene(void *cenario, int &fases);
+void CutScene(void *cenario);
 
 //= > Àrea para Lidar com Personagens
 void LidandoComPersonagem(int &index);
@@ -104,9 +104,7 @@ void LidandoComMissoes(int tipo);
 
 void FinalizandoMissoes();
 
-void FinalGuaxinim();
-
-void FinalCat();
+void FinalMissao(int circunstancia, int contador);
 
 //= > Àrea para Coletas de Itens
 void ColetarItensFase();
@@ -702,31 +700,31 @@ int main()
 		Menu(cenarios[12], fases);
 	  if(fases == 1)
       {
-        LidandoComFases(cenarios[0], fases, false, false, true, false, inventario, 5, 6, 5, 9, false);
+        LidandoComFases(cenarios[0], false, false, true, false, inventario, 5, 6, 5, 9, false);
         SaindoDoTutorial();//Verificando se o Player coletou todos os itens para mudar de etapa
 	  }//não há segunda fase pela lógica que criei de transição de fase
 	  else if(fases == 3)
 	  {
-	    LidandoComFases(cenarios[1], fases, false, false, false, true, inventario, 7, 9, 5, 9, false);
+	    LidandoComFases(cenarios[1], false, false, false, true, inventario, 7, 9, 5, 9, false);
 	    SaindoDoTutorial();//Verificando se o Player coletou todos os itens para mudar de etapa
 	  }
 	  else if(fases == 4)
 	  {
-	    LidandoComFases(cenarios[2], fases, false, false, true, false, inventario, 10, 10, 10, 17, true);
+	    LidandoComFases(cenarios[2], false, false, true, false, inventario, 10, 10, 10, 17, true);
 	  }
 	
 	  else if(fases == 6)
 	  {
 	    variavelDeControle = 18;
-	    LidandoComFases(cenarios[3], fases, true, false, pegouMissao, true, inventario, 11, 11, 10, 17, false);
+	    LidandoComFases(cenarios[3], true, false, pegouMissao, true, inventario, 11, 11, 10, 17, false);
 	  }
 	  else if(fases == 7)
 	  {
-	    LidandoComFases(cenarios[4], fases, false, true, true, false, inventario, 12, 12, 10, 17, false);
+	    LidandoComFases(cenarios[4], false, true, true, false, inventario, 12, 12, 10, 17, false);
 	  }
 	  else if(fases == 8)
 	  {
-	    LidandoComFases(cenarios[6], fases, false, false, true, true, inventario, 14, 14, 10, 17, false);
+	    LidandoComFases(cenarios[6], false, false, true, true, inventario, 14, 14, 10, 17, false);
 	    MostrarColetaveisMissao(30,30);
 	  }
 	  else if(fases == 9)
@@ -737,64 +735,65 @@ int main()
 	      entrou = true;
 		}
 	    variavelDeControle = 22;
-	    LidandoComFases(cenarios[5], fases, false, false, false, true, inventario, 13, 13, 10, 17, true);
+	    LidandoComFases(cenarios[5], false, false, false, true, inventario, 13, 13, 10, 17, true);
 	  }
 	  else if(fases == 10)
 	  {
 	    variavelDeControle = 24;
-	    LidandoComFases(cenarios[7], fases, false, false, true, true, inventario, 7, 9, 10, 17, true);
+	    LidandoComFases(cenarios[7], false, false, true, true, inventario, 7, 9, 10, 17, true);
 	    MostrarColetaveisMissao(31,31);
 	    MostrarColetaveisMissao(35,35);
 	  }
 	  else if(fases == 12)
 	  {
-	    LidandoComFases(cenarios[8], fases, true, false, true, true, inventario, 7, 9, 10, 17, false);
+	    LidandoComFases(cenarios[8], true, false, true, true, inventario, 7, 9, 10, 17, false);
 	    MostrarColetaveisMissao(32,33);
 	    MostrarColetaveisMissao(36,36);
 	  }
 	  else if(fases == 13)
 	  {
 	    variavelDeControle = 26;
-	    LidandoComFases(cenarios[9], fases, false, true, true, false, inventario, 15, 15, 10, 17, true);
+	    LidandoComFases(cenarios[9], false, true, true, false, inventario, 15, 15, 10, 17, true);
 	    MostrarColetaveisMissao(37,37);
 	  }
 	  else if(fases == 14)
 	  {
 	    variavelDeControle = 28;
-	    LidandoComFases(cenarios[11], fases, false, false, false, true, inventario, 17, 17, 10, 17, true);
+	    LidandoComFases(cenarios[11], false, false, false, true, inventario, 17, 17, 10, 17, true);
 	    MostrarColetaveisMissao(39,39);
 	    MostrarColetaveisMissao(34,34);
 	  }
 	  else if(fases == 15)
 	  {
-	    LidandoComFases(cenarios[10], fases, false, false, false, true, inventario, 16, 16, 10, 17, false);
+	    LidandoComFases(cenarios[10], false, false, false, true, inventario, 16, 16, 10, 17, false);
 	    MostrarColetaveisMissao(38,38);
 	  }
 	  else if(fases == 16)
-	    Menu(cenarios[13], fases);
+	    CutScene(cenarios[13]);
 	  else if(fases == 17)
-	    Menu(cenarios[14], fases);
+	    CutScene(cenarios[14]);
 	  else if(fases == 18)
-	    Menu(cenarios[15], fases);
+	    CutScene(cenarios[15]);
 	  else if(fases == 19)
 	    putimage(0,0, cenarios[16], COPY_PUT);
-	    
+	  
+	  //CutScenes do começo do jogo
 	  else if(fases == 21)
-	    CutScene(cenarios[17], fases);
+	    CutScene(cenarios[17]);
 	  else if(fases == 22)
-	    CutScene(cenarios[18], fases);
+	    CutScene(cenarios[18]);
 	  else if(fases == 23)
-	    CutScene(cenarios[19], fases);
+	    CutScene(cenarios[19]);
 	  else if(fases == 24)
-	    CutScene(cenarios[20], fases);
+	    CutScene(cenarios[20]);
 	  else if(fases == 25)
-	    CutScene(cenarios[21], fases);
+	    CutScene(cenarios[21]);
 	  else if(fases == 26)
-	    CutScene(cenarios[22], fases);
+	    CutScene(cenarios[22]);
 	  else if(fases == 27)
-	    CutScene(cenarios[23], fases);
+	    CutScene(cenarios[23]);
 	  else if(fases == 28)
-	    CutScene(cenarios[24], fases);
+	    CutScene(cenarios[24]);
 	  else if(fases == 29)
 	    fases = 0;
 	  
@@ -832,11 +831,10 @@ int main()
   return 0;
 }
 
-//= > Àrea para Desenhar e Criar
+//======================= > Àrea para Desenhar e Criar < =======================
 void CriandoPersonagem(int index)
 {
   ChecagemDeColisao( P.x, P.y, blocosColisao[index].x, blocosColisao[index].y, blocosColisao[index].largura, blocosColisao[index].altura, blocosColisao[index].colidido);
-  ChecagemDeColisaoDoMouse();
   
   if(!blocosColisao[index].colidido)//Detectando colisão para por outline
     DesenhandoBotao( blocosColisao[index].x, blocosColisao[index].y, blocosColisao[index].sprite, blocosColisao[index].spriteMascara);
@@ -901,8 +899,8 @@ void MostrarColetaveisMissao(int indexMenor, int indexMaior)
 	}
 }
 
-//= > Àrea para Lidar com Leveis
-void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool inventario, int blocoInicial, int blocoFinal, int InvIndexInicial, int InvIndexFinal, bool TemPersonagem)
+//======================= >  Àrea para Lidar com Leveis < =======================
+void LidandoComFases(void *cenario, bool fasePraCima, bool fasePraBaixo, bool fasePraDireita, bool fasePraEsquerda, bool inventario, int blocoInicial, int blocoFinal, int InvIndexInicial, int InvIndexFinal, bool TemPersonagem)
 {
   //Desenhando Cenário
   putimage(0, 0, cenario, COPY_PUT);
@@ -953,25 +951,25 @@ void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBai
     //==================> Ações dos Bloco de Colisão que não sejam coletáveis (Botões de mudança de fases e inventário) <==================
     if(blocosColisao[i].tipo == 0 && blocosColisao[i].cliqueMouse == true && fasePraCima == true)//botão fase Acima
 	{
-	  fase += 1;
+	  fases += 1;
 	  ZerandoColisoes();
 	  blocosColisao[i].cliqueMouse = false;
 	}
 	else if(blocosColisao[i].tipo == 1 && blocosColisao[i].cliqueMouse == true && fasePraDireita == true)//botão fase para à Direita
 	{	
-	  fase += 2;
+	  fases += 2;
 	  ZerandoColisoes();
 	  blocosColisao[i].cliqueMouse = false;
 	}
 	else if(blocosColisao[i].tipo == 2 && blocosColisao[i].cliqueMouse == true && fasePraEsquerda == true)//botão fase à Esquerda
 	{	
-	  fase -= 2;
+	  fases -= 2;
 	  ZerandoColisoes();
 	  blocosColisao[i].cliqueMouse = false;
 	}
     else if(blocosColisao[i].tipo == 3 && blocosColisao[i].cliqueMouse == true && fasePraBaixo == true)//botão fase Abaixo
     {
-	  fase -= 1;
+	  fases -= 1;
 	  ZerandoColisoes();
 	  blocosColisao[i].cliqueMouse = false;
 	}
@@ -1004,21 +1002,14 @@ void LidandoComFases(void *cenario, int &fase, bool fasePraCima, bool fasePraBai
   ChecagemDeColisaoDoMouse();
 }
 
-void Menu(void *cenario, int &fases)
+void Menu(void *cenario, int &fases)//Criando  o Menu
 {
   putimage(0, 0, cenario, COPY_PUT);
-  if(TempoDecorrido > Espera)
+  if(GetKeyState(VK_LBUTTON)&0x80)
   {
-    if(GetKeyState(VK_LBUTTON)&0x80)
-	{
-	  Inicio = GetTickCount();
-	  if(!tocou)
-	  {
-		mciSendString("play jogo repeat", NULL, 0, 0); 
-		tocou = true;	
-	  }
-	  fases ++;
-	}
+	Inicio = GetTickCount();
+	mciSendString("play jogo repeat", NULL, 0, 0); 
+	fases ++;
   }
 }
 
@@ -1046,7 +1037,7 @@ void CaixaDeTextos(int indexMenor, int indexMaior)
   }
 }
 
-void CutScene(void *cenario, int &fases)
+void CutScene(void *cenario)
 {
   putimage(0, 0, cenario, COPY_PUT);
   if(TempoDecorrido > Espera)
@@ -1059,7 +1050,7 @@ void CutScene(void *cenario, int &fases)
   }
 }
 
-//= > Àrea para Lidar com Colisões
+//======================= > Àrea para Lidar com Colisões < =======================
 void ChecagemDeColisaoDoMouse()
 {
   if(colisaoMouse == false)
@@ -1121,7 +1112,7 @@ bool ChecagemDeColisao( int xColisor, int yColisor, int xColidido, int yColidido
     colidiu = false;
 }
 
-//= > Àrea para Lidar com Personagens
+//======================= > Área para Lidar com Personagens < =======================
 void LidandoComPersonagem(int &index)//Colentando o tipo de personagem que teve interação e reagindo conforme devido
 {
   CriandoPersonagem(index);
@@ -1157,7 +1148,7 @@ void LidandoComAsFolhas(int &index)//Interação com as folhas de onde sai a Lontr
 
 void LidandoComABruxa(int primeiroItemMissao, int ultimoItemMissao)//Ativando os itens a serem coletados
 {
-  for(int i = primeiroItemMissao; i < ultimoItemMissao; i++)
+  for(int i = primeiroItemMissao; i < ultimoItemMissao + 1; i++)
   {
     blocosColisao[i].coletado = false;
   }
@@ -1173,37 +1164,26 @@ void LidandoComMissoes(int tipo)//Ativando os itens a serem coletados adicionalm
   }
 }
 
-void FinalizandoMissoes()
+void FinalizandoMissoes()//Conferindo circunstâncias para finalizar missões do jogo
 {
   if(qntItensColetados >= 15)
     AtivandoFinal();
   if(qntDocesColetados >= 5)
-    FinalCat();
+    FinalMissao(15, qntDocesColetados);
   if(qntMoedasColetadas >= 5)
-    FinalGuaxinim();
+    FinalMissao(14, qntMoedasColetadas);
 }
 
-void FinalGuaxinim()
+void FinalMissao(int circunstancia, int contador)
 {
-  if(fases == 14)
+  if(fases == circunstancia)
   {
-    //Caixas de texto()
-    qntItensColetados++;
-	qntMoedasColetadas = 0;
+  	qntItensColetados++;
+  	contador = 0;
   }
 }
 
-void FinalCat()
-{
-  if(fases == 15)
-  {
-    //Caixas de texto()
-    qntItensColetados++;
-	qntDocesColetados = 0;
-  }
-}
-
-//= > Àrea para Coletas de Itens
+//======================= > Área para Coletas de Itens < =======================
 void ColetarItensFase()
 {
   if(blocosColisao[indexItemColidido].tipo == 5 && blocosColisao[indexItemColidido].coletado == false)//Captura de Coletáveis da Fase
