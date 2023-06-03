@@ -188,7 +188,7 @@ int main()
   blocosColisao[3].altura = 64;
   blocosColisao[3].largura = 64;
   blocosColisao[3].x = 640;
-  blocosColisao[3].y = 720 - blocosColisao[3].altura - 20;
+  blocosColisao[3].y = 600 - blocosColisao[3].altura - 10;
   blocosColisao[3].tipo = 3;
   blocosColisao[3].colidido = false;
   blocosColisao[3].cliqueMouse = false;
@@ -889,7 +889,7 @@ void LidandoComFases(void *cenario, bool fasePraCima, bool fasePraBaixo, bool fa
   for(int i = 0; i <= 4; i++)//pegando os botões bases para troca de fase e inventário
   { 
     //===============================> Desenhando os Blocos para Mudança de Fase <===============================
-    if(blocosColisao[i].tipo == 0 && fasePraCima == true)//conferindo para quais lados serão as próximas fases / fases anteriores
+    if(blocosColisao[i].tipo == 0 && fasePraCima == true)
     {
       ChecagemDeColisao(P.x, P.y, blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].largura, blocosColisao[i].altura, blocosColisao[i].colidido);//Coletando a informação de colisão e guardando dentro do item.
       DesenhandoBotao( blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].sprite, blocosColisao[i].spriteMascara);
@@ -921,6 +921,7 @@ void LidandoComFases(void *cenario, bool fasePraCima, bool fasePraBaixo, bool fa
 	}
 
     //==================> Ações dos Bloco de Colisão que não sejam coletáveis (Botões de mudança de fases e inventário) <==================
+    //Conferindo para quais lados serão as próximas fases / fases anteriores
     if(blocosColisao[i].tipo == 0 && blocosColisao[i].cliqueMouse == true && fasePraCima == true)//botão fase Acima
 	{
 	  fases += 1;
