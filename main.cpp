@@ -16,7 +16,7 @@ using namespace std;
 //local para os structs
 typedef struct _blocosColisao
 {
-  int x, y, altura, largura, tipo;
+  int x, y, altura, largura, tipo, texto;
   bool colidido, cliqueMouse, coletado;
   void *spriteMascara;
   void *sprite;
@@ -24,13 +24,14 @@ typedef struct _blocosColisao
 
 //criando o vetor para blocos de colisão
 BlocoDeColisao *blocosColisao;
-int qntBlocos = 50;
+int qntBlocos = 55;
 
 //=> Fases
 int fases = 21;
 bool pegouMissao = false;
 bool entrou = false;
 bool tocou = false;
+bool trocarDeFase = true;
 
 //=> Inventário
 void *inventarioImagem;
@@ -122,7 +123,11 @@ void CaixaDeTexto(int index);
 
 void LidandoComTextos();
 
+void TextoAoInteragir(int qualTexto);
+
 void CondicionaisTextos();
+
+void IndicacaoParaTrocaDeTexto();
 
 //=================================================> JOGO <=================================================
 int main()
@@ -154,6 +159,7 @@ int main()
   blocosColisao[0].altura = 64;
   blocosColisao[0].largura = 64;
   blocosColisao[0].tipo = 0;
+  blocosColisao[0].texto = 40;
   blocosColisao[0].colidido = false;
   blocosColisao[0].cliqueMouse = false;
   blocosColisao[0].coletado = false;
@@ -166,6 +172,7 @@ int main()
   blocosColisao[1].x = 1250 - blocosColisao[1].largura;
   blocosColisao[1].y = 360;
   blocosColisao[1].tipo = 1;
+  blocosColisao[1].texto = 40;
   blocosColisao[1].colidido = false;
   blocosColisao[1].cliqueMouse = false;
   blocosColisao[1].coletado = false;
@@ -178,6 +185,7 @@ int main()
   blocosColisao[2].x = 30;
   blocosColisao[2].y = 360;
   blocosColisao[2].tipo = 2;
+  blocosColisao[2].texto = 40;
   blocosColisao[2].colidido = false;
   blocosColisao[2].cliqueMouse = false;
   blocosColisao[2].coletado = false;
@@ -190,6 +198,7 @@ int main()
   blocosColisao[3].x = 640;
   blocosColisao[3].y = 600 - blocosColisao[3].altura - 10;
   blocosColisao[3].tipo = 3;
+  blocosColisao[3].texto = 40;
   blocosColisao[3].colidido = false;
   blocosColisao[3].cliqueMouse = false;
   blocosColisao[3].coletado = false;
@@ -200,6 +209,7 @@ int main()
   blocosColisao[4].altura = 64;
   blocosColisao[4].largura = 64;
   blocosColisao[4].tipo = 4;
+  blocosColisao[4].texto = 40;
   blocosColisao[4].x = 1280 - blocosColisao[4].largura;
   blocosColisao[4].y = 30;
   blocosColisao[4].colidido = false;
@@ -215,6 +225,7 @@ int main()
   blocosColisao[5].altura = 54;
   blocosColisao[5].largura = 96;
   blocosColisao[5].tipo = 5;
+  blocosColisao[5].texto = 48;
   blocosColisao[5].colidido = false;
   blocosColisao[5].cliqueMouse = false;
   blocosColisao[5].coletado = false;
@@ -227,6 +238,7 @@ int main()
   blocosColisao[6].altura = 54;
   blocosColisao[6].largura = 96;
   blocosColisao[6].tipo = 5;
+  blocosColisao[6].texto = 50;
   blocosColisao[6].colidido = false;
   blocosColisao[6].cliqueMouse = false;
   blocosColisao[6].coletado = false;
@@ -239,6 +251,7 @@ int main()
   blocosColisao[7].altura = 54;
   blocosColisao[7].largura = 96;
   blocosColisao[7].tipo = 5;
+  blocosColisao[7].texto = 46;
   blocosColisao[7].colidido = false;
   blocosColisao[7].cliqueMouse = false;
   blocosColisao[7].coletado = false;
@@ -251,6 +264,7 @@ int main()
   blocosColisao[8].altura = 54;
   blocosColisao[8].largura = 96;
   blocosColisao[8].tipo = 5;
+  blocosColisao[8].texto = 44;
   blocosColisao[8].colidido = false;
   blocosColisao[8].cliqueMouse = false;
   blocosColisao[8].coletado = false;
@@ -263,6 +277,7 @@ int main()
   blocosColisao[9].altura = 54;
   blocosColisao[9].largura = 96;
   blocosColisao[9].tipo = 5;
+  blocosColisao[9].texto = 51;
   blocosColisao[9].colidido = false;
   blocosColisao[9].cliqueMouse = false;
   blocosColisao[9].coletado = false;
@@ -682,10 +697,142 @@ int main()
   blocosColisao[43].sprite = carregarImagem(".//Artes//Textos//Tutorial//texto_tutorial_3.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
   blocosColisao[43].spriteMascara = NULL;
   
+  //Texto Boneca 1
+  blocosColisao[44].x = blocosColisao[40].x;
+  blocosColisao[44].y = blocosColisao[40].y;
+  blocosColisao[44].altura = blocosColisao[40].altura;
+  blocosColisao[44].largura = blocosColisao[40].largura;
+  blocosColisao[44].tipo = blocosColisao[40].tipo;
+  blocosColisao[44].colidido = false;
+  blocosColisao[44].cliqueMouse = false;
+  blocosColisao[44].coletado = true;
+  blocosColisao[44].sprite = carregarImagem(".//Artes//Textos//Tutorial//texto_tutorial_boneca_1.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[44].spriteMascara = NULL;
+  
+  //Texto Boneca 2
+  blocosColisao[45].x = blocosColisao[40].x;
+  blocosColisao[45].y = blocosColisao[40].y;
+  blocosColisao[45].altura = blocosColisao[40].altura;
+  blocosColisao[45].largura = blocosColisao[40].largura;
+  blocosColisao[45].tipo = blocosColisao[40].tipo;
+  blocosColisao[45].colidido = false;
+  blocosColisao[45].cliqueMouse = false;
+  blocosColisao[45].coletado = true;
+  blocosColisao[45].sprite = carregarImagem(".//Artes//Textos//Tutorial//texto_tutorial_boneca_2.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[45].spriteMascara = NULL;
+  
+  //Texto Relicário 1
+  blocosColisao[46].x = blocosColisao[40].x;
+  blocosColisao[46].y = blocosColisao[40].y;
+  blocosColisao[46].altura = blocosColisao[40].altura;
+  blocosColisao[46].largura = blocosColisao[40].largura;
+  blocosColisao[46].tipo = blocosColisao[40].tipo;
+  blocosColisao[46].colidido = false;
+  blocosColisao[46].cliqueMouse = false;
+  blocosColisao[46].coletado = true;
+  blocosColisao[46].sprite = carregarImagem(".//Artes//Textos//Tutorial//texto_5_relicario_1.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[46].spriteMascara = NULL;
+  
+  //Texto Relicário 2
+  blocosColisao[47].x = blocosColisao[40].x;
+  blocosColisao[47].y = blocosColisao[40].y;
+  blocosColisao[47].altura = blocosColisao[40].altura;
+  blocosColisao[47].largura = blocosColisao[40].largura;
+  blocosColisao[47].tipo = blocosColisao[40].tipo;
+  blocosColisao[47].colidido = false;
+  blocosColisao[47].cliqueMouse = false;
+  blocosColisao[47].coletado = true;
+  blocosColisao[47].sprite = carregarImagem(".//Artes//Textos//Tutorial//texto_5_relicario_2.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[47].spriteMascara = NULL;
+  
+  //Texto Ervas 1
+  blocosColisao[48].x = blocosColisao[40].x;
+  blocosColisao[48].y = blocosColisao[40].y;
+  blocosColisao[48].altura = blocosColisao[40].altura;
+  blocosColisao[48].largura = blocosColisao[40].largura;
+  blocosColisao[48].tipo = blocosColisao[40].tipo;
+  blocosColisao[48].texto = 40;
+  blocosColisao[48].colidido = false;
+  blocosColisao[48].cliqueMouse = false;
+  blocosColisao[48].coletado = true;
+  blocosColisao[48].sprite = carregarImagem(".//Artes//Textos//Tutorial//texto_6_ervas_1.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[48].spriteMascara = NULL;
+  
+  //Texto Ervas 2
+  blocosColisao[49].x = blocosColisao[40].x;
+  blocosColisao[49].y = blocosColisao[40].y;
+  blocosColisao[49].altura = blocosColisao[40].altura;
+  blocosColisao[49].largura = blocosColisao[40].largura;
+  blocosColisao[49].tipo = blocosColisao[40].tipo;
+  blocosColisao[49].colidido = false;
+  blocosColisao[49].cliqueMouse = false;
+  blocosColisao[49].coletado = true;
+  blocosColisao[49].sprite = carregarImagem(".//Artes//Textos//Tutorial//texto_6_ervas_2.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[49].spriteMascara = NULL;
+  
+  //Texto Sal 
+  blocosColisao[50].x = blocosColisao[40].x;
+  blocosColisao[50].y = blocosColisao[40].y;
+  blocosColisao[50].altura = blocosColisao[40].altura;
+  blocosColisao[50].largura = blocosColisao[40].largura;
+  blocosColisao[50].tipo = blocosColisao[40].tipo;
+  blocosColisao[50].colidido = false;
+  blocosColisao[50].cliqueMouse = false;
+  blocosColisao[50].coletado = true;
+  blocosColisao[50].sprite = carregarImagem(".//Artes//Textos//Tutorial//texto_7_sal.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[50].spriteMascara = NULL;
+  
+  //Texto Estrela 
+  blocosColisao[51].x = blocosColisao[40].x;
+  blocosColisao[51].y = blocosColisao[40].y;
+  blocosColisao[51].altura = blocosColisao[40].altura;
+  blocosColisao[51].largura = blocosColisao[40].largura;
+  blocosColisao[51].tipo = blocosColisao[40].tipo;
+  blocosColisao[51].colidido = false;
+  blocosColisao[51].cliqueMouse = false;
+  blocosColisao[51].coletado = true;
+  blocosColisao[51].sprite = carregarImagem(".//Artes//Textos//Tutorial//texto_8_estrela.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[51].spriteMascara = NULL;
+  
+  //Texto Ao Pegar Todos os Itens Tutorial 1
+  blocosColisao[52].x = blocosColisao[40].x;
+  blocosColisao[52].y = blocosColisao[40].y;
+  blocosColisao[52].altura = blocosColisao[40].altura;
+  blocosColisao[52].largura = blocosColisao[40].largura;
+  blocosColisao[52].tipo = blocosColisao[40].tipo;
+  blocosColisao[52].colidido = false;
+  blocosColisao[52].cliqueMouse = false;
+  blocosColisao[52].coletado = true;
+  blocosColisao[52].sprite = carregarImagem(".//Artes//Textos//Tutorial//texto_9_todos_itens.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[52].spriteMascara = NULL;
+  
+  //Texto Ao Pegar Todos os Itens Tutorial 2
+  blocosColisao[53].x = blocosColisao[40].x;
+  blocosColisao[53].y = blocosColisao[40].y;
+  blocosColisao[53].altura = blocosColisao[40].altura;
+  blocosColisao[53].largura = blocosColisao[40].largura;
+  blocosColisao[53].tipo = blocosColisao[40].tipo;
+  blocosColisao[53].colidido = false;
+  blocosColisao[53].cliqueMouse = false;
+  blocosColisao[53].coletado = true;
+  blocosColisao[53].sprite = carregarImagem(".//Artes//Textos//Tutorial//texto_10_final.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[53].spriteMascara = NULL;
+  
+  //Garantindo saída do tutorial
+  blocosColisao[54].x = blocosColisao[40].x;
+  blocosColisao[54].y = blocosColisao[40].y;
+  blocosColisao[54].altura = blocosColisao[40].altura;
+  blocosColisao[54].largura = blocosColisao[40].largura;
+  blocosColisao[54].tipo = blocosColisao[40].tipo;
+  blocosColisao[54].colidido = false;
+  blocosColisao[54].cliqueMouse = false;
+  blocosColisao[54].coletado = true;
+  blocosColisao[54].sprite = carregarImagem(".//Artes//Textos//Tutorial//texto_10_final.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[54].spriteMascara = NULL;
 
   //===============================> Cenários <===============================
   void **cenarios;
-  int qntDeCenarios = 25;
+  int qntDeCenarios = 26;
   cenarios = (void **) malloc(sizeof(void *) * qntDeCenarios);
 
   cenarios[0] = carregarImagem(".//Artes//Cenarios//sala_tutas.bmp", 1280, 600, 0, 0);
@@ -737,6 +884,8 @@ int main()
   cenarios[23] = carregarImagem(".//Artes//Cenarios//cena5_pt1.bmp", 1280, 720, 0, 0);
   
   cenarios[24] = carregarImagem(".//Artes//Cenarios//cena5_pt2.bmp", 1280, 720, 0, 0);
+  
+  cenarios[25] = carregarImagem(".//Artes//Cenarios//cena_fim_tutorial.bmp", 1280, 720, 0, 0);
   
   //Imagem do Inventario
   inventarioImagem = carregarImagem(".//Artes//Itens//inventario.bmp", InvLargura, InvAltura, 0, 0);
@@ -876,6 +1025,7 @@ void LidandoComFases(void *cenario, bool fasePraCima, bool fasePraBaixo, bool fa
   putimage(0, 0, cenario, COPY_PUT);
   ChecagemDeColisao( P.x, P.y, blocosColisao[texto].x, blocosColisao[texto].y, blocosColisao[texto].largura, blocosColisao[texto].altura, blocosColisao[texto].colidido);
   CaixaDeTexto(texto);
+  IndicacaoParaTrocaDeTexto();
   
   //Lidando com Personagem da fase, se houver
   if(TemPersonagem == true)
@@ -889,25 +1039,25 @@ void LidandoComFases(void *cenario, bool fasePraCima, bool fasePraBaixo, bool fa
   for(int i = 0; i <= 4; i++)//pegando os botões bases para troca de fase e inventário
   { 
     //===============================> Desenhando os Blocos para Mudança de Fase <===============================
-    if(blocosColisao[i].tipo == 0 && fasePraCima == true)
+    if(blocosColisao[i].tipo == 0 && fasePraCima == true && trocarDeFase == true)
     {
       ChecagemDeColisao(P.x, P.y, blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].largura, blocosColisao[i].altura, blocosColisao[i].colidido);//Coletando a informação de colisão e guardando dentro do item.
       DesenhandoBotao( blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].sprite, blocosColisao[i].spriteMascara);
 	}
       
-    if(blocosColisao[i].tipo == 1 && fasePraDireita == true)
+    if(blocosColisao[i].tipo == 1 && fasePraDireita == true && trocarDeFase == true)
     {
       ChecagemDeColisao(P.x, P.y, blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].largura, blocosColisao[i].altura, blocosColisao[i].colidido);
       DesenhandoBotao( blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].sprite, blocosColisao[i].spriteMascara);
 	}
       
-    if(blocosColisao[i].tipo == 2 && fasePraEsquerda == true)
+    if(blocosColisao[i].tipo == 2 && fasePraEsquerda == true && trocarDeFase == true)
     {
       ChecagemDeColisao(P.x, P.y, blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].largura, blocosColisao[i].altura, blocosColisao[i].colidido);
       DesenhandoBotao( blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].sprite, blocosColisao[i].spriteMascara);
 	}
       
-    if(blocosColisao[i].tipo == 3 && fasePraBaixo == true)
+    if(blocosColisao[i].tipo == 3 && fasePraBaixo == true && trocarDeFase == true)
     {
       ChecagemDeColisao(P.x, P.y, blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].largura, blocosColisao[i].altura, blocosColisao[i].colidido);
       DesenhandoBotao( blocosColisao[i].x, blocosColisao[i].y, blocosColisao[i].sprite, blocosColisao[i].spriteMascara);
@@ -922,28 +1072,28 @@ void LidandoComFases(void *cenario, bool fasePraCima, bool fasePraBaixo, bool fa
 
     //==================> Ações dos Bloco de Colisão que não sejam coletáveis (Botões de mudança de fases e inventário) <==================
     //Conferindo para quais lados serão as próximas fases / fases anteriores
-    if(blocosColisao[i].tipo == 0 && blocosColisao[i].cliqueMouse == true && fasePraCima == true)//botão fase Acima
+    if(blocosColisao[i].tipo == 0 && blocosColisao[i].cliqueMouse == true && fasePraCima == true && trocarDeFase == true)//botão fase Acima
 	{
 	  fases += 1;
 	  texto = 40;
 	  ZerandoColisoes();
 	  blocosColisao[i].cliqueMouse = false;
 	}
-	else if(blocosColisao[i].tipo == 1 && blocosColisao[i].cliqueMouse == true && fasePraDireita == true)//botão fase para à Direita
+	else if(blocosColisao[i].tipo == 1 && blocosColisao[i].cliqueMouse == true && fasePraDireita == true && trocarDeFase == true)//botão fase para à Direita
 	{	
 	  fases += 2;
 	  texto = 40;
 	  ZerandoColisoes();
 	  blocosColisao[i].cliqueMouse = false;
 	}
-	else if(blocosColisao[i].tipo == 2 && blocosColisao[i].cliqueMouse == true && fasePraEsquerda == true)//botão fase à Esquerda
+	else if(blocosColisao[i].tipo == 2 && blocosColisao[i].cliqueMouse == true && fasePraEsquerda == true && trocarDeFase == true)//botão fase à Esquerda
 	{	
 	  fases -= 2;
 	  texto = 40;
 	  ZerandoColisoes();
 	  blocosColisao[i].cliqueMouse = false;
 	}
-    else if(blocosColisao[i].tipo == 3 && blocosColisao[i].cliqueMouse == true && fasePraBaixo == true)//botão fase Abaixo
+    else if(blocosColisao[i].tipo == 3 && blocosColisao[i].cliqueMouse == true && fasePraBaixo == true && trocarDeFase == true)//botão fase Abaixo
     {
 	  fases -= 1;
 	  texto = 40;
@@ -989,12 +1139,10 @@ void Menu(void *cenario, int &fases)//Criando  o Menu
 
 void SaindoDoTutorial()//Verificando se o Player coletou todos os itens para mudar de etapa
 {
-  if(qntItensColetados >= 5)
-  {
-    inventario = false;
-    fases = 4;
-    ZerandoColisoes();
-  }
+  fases = 2;
+  texto = 40;
+  inventario = false;
+  ZerandoColisoes();
 }
 
 void AtivandoFinal()
@@ -1008,10 +1156,16 @@ void CutScene(void *cenario)
   putimage(0, 0, cenario, COPY_PUT);
   if(TempoDecorrido > Espera)
   {
-    if (GetKeyState(VK_LBUTTON)&0x80)
+    if(GetKeyState(VK_LBUTTON)&0x80)
 	{
 	  Inicio = GetTickCount();
-	  fases ++;
+	  if(fases != 2)
+	    fases ++;
+	  else
+	  {
+	    fases = 4;
+        texto = 40;	  	
+	  }
 	}
   }
 }
@@ -1023,16 +1177,19 @@ void CondicionaisDeFases(void **cenarios)
   if(fases == 1)
   {
     LidandoComFases(cenarios[0], false, false, true, false, inventario, 5, 6, 5, 9, false);
-    SaindoDoTutorial();//Verificando se o Player coletou todos os itens para mudar de etapa
   }//não há segunda fase pela lógica que criei de transição de fase
+  else if(fases == 2)
+  {
+    CutScene(cenarios[25]);
+  }
   else if(fases == 3)
   {
 	LidandoComFases(cenarios[1], false, false, false, true, inventario, 7, 9, 5, 9, false);
-	SaindoDoTutorial();//Verificando se o Player coletou todos os itens para mudar de etapa
   }
   else if(fases == 4)
   {
     LidandoComFases(cenarios[2], false, false, true, false, inventario, 10, 10, 10, 17, true);
+    trocarDeFase = true;
   }	
   else if(fases == 6)
   {
@@ -1160,6 +1317,8 @@ void ChecagemDeColisaoDoMouse()
 	  ColetarItensFase();
 	  ColetarItensMissoes(11, qntMoedasColetadas, indexItemColidido);
 	  ColetarItensMissoes(12, qntDocesColetados, indexItemColidido);
+	  if(blocosColisao[indexItemColidido].tipo >= 5 && blocosColisao[indexItemColidido].tipo <= 10)
+	    TextoAoInteragir(blocosColisao[indexItemColidido].texto);
 	  LidandoComTextos();
 	}
   }
@@ -1279,7 +1438,7 @@ void ColetarItensMissoes(int tipo, int &quantidade, int indexItemColididos)
 
 //======================= > Área para Textos < =======================
 
-void LidandoComTextos()
+void LidandoComTextos()//Mudar De Texto ao Clicar na Caixa De Texto
 {
   if(rolarTexto == true)
   {
@@ -1292,6 +1451,14 @@ void LidandoComTextos()
   }
 }
 
+void TextoAoInteragir(int qualTexto)
+{
+  rolarTexto = true;
+  texto = qualTexto;
+  if(fases <= 3 && qntItensColetados == 5 && texto < 52)
+    texto = 52;
+}
+
 void CaixaDeTexto(int index)//Desenhando Caixa de Texto
 {
   putimage(blocosColisao[index].x, blocosColisao[index].y, blocosColisao[index].sprite , COPY_PUT);
@@ -1299,9 +1466,30 @@ void CaixaDeTexto(int index)//Desenhando Caixa de Texto
 
 void CondicionaisTextos()
 {
+  if(texto == 40)
+    rolarTexto = false;
   if(texto == 43)
     rolarTexto = false;
+  if(texto == 45)
+    rolarTexto = false;
+  if(texto == 47)
+    rolarTexto = false;
+  if(texto == 49)
+    rolarTexto = false;
+  if(texto == 50)
+    rolarTexto = false;
+  if(texto == 51)
+    rolarTexto = false;
+  if(texto == 52)
+    trocarDeFase = false;
+  if(texto == 54)
+    SaindoDoTutorial();//Verificando se o Player coletou todos os itens e clicou na última caixa de texto para mudar de etapa
 }
 
+void IndicacaoParaTrocaDeTexto()
+{
+  if(rolarTexto == true)
+    outtextxy(1215, 695, "Passe >>");
+}
 
 
