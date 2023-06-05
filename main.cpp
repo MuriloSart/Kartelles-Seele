@@ -10,8 +10,9 @@ using namespace std;
 #define ESC    	27
 
 /*
-	Colocar MostrarColetaveisMissao() para mostrar as moedas ou doces das respectiveis fases,
-	Criar função para receber item ao completar
+	Ajeitar Erros: Bug de não mudar o texto ao completar missões
+	Procurar o por quê de alguns itens estarem mostrando uma conversa aleatória
+	Criar uma interface contando quantos itens foram pegos das missões
 */
 //local para os structs
 typedef struct _blocosColisao
@@ -24,7 +25,7 @@ typedef struct _blocosColisao
 
 //criando o vetor para blocos de colisão
 BlocoDeColisao *blocosColisao;
-int qntBlocos = 85;
+int qntBlocos = 110;
 
 //=> Fases
 int fases = 21;
@@ -110,11 +111,11 @@ void LidandoComAsFolhas(int &index);
 
 void LidandoComABruxa(int primeiroItemMissao, int ultimoItemMissao);
 
-void LidandoComMissoes(int tipo);
+void LidandoComMissoes(int tipo, int index);
 
 void FinalizandoMissoes();
 
-void FinalMissao(int circunstancia, int contador);
+void FinalMissao(int circunstancia, int contador, int qualTexto);
 
 //= > Área para Coletas de Itens
 void ColetarItensFase();
@@ -503,7 +504,7 @@ int main()
   blocosColisao[26].altura = 255;
   blocosColisao[26].largura = 255;
   blocosColisao[26].tipo = 9;
-  blocosColisao[26].texto = 40;
+  blocosColisao[26].texto = 85;
   blocosColisao[26].colidido = false;
   blocosColisao[26].cliqueMouse = false;
   blocosColisao[26].coletado = false;
@@ -529,7 +530,7 @@ int main()
   blocosColisao[28].altura = 400;
   blocosColisao[28].largura = 170;
   blocosColisao[28].tipo = 10;
-  blocosColisao[28].texto = 40;
+  blocosColisao[28].texto = 100;
   blocosColisao[28].colidido = false;
   blocosColisao[28].cliqueMouse = false;
   blocosColisao[28].coletado = false;
@@ -554,8 +555,9 @@ int main()
   blocosColisao[30].x = 900;
   blocosColisao[30].y = 130;
   blocosColisao[30].altura = 64;
-  blocosColisao[30].largura = 64;
+  blocosColisao[30].largura = 135;
   blocosColisao[30].tipo = 11;
+  blocosColisao[30].texto = 40;
   blocosColisao[30].colidido = false;
   blocosColisao[30].cliqueMouse = false;
   blocosColisao[30].coletado = true;
@@ -568,6 +570,7 @@ int main()
   blocosColisao[31].altura = blocosColisao[30].altura;
   blocosColisao[31].largura = blocosColisao[30].largura;
   blocosColisao[31].tipo = blocosColisao[30].tipo;
+  blocosColisao[31].texto = blocosColisao[30].texto;
   blocosColisao[31].colidido = false;
   blocosColisao[31].cliqueMouse = false;
   blocosColisao[31].coletado = true;
@@ -580,6 +583,7 @@ int main()
   blocosColisao[32].altura = blocosColisao[30].altura;
   blocosColisao[32].largura = blocosColisao[30].largura;
   blocosColisao[32].tipo = blocosColisao[30].tipo;
+  blocosColisao[32].texto = blocosColisao[30].texto;
   blocosColisao[32].colidido = false;
   blocosColisao[32].cliqueMouse = false;
   blocosColisao[32].coletado = true;
@@ -592,6 +596,7 @@ int main()
   blocosColisao[33].altura = blocosColisao[30].altura;
   blocosColisao[33].largura = blocosColisao[30].largura;
   blocosColisao[33].tipo = blocosColisao[30].tipo;
+  blocosColisao[33].texto = blocosColisao[30].texto;
   blocosColisao[33].colidido = false;
   blocosColisao[33].cliqueMouse = false;
   blocosColisao[33].coletado = true;
@@ -604,6 +609,7 @@ int main()
   blocosColisao[34].altura = blocosColisao[30].altura;
   blocosColisao[34].largura = blocosColisao[30].largura;
   blocosColisao[34].tipo = blocosColisao[30].tipo;
+  blocosColisao[34].texto = blocosColisao[30].texto;
   blocosColisao[34].colidido = false;
   blocosColisao[34].cliqueMouse = false;
   blocosColisao[34].coletado = true;
@@ -614,8 +620,9 @@ int main()
   blocosColisao[35].x = 900;
   blocosColisao[35].y = 400;
   blocosColisao[35].altura = 64;
-  blocosColisao[35].largura = 64;
+  blocosColisao[35].largura = 135;
   blocosColisao[35].tipo = 12;
+  blocosColisao[35].texto = 40;
   blocosColisao[35].colidido = false;
   blocosColisao[35].cliqueMouse = false;
   blocosColisao[35].coletado = true;
@@ -628,6 +635,7 @@ int main()
   blocosColisao[36].altura = blocosColisao[35].altura;
   blocosColisao[36].largura = blocosColisao[35].largura;
   blocosColisao[36].tipo = blocosColisao[35].tipo;
+  blocosColisao[36].texto = blocosColisao[35].texto;
   blocosColisao[36].colidido = false;
   blocosColisao[36].cliqueMouse = false;
   blocosColisao[36].coletado = true;
@@ -640,6 +648,7 @@ int main()
   blocosColisao[37].altura = blocosColisao[35].altura;
   blocosColisao[37].largura = blocosColisao[35].largura;
   blocosColisao[37].tipo = blocosColisao[35].tipo;
+  blocosColisao[37].texto = blocosColisao[35].texto;
   blocosColisao[37].colidido = false;
   blocosColisao[37].cliqueMouse = false;
   blocosColisao[37].coletado = true;
@@ -652,6 +661,7 @@ int main()
   blocosColisao[38].altura = blocosColisao[35].altura;
   blocosColisao[38].largura = blocosColisao[35].largura;
   blocosColisao[38].tipo = blocosColisao[35].tipo;
+  blocosColisao[38].texto = blocosColisao[35].texto;
   blocosColisao[38].colidido = false;
   blocosColisao[38].cliqueMouse = false;
   blocosColisao[38].coletado = true;
@@ -664,6 +674,7 @@ int main()
   blocosColisao[39].altura = blocosColisao[35].altura;
   blocosColisao[39].largura = blocosColisao[35].largura;
   blocosColisao[39].tipo = blocosColisao[35].tipo;
+  blocosColisao[39].texto = blocosColisao[35].texto;
   blocosColisao[39].colidido = false;
   blocosColisao[39].cliqueMouse = false;
   blocosColisao[39].coletado = true;
@@ -1213,6 +1224,306 @@ int main()
   blocosColisao[84].sprite = carregarImagem(".//Artes//Textos//encontro_bruxa//texto_27.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
   blocosColisao[84].spriteMascara = NULL;
   
+  //Conversa com o Guaxinim 1
+  blocosColisao[85].x = blocosColisao[40].x;
+  blocosColisao[85].y = blocosColisao[40].y;
+  blocosColisao[85].altura = blocosColisao[40].altura;
+  blocosColisao[85].largura = blocosColisao[40].largura;
+  blocosColisao[85].tipo = blocosColisao[40].tipo;
+  blocosColisao[85].colidido = false;
+  blocosColisao[85].cliqueMouse = false;
+  blocosColisao[85].coletado = true;
+  blocosColisao[85].sprite = carregarImagem(".//Artes//Textos//encontro_guaxinim//texto_40.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[85].spriteMascara = NULL;
+  
+  //Conversa com o Guaxinim 2
+  blocosColisao[86].x = blocosColisao[40].x;
+  blocosColisao[86].y = blocosColisao[40].y;
+  blocosColisao[86].altura = blocosColisao[40].altura;
+  blocosColisao[86].largura = blocosColisao[40].largura;
+  blocosColisao[86].tipo = blocosColisao[40].tipo;
+  blocosColisao[86].colidido = false;
+  blocosColisao[86].cliqueMouse = false;
+  blocosColisao[86].coletado = true;
+  blocosColisao[86].sprite = carregarImagem(".//Artes//Textos//encontro_guaxinim//texto_41.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[86].spriteMascara = NULL;
+  
+  //Conversa com o Guaxinim 3
+  blocosColisao[87].x = blocosColisao[40].x;
+  blocosColisao[87].y = blocosColisao[40].y;
+  blocosColisao[87].altura = blocosColisao[40].altura;
+  blocosColisao[87].largura = blocosColisao[40].largura;
+  blocosColisao[87].tipo = blocosColisao[40].tipo;
+  blocosColisao[87].colidido = false;
+  blocosColisao[87].cliqueMouse = false;
+  blocosColisao[87].coletado = true;
+  blocosColisao[87].sprite = carregarImagem(".//Artes//Textos//encontro_guaxinim//texto_42.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[87].spriteMascara = NULL;
+  
+  //Conversa com o Guaxinim 4
+  blocosColisao[88].x = blocosColisao[40].x;
+  blocosColisao[88].y = blocosColisao[40].y;
+  blocosColisao[88].altura = blocosColisao[40].altura;
+  blocosColisao[88].largura = blocosColisao[40].largura;
+  blocosColisao[88].tipo = blocosColisao[40].tipo;
+  blocosColisao[88].colidido = false;
+  blocosColisao[88].cliqueMouse = false;
+  blocosColisao[88].coletado = true;
+  blocosColisao[88].sprite = carregarImagem(".//Artes//Textos//encontro_guaxinim//texto_43.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[88].spriteMascara = NULL;
+  
+  //Conversa com o Guaxinim 5
+  blocosColisao[89].x = blocosColisao[40].x;
+  blocosColisao[89].y = blocosColisao[40].y;
+  blocosColisao[89].altura = blocosColisao[40].altura;
+  blocosColisao[89].largura = blocosColisao[40].largura;
+  blocosColisao[89].tipo = blocosColisao[40].tipo;
+  blocosColisao[89].colidido = false;
+  blocosColisao[89].cliqueMouse = false;
+  blocosColisao[89].coletado = true;
+  blocosColisao[89].sprite = carregarImagem(".//Artes//Textos//encontro_guaxinim//texto_44.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[89].spriteMascara = NULL;
+  
+  //Conversa com o Guaxinim 6
+  blocosColisao[90].x = blocosColisao[40].x;
+  blocosColisao[90].y = blocosColisao[40].y;
+  blocosColisao[90].altura = blocosColisao[40].altura;
+  blocosColisao[90].largura = blocosColisao[40].largura;
+  blocosColisao[90].tipo = blocosColisao[40].tipo;
+  blocosColisao[90].colidido = false;
+  blocosColisao[90].cliqueMouse = false;
+  blocosColisao[90].coletado = true;
+  blocosColisao[90].sprite = carregarImagem(".//Artes//Textos//encontro_guaxinim//texto_45.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[90].spriteMascara = NULL;
+  
+  //Conversa com o Guaxinim 7
+  blocosColisao[91].x = blocosColisao[40].x;
+  blocosColisao[91].y = blocosColisao[40].y;
+  blocosColisao[91].altura = blocosColisao[40].altura;
+  blocosColisao[91].largura = blocosColisao[40].largura;
+  blocosColisao[91].tipo = blocosColisao[40].tipo;
+  blocosColisao[91].colidido = false;
+  blocosColisao[91].cliqueMouse = false;
+  blocosColisao[91].coletado = true;
+  blocosColisao[91].sprite = carregarImagem(".//Artes//Textos//encontro_guaxinim//texto_46.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[91].spriteMascara = NULL;
+  
+  //Conversa com o Guaxinim 8
+  blocosColisao[92].x = blocosColisao[40].x;
+  blocosColisao[92].y = blocosColisao[40].y;
+  blocosColisao[92].altura = blocosColisao[40].altura;
+  blocosColisao[92].largura = blocosColisao[40].largura;
+  blocosColisao[92].tipo = blocosColisao[40].tipo;
+  blocosColisao[92].colidido = false;
+  blocosColisao[92].cliqueMouse = false;
+  blocosColisao[92].coletado = true;
+  blocosColisao[92].sprite = carregarImagem(".//Artes//Textos//encontro_guaxinim//texto_47.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[92].spriteMascara = NULL;
+  
+  //Conversa com o Guaxinim 9
+  blocosColisao[93].x = blocosColisao[40].x;
+  blocosColisao[93].y = blocosColisao[40].y;
+  blocosColisao[93].altura = blocosColisao[40].altura;
+  blocosColisao[93].largura = blocosColisao[40].largura;
+  blocosColisao[93].tipo = blocosColisao[40].tipo;
+  blocosColisao[93].colidido = false;
+  blocosColisao[93].cliqueMouse = false;
+  blocosColisao[93].coletado = true;
+  blocosColisao[93].sprite = carregarImagem(".//Artes//Textos//encontro_guaxinim//texto_48.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[93].spriteMascara = NULL;
+  
+  //Conversa com o Guaxinim 10
+  blocosColisao[94].x = blocosColisao[40].x;
+  blocosColisao[94].y = blocosColisao[40].y;
+  blocosColisao[94].altura = blocosColisao[40].altura;
+  blocosColisao[94].largura = blocosColisao[40].largura;
+  blocosColisao[94].tipo = blocosColisao[40].tipo;
+  blocosColisao[94].colidido = false;
+  blocosColisao[94].cliqueMouse = false;
+  blocosColisao[94].coletado = true;
+  blocosColisao[94].sprite = carregarImagem(".//Artes//Textos//encontro_guaxinim//texto_49.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[94].spriteMascara = NULL;
+  
+  //Conversa com o Guaxinim 11
+  blocosColisao[95].x = blocosColisao[40].x;
+  blocosColisao[95].y = blocosColisao[40].y;
+  blocosColisao[95].altura = blocosColisao[40].altura;
+  blocosColisao[95].largura = blocosColisao[40].largura;
+  blocosColisao[95].tipo = blocosColisao[40].tipo;
+  blocosColisao[95].colidido = false;
+  blocosColisao[95].cliqueMouse = false;
+  blocosColisao[95].coletado = true;
+  blocosColisao[95].sprite = carregarImagem(".//Artes//Textos//encontro_guaxinim//texto_50.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[95].spriteMascara = NULL;
+  
+  //Conversa com o Guaxinim pós acabar missão 1
+  blocosColisao[96].x = blocosColisao[40].x;
+  blocosColisao[96].y = blocosColisao[40].y;
+  blocosColisao[96].altura = blocosColisao[40].altura;
+  blocosColisao[96].largura = blocosColisao[40].largura;
+  blocosColisao[96].tipo = blocosColisao[40].tipo;
+  blocosColisao[96].colidido = false;
+  blocosColisao[96].cliqueMouse = false;
+  blocosColisao[96].coletado = true;
+  blocosColisao[96].sprite = carregarImagem(".//Artes//Textos//encontro_guaxinim_pos//texto_51.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[96].spriteMascara = NULL;
+  
+  //Conversa com o Guaxinim pós acabar missão 2
+  blocosColisao[97].x = blocosColisao[40].x;
+  blocosColisao[97].y = blocosColisao[40].y;
+  blocosColisao[97].altura = blocosColisao[40].altura;
+  blocosColisao[97].largura = blocosColisao[40].largura;
+  blocosColisao[97].tipo = blocosColisao[40].tipo;
+  blocosColisao[97].colidido = false;
+  blocosColisao[97].cliqueMouse = false;
+  blocosColisao[97].coletado = true;
+  blocosColisao[97].sprite = carregarImagem(".//Artes//Textos//encontro_guaxinim_pos//texto_52.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[97].spriteMascara = NULL;
+  
+  //Conversa com o Guaxinim pós acabar missão 3
+  blocosColisao[98].x = blocosColisao[40].x;
+  blocosColisao[98].y = blocosColisao[40].y;
+  blocosColisao[98].altura = blocosColisao[40].altura;
+  blocosColisao[98].largura = blocosColisao[40].largura;
+  blocosColisao[98].tipo = blocosColisao[40].tipo;
+  blocosColisao[98].colidido = false;
+  blocosColisao[98].cliqueMouse = false;
+  blocosColisao[98].coletado = true;
+  blocosColisao[98].sprite = carregarImagem(".//Artes//Textos//encontro_guaxinim_pos//texto_53.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[98].spriteMascara = NULL;
+  
+  //Conversa com o Guaxinim pós acabar missão 4
+  blocosColisao[99].x = blocosColisao[40].x;
+  blocosColisao[99].y = blocosColisao[40].y;
+  blocosColisao[99].altura = blocosColisao[40].altura;
+  blocosColisao[99].largura = blocosColisao[40].largura;
+  blocosColisao[99].tipo = blocosColisao[40].tipo;
+  blocosColisao[99].colidido = false;
+  blocosColisao[99].cliqueMouse = false;
+  blocosColisao[99].coletado = true;
+  blocosColisao[99].sprite = carregarImagem(".//Artes//Textos//encontro_guaxinim_pos//texto_54.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[99].spriteMascara = NULL;
+  
+  //Conversa com o Pocket Cat 1
+  blocosColisao[100].x = blocosColisao[40].x;
+  blocosColisao[100].y = blocosColisao[40].y;
+  blocosColisao[100].altura = blocosColisao[40].altura;
+  blocosColisao[100].largura = blocosColisao[40].largura;
+  blocosColisao[100].tipo = blocosColisao[40].tipo;
+  blocosColisao[100].colidido = false;
+  blocosColisao[100].cliqueMouse = false;
+  blocosColisao[100].coletado = true;
+  blocosColisao[100].sprite = carregarImagem(".//Artes//Textos//encontro_pocket//texto_55.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[100].spriteMascara = NULL;
+  
+  //Conversa com o Pocket Cat 2
+  blocosColisao[101].x = blocosColisao[40].x;
+  blocosColisao[101].y = blocosColisao[40].y;
+  blocosColisao[101].altura = blocosColisao[40].altura;
+  blocosColisao[101].largura = blocosColisao[40].largura;
+  blocosColisao[101].tipo = blocosColisao[40].tipo;
+  blocosColisao[101].colidido = false;
+  blocosColisao[101].cliqueMouse = false;
+  blocosColisao[101].coletado = true;
+  blocosColisao[101].sprite = carregarImagem(".//Artes//Textos//encontro_pocket//texto_56.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[101].spriteMascara = NULL;
+  
+  //Conversa com o Pocket Cat 3
+  blocosColisao[102].x = blocosColisao[40].x;
+  blocosColisao[102].y = blocosColisao[40].y;
+  blocosColisao[102].altura = blocosColisao[40].altura;
+  blocosColisao[102].largura = blocosColisao[40].largura;
+  blocosColisao[102].tipo = blocosColisao[40].tipo;
+  blocosColisao[102].colidido = false;
+  blocosColisao[102].cliqueMouse = false;
+  blocosColisao[102].coletado = true;
+  blocosColisao[102].sprite = carregarImagem(".//Artes//Textos//encontro_pocket//texto_57.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[102].spriteMascara = NULL;
+  
+  //Conversa com o Pocket Cat 4
+  blocosColisao[103].x = blocosColisao[40].x;
+  blocosColisao[103].y = blocosColisao[40].y;
+  blocosColisao[103].altura = blocosColisao[40].altura;
+  blocosColisao[103].largura = blocosColisao[40].largura;
+  blocosColisao[103].tipo = blocosColisao[40].tipo;
+  blocosColisao[103].colidido = false;
+  blocosColisao[103].cliqueMouse = false;
+  blocosColisao[103].coletado = true;
+  blocosColisao[103].sprite = carregarImagem(".//Artes//Textos//encontro_pocket//texto_58.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[103].spriteMascara = NULL;
+  
+  //Conversa com o Pocket Cat 5
+  blocosColisao[104].x = blocosColisao[40].x;
+  blocosColisao[104].y = blocosColisao[40].y;
+  blocosColisao[104].altura = blocosColisao[40].altura;
+  blocosColisao[104].largura = blocosColisao[40].largura;
+  blocosColisao[104].tipo = blocosColisao[40].tipo;
+  blocosColisao[103].colidido = false;
+  blocosColisao[104].cliqueMouse = false;
+  blocosColisao[104].coletado = true;
+  blocosColisao[104].sprite = carregarImagem(".//Artes//Textos//encontro_pocket//texto_59.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[104].spriteMascara = NULL;
+  
+  //Conversa com o Pocket Cat 6
+  blocosColisao[105].x = blocosColisao[40].x;
+  blocosColisao[105].y = blocosColisao[40].y;
+  blocosColisao[105].altura = blocosColisao[40].altura;
+  blocosColisao[105].largura = blocosColisao[40].largura;
+  blocosColisao[105].tipo = blocosColisao[40].tipo;
+  blocosColisao[105].colidido = false;
+  blocosColisao[105].cliqueMouse = false;
+  blocosColisao[105].coletado = true;
+  blocosColisao[105].sprite = carregarImagem(".//Artes//Textos//encontro_pocket//texto_60.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[105].spriteMascara = NULL;
+  
+  //Conversa com o Pocket Cat 7
+  blocosColisao[106].x = blocosColisao[40].x;
+  blocosColisao[106].y = blocosColisao[40].y;
+  blocosColisao[106].altura = blocosColisao[40].altura;
+  blocosColisao[106].largura = blocosColisao[40].largura;
+  blocosColisao[106].tipo = blocosColisao[40].tipo;
+  blocosColisao[106].colidido = false;
+  blocosColisao[106].cliqueMouse = false;
+  blocosColisao[106].coletado = true;
+  blocosColisao[106].sprite = carregarImagem(".//Artes//Textos//encontro_pocket//texto_61.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[106].spriteMascara = NULL;
+  
+  //Conversa com o Pocket Cat 8
+  blocosColisao[107].x = blocosColisao[40].x;
+  blocosColisao[107].y = blocosColisao[40].y;
+  blocosColisao[107].altura = blocosColisao[40].altura;
+  blocosColisao[107].largura = blocosColisao[40].largura;
+  blocosColisao[107].tipo = blocosColisao[40].tipo;
+  blocosColisao[107].colidido = false;
+  blocosColisao[107].cliqueMouse = false;
+  blocosColisao[107].coletado = true;
+  blocosColisao[107].sprite = carregarImagem(".//Artes//Textos//encontro_pocket//texto_62.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[107].spriteMascara = NULL;
+  
+  //Conversa com o Pocket Cat missão pós 1
+  blocosColisao[108].x = blocosColisao[40].x;
+  blocosColisao[108].y = blocosColisao[40].y;
+  blocosColisao[108].altura = blocosColisao[40].altura;
+  blocosColisao[108].largura = blocosColisao[40].largura;
+  blocosColisao[108].tipo = blocosColisao[40].tipo;
+  blocosColisao[108].colidido = false;
+  blocosColisao[108].cliqueMouse = false;
+  blocosColisao[108].coletado = true;
+  blocosColisao[108].sprite = carregarImagem(".//Artes//Textos//encontro_pocket_pos//texto_63.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[108].spriteMascara = NULL;
+  
+  //Conversa com o Pocket Cat missão pós 2
+  blocosColisao[109].x = blocosColisao[40].x;
+  blocosColisao[109].y = blocosColisao[40].y;
+  blocosColisao[109].altura = blocosColisao[40].altura;
+  blocosColisao[109].largura = blocosColisao[40].largura;
+  blocosColisao[109].tipo = blocosColisao[40].tipo;
+  blocosColisao[109].colidido = false;
+  blocosColisao[109].cliqueMouse = false;
+  blocosColisao[109].coletado = true;
+  blocosColisao[109].sprite = carregarImagem(".//Artes//Textos//encontro_pocket_pos//texto_64.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[109].spriteMascara = NULL;
+  
   //===============================> Cenários <===============================
   void **cenarios;
   int qntDeCenarios = 26;
@@ -1293,7 +1604,7 @@ int main()
       //=================> Garantindo que o Mouse Fique Dentro da Tela <=================
       GetCursorPos(&P);
       ScreenToClient(janela, &P);
-      printf("\n%d", blocosColisao[18].coletado);
+      
       //=================> Lidando com a troca de fases <=================
       CondicionaisDeFases(cenarios);
       CondicionaisTextos();
@@ -1688,6 +1999,7 @@ void ChecagemDeColisaoDoMouse()
   }
   if(colisaoMouse == true)
   {
+  	printf("\n%d", indexItemColidido);
 	for(int i = 0; i < qntBlocos; i++)//checagem se não há mais colisão.
 	{
 	  if(blocosColisao[i].colidido == true)//se há, então ignora a verificação
@@ -1743,8 +2055,7 @@ void LidandoComPersonagem(int &index)//Colentando o tipo de personagem que teve 
   CriandoPersonagem(index);
   if(blocosColisao[index].cliqueMouse == true && blocosColisao[index].coletado == false)
   {
-  	printf("\nentrou");
-  	blocosColisao[index].coletado = true;
+    blocosColisao[index].coletado = true;
 	switch(blocosColisao[index].tipo)
 	{
 	  case 6:
@@ -1757,10 +2068,10 @@ void LidandoComPersonagem(int &index)//Colentando o tipo de personagem que teve 
 	    LidandoComABruxa(10, 17);
 	    break;
 	  case 9:
-	    LidandoComMissoes(11);
+	    LidandoComMissoes(11, index);
 	    break;
 	  case 10:
-	    LidandoComMissoes(12);
+	    LidandoComMissoes(12, index);
 	    break;
 	}
   }
@@ -1783,8 +2094,9 @@ void LidandoComABruxa(int primeiroItemMissao, int ultimoItemMissao)//Ativando os
   TextoAoInteragir(71);
 }
 
-void LidandoComMissoes(int tipo)//Ativando os itens a serem coletados adicionalmente para recompensa no final
+void LidandoComMissoes(int tipo, int index)//Ativando os itens a serem coletados adicionalmente para recompensa no final
 {
+  TextoAoInteragir(blocosColisao[index].texto);
   for(int i = 0; i < qntBlocos; i++)
   {
     if(blocosColisao[i].tipo == tipo)
@@ -1796,18 +2108,19 @@ void FinalizandoMissoes()//Conferindo circunstâncias para finalizar missões do j
 {
   if(qntItensColetados >= 15)
     AtivandoFinal();
-  if(qntDocesColetados >= 5)
-    FinalMissao(15, qntDocesColetados);
   if(qntMoedasColetadas >= 5)
-    FinalMissao(14, qntMoedasColetadas);
+    FinalMissao(13, qntMoedasColetadas, 96);
+  if(qntDocesColetados >= 5)
+    FinalMissao(14, qntDocesColetados, 108);
 }
 
-void FinalMissao(int circunstancia, int contador)
+void FinalMissao(int circunstancia, int contador, int qualTexto)
 {
   if(fases == circunstancia)
   {
-  	qntItensColetados++;
   	contador = 0;
+  	qntItensColetados++;
+  	TextoAoInteragir(qualTexto);
   }
 }
 
@@ -1894,6 +2207,10 @@ void CondicionaisTextos()
     rolarTexto = false;
   }
   if(texto == 83)
+    rolarTexto = false;
+  if(texto == 95)
+    rolarTexto = false;
+  if(texto == 99)
     rolarTexto = false;
 }
 
