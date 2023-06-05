@@ -24,12 +24,15 @@ typedef struct _blocosColisao
 
 //criando o vetor para blocos de colisão
 BlocoDeColisao *blocosColisao;
-int qntBlocos = 84;
+int qntBlocos = 85;
 
 //=> Fases
 int fases = 21;
 bool pegouMissao = false;
 bool entrou = false;
+bool jaEntrou = false;
+bool jaEntrou2 = false;
+bool jaEntrou3 = false;
 bool tocou = false;
 bool trocarDeFase = true;
 
@@ -435,6 +438,7 @@ int main()
   blocosColisao[21].altura = blocosColisao[20].altura;
   blocosColisao[21].largura = blocosColisao[20].largura;
   blocosColisao[21].tipo = blocosColisao[20].tipo;
+  blocosColisao[21].tipo = blocosColisao[20].tipo;
   blocosColisao[21].colidido = false;
   blocosColisao[21].cliqueMouse = false;
   blocosColisao[21].coletado = false;
@@ -473,7 +477,7 @@ int main()
   blocosColisao[24].altura = 137;
   blocosColisao[24].largura = 137;
   blocosColisao[24].tipo = 7;
-  blocosColisao[24].texto = 71;
+  blocosColisao[24].texto = 84;
   blocosColisao[24].colidido = false;
   blocosColisao[24].cliqueMouse = false;
   blocosColisao[24].coletado = false;
@@ -1197,6 +1201,18 @@ int main()
   blocosColisao[83].sprite = carregarImagem(".//Artes//Textos//encontro_bruxa//texto_39.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
   blocosColisao[83].spriteMascara = NULL;
   
+  //Conversa com a Bruxa2
+  blocosColisao[84].x = blocosColisao[40].x;
+  blocosColisao[84].y = blocosColisao[40].y;
+  blocosColisao[84].altura = blocosColisao[40].altura;
+  blocosColisao[84].largura = blocosColisao[40].largura;
+  blocosColisao[84].tipo = blocosColisao[40].tipo;
+  blocosColisao[84].colidido = false;
+  blocosColisao[84].cliqueMouse = false;
+  blocosColisao[84].coletado = true;
+  blocosColisao[84].sprite = carregarImagem(".//Artes//Textos//encontro_bruxa//texto_27.bmp", blocosColisao[40].largura, blocosColisao[40].altura, 0, 0);
+  blocosColisao[84].spriteMascara = NULL;
+  
   //===============================> Cenários <===============================
   void **cenarios;
   int qntDeCenarios = 26;
@@ -1277,7 +1293,7 @@ int main()
       //=================> Garantindo que o Mouse Fique Dentro da Tela <=================
       GetCursorPos(&P);
       ScreenToClient(janela, &P);
-      
+      printf("\n%d", blocosColisao[18].coletado);
       //=================> Lidando com a troca de fases <=================
       CondicionaisDeFases(cenarios);
       CondicionaisTextos();
@@ -1531,7 +1547,7 @@ void CutScene(void *cenario)
 	  else
 	  {
 	    fases = 4;
-        texto = 40;	  	
+        texto = 40;	
 	  }
 	}
   }
@@ -1561,12 +1577,20 @@ void CondicionaisDeFases(void **cenarios)
   {
     variavelDeControle = 18;
 	LidandoComFases(cenarios[3], true, false, pegouMissao, true, inventario, 11, 11, 10, 17, false);
-    TextoAoInteragir(66);
+    if(!jaEntrou2)
+    {
+      TextoAoInteragir(66);
+      jaEntrou2 = true;
+	}
   }
   else if(fases == 7)
   {
     LidandoComFases(cenarios[4], false, true, true, false, inventario, 12, 12, 10, 17, false);
-    TextoAoInteragir(67);
+    if(!jaEntrou)
+    {
+      TextoAoInteragir(67);
+      jaEntrou = true;
+	}
   }
   else if(fases == 8)
   {
@@ -1664,7 +1688,6 @@ void ChecagemDeColisaoDoMouse()
   }
   if(colisaoMouse == true)
   {
-  	printf("\n%d", indexItemColidido);
 	for(int i = 0; i < qntBlocos; i++)//checagem se não há mais colisão.
 	{
 	  if(blocosColisao[i].colidido == true)//se há, então ignora a verificação
@@ -1686,7 +1709,7 @@ void ChecagemDeColisaoDoMouse()
 	  ColetarItensFase();
 	  ColetarItensMissoes(11, qntMoedasColetadas, indexItemColidido);
 	  ColetarItensMissoes(12, qntDocesColetados, indexItemColidido);
-	  if(blocosColisao[indexItemColidido].tipo >= 5 && blocosColisao[indexItemColidido].tipo <= 10)
+	  if(blocosColisao[indexItemColidido].tipo == 5)
 	    TextoAoInteragir(blocosColisao[indexItemColidido].texto);
 	  LidandoComTextos();
 	}
@@ -1720,6 +1743,8 @@ void LidandoComPersonagem(int &index)//Colentando o tipo de personagem que teve 
   CriandoPersonagem(index);
   if(blocosColisao[index].cliqueMouse == true && blocosColisao[index].coletado == false)
   {
+  	printf("\nentrou");
+  	blocosColisao[index].coletado = true;
 	switch(blocosColisao[index].tipo)
 	{
 	  case 6:
@@ -1738,7 +1763,6 @@ void LidandoComPersonagem(int &index)//Colentando o tipo de personagem que teve 
 	    LidandoComMissoes(12);
 	    break;
 	}
-	blocosColisao[index].coletado = true;
   }
 }
 
@@ -1746,7 +1770,7 @@ void LidandoComAsFolhas(int &index)//Interação com as folhas de onde sai a Lontr
 {
   index += 2;
   ZerandoColisoes();
-  TextoAoInteragir(blocosColisao[index].texto);
+  TextoAoInteragir(55);
 }
 
 void LidandoComABruxa(int primeiroItemMissao, int ultimoItemMissao)//Ativando os itens a serem coletados
@@ -1869,6 +1893,8 @@ void CondicionaisTextos()
     trocarDeFase = true;
     rolarTexto = false;
   }
+  if(texto == 83)
+    rolarTexto = false;
 }
 
 void IndicacaoParaTrocaDeTexto()
