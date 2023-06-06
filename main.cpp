@@ -10,8 +10,6 @@ using namespace std;
 #define ESC    	27
 
 /*
-	Ajeitar Erros: Bug de não mudar o texto ao completar missões
-	Procurar o por quê de alguns itens estarem mostrando uma conversa aleatória
 	Criar uma interface contando quantos itens foram pegos das missões
 */
 //local para os structs
@@ -29,13 +27,19 @@ int qntBlocos = 110;
 
 //=> Fases
 int fases = 21;
-bool pegouMissao = false;
+bool tocou = false;
 bool entrou = false;
 bool jaEntrou = false;
 bool jaEntrou2 = false;
 bool jaEntrou3 = false;
-bool tocou = false;
+bool jaEntrou4 = false;
+bool jaEntrou5 = false;
+bool pegouMissao = false;
 bool trocarDeFase = true;
+
+//Booleanas Missões
+bool missaoGuaxi = false;
+bool missaoCat = false;
 
 //=> Inventário
 void *inventarioImagem;
@@ -111,11 +115,15 @@ void LidandoComAsFolhas(int &index);
 
 void LidandoComABruxa(int primeiroItemMissao, int ultimoItemMissao);
 
-void LidandoComMissoes(int tipo, int index);
+void LidandoComMissoes(int tipo, int index, bool &verificacao);
 
 void FinalizandoMissoes();
 
-void FinalMissao(int circunstancia, int contador, int qualTexto);
+void FinalMissao(int circunstancia, int contador, int qualTexto, bool &verificacao);
+
+void ExibeContador(int x, int y, char *msg, int t);
+
+void ContadorDeItensMissoes(int contador, int xTexto, int yTexto, char *msg, bool &condicao);
 
 //= > Área para Coletas de Itens
 void ColetarItensFase();
@@ -554,8 +562,8 @@ int main()
   //=>Moedas 1
   blocosColisao[30].x = 900;
   blocosColisao[30].y = 130;
-  blocosColisao[30].altura = 64;
-  blocosColisao[30].largura = 135;
+  blocosColisao[30].altura = 32;
+  blocosColisao[30].largura = 68;
   blocosColisao[30].tipo = 11;
   blocosColisao[30].texto = 40;
   blocosColisao[30].colidido = false;
@@ -619,8 +627,8 @@ int main()
   //=>Doce 1
   blocosColisao[35].x = 900;
   blocosColisao[35].y = 400;
-  blocosColisao[35].altura = 64;
-  blocosColisao[35].largura = 135;
+  blocosColisao[35].altura = 32;
+  blocosColisao[35].largura = 68;
   blocosColisao[35].tipo = 12;
   blocosColisao[35].texto = 40;
   blocosColisao[35].colidido = false;
@@ -1600,7 +1608,7 @@ int main()
 	  if(pg == 1) pg = 2; else pg = 1;//técnica de paginação
 	  setactivepage(pg);
 	  cleardevice();
-      
+      printf("\n%d", blocosColisao[7].coletado);
       //=================> Garantindo que o Mouse Fique Dentro da Tela <=================
       GetCursorPos(&P);
       ScreenToClient(janela, &P);
@@ -1609,6 +1617,9 @@ int main()
       CondicionaisDeFases(cenarios);
       CondicionaisTextos();
 	  FinalizandoMissoes();
+	  
+	  ContadorDeItensMissoes( qntDocesColetados, 0, 0, "Quantidade de Doces: ", missaoCat);
+	  ContadorDeItensMissoes( qntMoedasColetadas, 0, 15, "Quantidade de Moedas: ", missaoGuaxi);
 	  
       setvisualpage(pg);
     }//Fim do Condicional para Barramento de Frames
@@ -1999,7 +2010,6 @@ void ChecagemDeColisaoDoMouse()
   }
   if(colisaoMouse == true)
   {
-  	printf("\n%d", indexItemColidido);
 	for(int i = 0; i < qntBlocos; i++)//checagem se não há mais colisão.
 	{
 	  if(blocosColisao[i].colidido == true)//se há, então ignora a verificação
@@ -2018,12 +2028,10 @@ void ChecagemDeColisaoDoMouse()
 	{
 	  Inicio = GetTickCount();//resetando o tempo de espera
 	  blocosColisao[indexItemColidido].cliqueMouse = true;
-	  ColetarItensFase();
 	  ColetarItensMissoes(11, qntMoedasColetadas, indexItemColidido);
 	  ColetarItensMissoes(12, qntDocesColetados, indexItemColidido);
-	  if(blocosColisao[indexItemColidido].tipo == 5)
-	    TextoAoInteragir(blocosColisao[indexItemColidido].texto);
 	  LidandoComTextos();
+	  ColetarItensFase();
 	}
   }
 }
@@ -2068,10 +2076,10 @@ void LidandoComPersonagem(int &index)//Colentando o tipo de personagem que teve 
 	    LidandoComABruxa(10, 17);
 	    break;
 	  case 9:
-	    LidandoComMissoes(11, index);
+	    LidandoComMissoes(11, index, missaoGuaxi);
 	    break;
 	  case 10:
-	    LidandoComMissoes(12, index);
+	    LidandoComMissoes(12, index, missaoCat);
 	    break;
 	}
   }
@@ -2094,9 +2102,10 @@ void LidandoComABruxa(int primeiroItemMissao, int ultimoItemMissao)//Ativando os
   TextoAoInteragir(71);
 }
 
-void LidandoComMissoes(int tipo, int index)//Ativando os itens a serem coletados adicionalmente para recompensa no final
+void LidandoComMissoes(int tipo, int index, bool &verificacao)//Ativando os itens a serem coletados adicionalmente para recompensa no final
 {
   TextoAoInteragir(blocosColisao[index].texto);
+  verificacao = true;
   for(int i = 0; i < qntBlocos; i++)
   {
     if(blocosColisao[i].tipo == tipo)
@@ -2108,20 +2117,36 @@ void FinalizandoMissoes()//Conferindo circunstâncias para finalizar missões do j
 {
   if(qntItensColetados >= 15)
     AtivandoFinal();
-  if(qntMoedasColetadas >= 5)
-    FinalMissao(13, qntMoedasColetadas, 96);
-  if(qntDocesColetados >= 5)
-    FinalMissao(14, qntDocesColetados, 108);
+  if(qntMoedasColetadas >= 5 && missaoGuaxi == true)
+    FinalMissao(13, qntMoedasColetadas, 96, missaoGuaxi);
+  if(qntDocesColetados >= 5 && missaoCat == true)
+    FinalMissao(14, qntDocesColetados, 108, missaoCat);
 }
 
-void FinalMissao(int circunstancia, int contador, int qualTexto)
+void FinalMissao(int circunstancia, int contador, int qualTexto, bool &verificacao)
 {
   if(fases == circunstancia)
   {
   	contador = 0;
   	qntItensColetados++;
+  	verificacao = false;
   	TextoAoInteragir(qualTexto);
   }
+}
+
+void ExibeContador(int x, int y, char *msg, int t)
+{
+  char st[50], S[100];
+  itoa(t, st, 10);
+  strcpy(S, msg);
+  strcat(S, st);
+  outtextxy(x, y, S);
+}
+
+void ContadorDeItensMissoes(int contador, int xTexto, int yTexto, char *msg, bool &condicao)
+{
+  if(condicao == true)
+    ExibeContador(xTexto, yTexto, msg, contador);	
 }
 
 //======================= > Área para Coletas de Itens < =======================
@@ -2131,6 +2156,7 @@ void ColetarItensFase()
   if(blocosColisao[indexItemColidido].tipo == 5 && blocosColisao[indexItemColidido].coletado == false)//Captura de Coletáveis da Fase
   {	
     qntItensColetados++;//registrando itens coletados
+    TextoAoInteragir(blocosColisao[indexItemColidido].texto);//Coletando Textos Dos Itens
 	blocosColisao[indexItemColidido].coletado = true;//impossibilitando de clicar novamente
   }
 }
