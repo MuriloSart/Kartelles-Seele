@@ -2238,6 +2238,10 @@ void CondicionaisTextos()
     rolarTexto = false;
   if(texto == 99)
     rolarTexto = false;
+  if(texto == 107)
+    rolarTexto = false;
+  if(texto == 109)
+    rolarTexto = false;
 }
 
 void IndicacaoParaTrocaDeTexto()
