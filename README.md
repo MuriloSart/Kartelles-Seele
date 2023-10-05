@@ -5,7 +5,7 @@ Kartelles Seele Banner
 Bem-vindo ao mundo de **Kartelles Seele**, uma obra-prima criada pela equipe da "Indie Otta". Neste envolvente jogo de aventura point-and-click, você explorará um universo repleto de enigmas desafiadores, enredos cativantes e personagens intrigantes. Prepare-se para embarcar em uma jornada única, onde suas escolhas moldarão o destino do protagonista.
 
 ## Sobre o Jogo
-**Kartelles Seele** é uma criação da talentosa equipe da "Indie Otta", composta por Nicolas, Nicolle, Maria, Gustavo e Murilo. Este jogo point-and-click de puzzle e enredo combina elementos de visual novel e aventura gráfica para oferecer uma experiência imersiva e emocionante.
+**Kartelles Seele** é uma criação da talentosa equipe da "Indie Otta", composta por Nicolas, Nicolle, Maria, Gustavo e Murilo. Este jogo point-and-click de puzzle e enredo feito em *C puro* que combina elementos de visual novel e aventura gráfica para oferecer uma experiência imersiva e emocionante.
 
 ## Principais Características
 - Enredo Profundo: Mergulhe em uma história rica e envolvente, repleta de reviravoltas emocionantes e personagens memoráveis.
